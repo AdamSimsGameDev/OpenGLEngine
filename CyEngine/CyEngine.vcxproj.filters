@@ -7,6 +7,15 @@
     <Filter Include="CyEngine\Events">
       <UniqueIdentifier>{3B83EB22-A70E-59E7-B01F-DCDB1C2AB5E7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CyEngine\Layers">
+      <UniqueIdentifier>{166ECE31-82F9-3BF6-8B0A-BFEAF71498F6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CyEngine.h" />
@@ -34,8 +43,20 @@
     <ClInclude Include="src\CyEngine\Events\WindowEvent.h">
       <Filter>CyEngine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Layers\Layer.h">
+      <Filter>CyEngine\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Layers\LayerStack.h">
+      <Filter>CyEngine\Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Log.h">
       <Filter>CyEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Window.h">
+      <Filter>CyEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\cypch.h" />
   </ItemGroup>
@@ -43,8 +64,17 @@
     <ClCompile Include="src\CyEngine\Application.cpp">
       <Filter>CyEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\Layers\Layer.cpp">
+      <Filter>CyEngine\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Layers\LayerStack.cpp">
+      <Filter>CyEngine\Layers</Filter>
+    </ClCompile>
     <ClCompile Include="src\CyEngine\Log.cpp">
       <Filter>CyEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\cypch.cpp" />
   </ItemGroup>

@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDirs = {}
 IncludeDirs["GLFW"] = "CyEngine/vendor/GLFW/include";
+IncludeDirs["glad"] = "CyEngine/vendor/glad/include";
 
 include "CyEngine/vendor/GLFW"
+include "CyEngine/vendor/glad"
 
 project "CyEngine"
 	location "CyEngine"
@@ -35,15 +37,18 @@ project "CyEngine"
 
 	includedirs
 	{
-		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include",
-		"${IncludeDirs.GLFW}"
+		"CyEngine/src",
+		"CyEngine/vendor/spdlog/include",
+		"%{IncludeDirs.GLFW}",
+		"%{IncludeDirs.glad}"
 	}
 
 	links
 	{
 		"GLFW",
-		"opengl32.lib"
+		"glad",
+		"opengl32.lib",
+		"dwmapi.lib"
 	}
 
 	filter "system:windows" 
@@ -64,14 +69,17 @@ project "CyEngine"
 
 	filter "configurations:Debug"
 		defines "CY_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Development"
 		defines "CY_DEVELOPMENT"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "CY_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 project "Sandbox"
@@ -111,13 +119,16 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "CY_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Development"
 		defines "CY_DEVELOPMENT"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "CY_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 

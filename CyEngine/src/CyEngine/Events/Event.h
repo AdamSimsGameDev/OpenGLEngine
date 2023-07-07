@@ -1,6 +1,7 @@
 #pragma once
-
-#include "Core.h"
+#include "../Core.h"
+#include <string>
+#include <functional>
 
 namespace Cy
 {
@@ -27,16 +28,6 @@ namespace Cy
 		MouseScroll
 	};
 
-	enum EventCategory
-	{
-		None = 0,
-		Application		= BIT(0),
-		Input			= BIT(1),
-		Keyboard		= BIT(1),
-		Mouse			= BIT(3),
-		MouseButton		= BIT(4)
-	};
-
 #define EVENT_TYPE(type)\
 	static EventType GetStaticType() { return EventType::type; }\
 	virtual EventType GetEventType() const override { return GetStaticType(); }\
@@ -50,6 +41,7 @@ namespace Cy
 		virtual const char* GetDisplayName() const = 0;
 
 		virtual std::string ToString() const { return GetDisplayName(); }
+		inline bool IsHandled() const { return m_Handled; }
 
 	protected:
 		bool m_Handled = false;

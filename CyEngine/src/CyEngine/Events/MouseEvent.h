@@ -6,18 +6,18 @@ namespace Cy
 	class CY_API MouseMoveEvent : public Event
 	{
 	public:
-		MouseMoveEvent(int x, int y)
+		MouseMoveEvent(float x, float y)
 			: m_MouseX(x), m_MouseY(y)
 		{
 		}
 
-		inline int GetX() const { return m_MouseX; }
-		inline int GetY() const { return m_MouseY; }
+		inline float GetX() const { return m_MouseX; }
+		inline float GetY() const { return m_MouseY; }
 	
 		EVENT_TYPE(MouseMove);
 
 	private:
-		int m_MouseX, m_MouseY;
+		float m_MouseX, m_MouseY;
 	};
 
 	class CY_API MouseButtonEvent : public Event
@@ -57,16 +57,18 @@ namespace Cy
 	class CY_API MouseScrollEvent : public Event
 	{
 	public:
-		MouseScrollEvent(float delta)
-			: m_Delta(delta)
+		MouseScrollEvent(float offsetX, float offsetY)
+			: m_OffsetX(offsetX), m_OffsetY(offsetY)
 		{
 		}
 
-		inline int GetDelta() const { return m_Delta; }
+		inline int GetOffsetX() const { return m_OffsetX; }
+		inline int GetOffsetY() const { return m_OffsetY; }
 
 		EVENT_TYPE(MouseScroll);
 
 	private:
-		float m_Delta;
+		float m_OffsetX;
+		float m_OffsetY;
 	};
 }

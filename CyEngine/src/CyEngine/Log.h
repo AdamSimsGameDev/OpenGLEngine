@@ -24,11 +24,15 @@ namespace Cy
 #define CY_CORE_INFO(...)  ::Cy::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define CY_CORE_WARN(...)  ::Cy::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define CY_CORE_ERROR(...) ::Cy::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define CY_CORE_FATAL(...) ::Cy::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define CY_CORE_FATAL(...) ::Cy::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client logging macros
 #define CY_TRACE(...) ::Cy::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define CY_INFO(...)  ::Cy::Log::GetClientLogger()->info(__VA_ARGS__)
 #define CY_WARN(...)  ::Cy::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define CY_ERROR(...) ::Cy::Log::GetClientLogger()->error(__VA_ARGS__)
-#define CY_FATAL(...) ::Cy::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define CY_FATAL(...) ::Cy::Log::GetClientLogger()->critical(__VA_ARGS__)
+
+// Assert macros
+#define CY_CORE_ASSERT(condition, ...)	if (!condition) ::Cy::Log::GetCoreLogger()->critical(__VA_ARGS__);
+#define CY_ASSERT(condition, ...)		if (!condition) ::Cy::Log::GetClientLogger()->critical(__VA_ARGS__);
