@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "Events/ApplicationEvent.h"
+#include "Log.h"
 
 namespace Cy
 {
@@ -14,6 +16,9 @@ namespace Cy
 
 	void Application::Run()
 	{
+		GameTickEvent e;
+		CY_TRACE(e.ToString());
+
 		while (true)
 		{
 			// DO

@@ -4,6 +4,9 @@
     <Filter Include="CyEngine">
       <UniqueIdentifier>{377B295C-2348-8467-4C61-720F388DB9F5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CyEngine\Events">
+      <UniqueIdentifier>{3B83EB22-A70E-59E7-B01F-DCDB1C2AB5E7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CyEngine.h" />
@@ -16,9 +19,18 @@
     <ClInclude Include="src\CyEngine\EntryPoint.h">
       <Filter>CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Events\Event.h">
+      <Filter>CyEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Events\MouseEvent.h">
+      <Filter>CyEngine\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Log.h">
       <Filter>CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Events\WindowEvent.h" />
+    <ClInclude Include="src\CyEngine\Events\KeyEvent.h" />
+    <ClInclude Include="src\CyEngine\Events\ApplicationEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
