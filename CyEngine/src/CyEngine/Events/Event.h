@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../Core.h"
-#include <string>
-#include <functional>
+#include "Core.h"
 
 namespace Cy
 {

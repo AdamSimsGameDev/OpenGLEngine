@@ -11,6 +11,11 @@ workspace "CyEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDirs = {}
+IncludeDirs["GLFW"] = "CyEngine/vendor/GLFW/include";
+
+include "CyEngine/vendor/GLFW"
+
 project "CyEngine"
 	location "CyEngine"
 	kind "SharedLib"
@@ -18,6 +23,9 @@ project "CyEngine"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("int/" .. outputdir .. "/%{prj.name}")
+
+	pchheader "cypch.h"
+	pchsource "CyEngine/src/cypch.cpp"
 
 	files
 	{
@@ -28,7 +36,14 @@ project "CyEngine"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"${IncludeDirs.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows" 

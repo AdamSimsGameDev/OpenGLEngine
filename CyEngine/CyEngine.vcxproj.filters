@@ -19,18 +19,25 @@
     <ClInclude Include="src\CyEngine\EntryPoint.h">
       <Filter>CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Events\ApplicationEvent.h">
+      <Filter>CyEngine\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Events\Event.h">
+      <Filter>CyEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Events\KeyEvent.h">
       <Filter>CyEngine\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\Events\MouseEvent.h">
       <Filter>CyEngine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Events\WindowEvent.h">
+      <Filter>CyEngine\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Log.h">
       <Filter>CyEngine</Filter>
     </ClInclude>
-    <ClInclude Include="src\CyEngine\Events\WindowEvent.h" />
-    <ClInclude Include="src\CyEngine\Events\KeyEvent.h" />
-    <ClInclude Include="src\CyEngine\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\cypch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
@@ -39,5 +46,6 @@
     <ClCompile Include="src\CyEngine\Log.cpp">
       <Filter>CyEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\cypch.cpp" />
   </ItemGroup>
 </Project>
