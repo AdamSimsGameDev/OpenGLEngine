@@ -14,9 +14,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDirs = {}
 IncludeDirs["GLFW"] = "CyEngine/vendor/GLFW/include";
 IncludeDirs["glad"] = "CyEngine/vendor/glad/include";
+IncludeDirs["imgui"] = "CyEngine/vendor/imgui";
 
 include "CyEngine/vendor/GLFW"
 include "CyEngine/vendor/glad"
+include "CyEngine/vendor/imgui"
 
 project "CyEngine"
 	location "CyEngine"
@@ -40,7 +42,8 @@ project "CyEngine"
 		"CyEngine/src",
 		"CyEngine/vendor/spdlog/include",
 		"%{IncludeDirs.GLFW}",
-		"%{IncludeDirs.glad}"
+		"%{IncludeDirs.glad}",
+		"%{IncludeDirs.imgui}"
 	}
 
 	links
@@ -48,7 +51,8 @@ project "CyEngine"
 		"GLFW",
 		"glad",
 		"opengl32.lib",
-		"dwmapi.lib"
+		"dwmapi.lib",
+		"imgui"
 	}
 
 	filter "system:windows" 
@@ -59,7 +63,8 @@ project "CyEngine"
 		defines
 		{
 			"CY_PLATFORM_WINDOWS",
-			"CY_BUILD_DLL"
+			"CY_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 		
 		postbuildcommands

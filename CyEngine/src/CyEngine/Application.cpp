@@ -3,7 +3,7 @@
 #include "Events/Event.h"
 #include "Events/WindowEvent.h"
 #include "Log.h"
-#include <gl/GL.h>
+#include <glad/glad.h>
 
 namespace Cy
 {
