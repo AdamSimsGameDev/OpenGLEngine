@@ -5,7 +5,7 @@ class Sandbox : public Cy::Application
 public:
 	Sandbox()
 	{
-
+		PushLayer(new Cy::ImGuiLayer());
 	}
 
 	~Sandbox()

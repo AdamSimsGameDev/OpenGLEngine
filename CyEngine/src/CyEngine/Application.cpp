@@ -2,15 +2,19 @@
 #include "Application.h"
 #include "Events/Event.h"
 #include "Events/WindowEvent.h"
+#include "Input.h"
 #include "Log.h"
+#include "KeyCode.h"
 #include <glad/glad.h>
 
 namespace Cy
 {
-#define BIND_EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
+	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 	}
@@ -26,8 +30,37 @@ namespace Cy
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			Input::Update();
+
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			if (Input::IsKeyPressed(CY_KEY_SPACE))
+			{
+				CY_CORE_TRACE("Space Pressed");
+			}
+			if (Input::IsKeyDown(CY_KEY_SPACE))
+			{
+				CY_CORE_TRACE("Space Down");
+			}
+			if (Input::IsKeyReleased(CY_KEY_SPACE))
+			{
+				CY_CORE_TRACE("Space Released");
+			}			
+			
+			if (Input::IsMouseButtonPressed(CY_MOUSE_BUTTON_LEFT))
+			{
+				CY_CORE_TRACE("LMB Pressed");
+			}
+			if (Input::IsMouseButtonDown(CY_MOUSE_BUTTON_LEFT))
+			{
+				CY_CORE_TRACE("LMB Down");
+			}
+			if (Input::IsMouseButtonReleased(CY_MOUSE_BUTTON_LEFT))
+			{
+				CY_CORE_TRACE("LMB Released");
+			}
+
 
 			m_Window->OnUpdate();
 		}
@@ -49,11 +82,13 @@ namespace Cy
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
 		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

@@ -21,6 +21,7 @@ namespace Cy
 		KeyPressed,
 		KeyReleased,
 		KeyRepeat,
+		KeyChar,
 
 		MousePressed,
 		MouseReleased,

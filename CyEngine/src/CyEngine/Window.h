@@ -38,6 +38,10 @@ namespace Cy
 		virtual void SetUseVSync(bool enabled) = 0;
 		virtual bool IsVSyncEnabled() const = 0;
 
+		virtual void* GetNativeWindow() const = 0;
+		template<typename T>
+		T* GetNativeWindowTyped() const { return static_cast<T*>(GetNativeWindow()); }
+
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
 }

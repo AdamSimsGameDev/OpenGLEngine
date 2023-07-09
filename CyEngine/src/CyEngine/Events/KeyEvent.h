@@ -5,6 +5,7 @@ namespace Cy
 {
 	class CY_API KeyEvent : public Event
 	{
+	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
 
 	protected:
@@ -45,5 +46,15 @@ namespace Cy
 		}
 
 		EVENT_TYPE(KeyReleased);
+	};
+
+	class CY_API KeyCharEvent : public KeyEvent
+	{
+	public:
+		KeyCharEvent(int keyCode) : KeyEvent(keyCode)
+		{
+		}
+
+		EVENT_TYPE(KeyChar);
 	};
 }

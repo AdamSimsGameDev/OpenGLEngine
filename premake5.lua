@@ -15,6 +15,7 @@ IncludeDirs = {}
 IncludeDirs["GLFW"] = "CyEngine/vendor/GLFW/include";
 IncludeDirs["glad"] = "CyEngine/vendor/glad/include";
 IncludeDirs["imgui"] = "CyEngine/vendor/imgui";
+IncludeDirs["glm"] = "CyEngine/vendor/glm";
 
 include "CyEngine/vendor/GLFW"
 include "CyEngine/vendor/glad"
@@ -34,7 +35,9 @@ project "CyEngine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -43,7 +46,8 @@ project "CyEngine"
 		"CyEngine/vendor/spdlog/include",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.glad}",
-		"%{IncludeDirs.imgui}"
+		"%{IncludeDirs.imgui}",
+		"%{IncludeDirs.glm}"
 	}
 
 	links
@@ -64,7 +68,8 @@ project "CyEngine"
 		{
 			"CY_PLATFORM_WINDOWS",
 			"CY_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
+			"GLFW_INCLUDE_NONE",
+			"IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
 		}
 		
 		postbuildcommands
@@ -104,7 +109,8 @@ project "Sandbox"
 	includedirs
 	{
 		"CyEngine/vendor/spdlog/include",
-		"CyEngine/src"
+		"CyEngine/src",
+		"%{IncludeDirs.glm}"
 	}
 
 	links
