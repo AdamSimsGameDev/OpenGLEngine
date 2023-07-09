@@ -1361,6 +1361,9 @@
     <ClCompile Include="src\CyEngine\Application.cpp">
       <Filter>src\CyEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp">
+      <Filter>src\CyEngine\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp">
       <Filter>src\CyEngine\ImGui</Filter>
     </ClCompile>

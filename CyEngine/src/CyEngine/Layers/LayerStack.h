@@ -25,6 +25,6 @@ namespace Cy
 
 	private:
 		LayerStackCont m_Layers;
-		LayerStackItr m_LayerInsert;
+		unsigned int m_LayerInsertIndex = 0;
 	};
 }

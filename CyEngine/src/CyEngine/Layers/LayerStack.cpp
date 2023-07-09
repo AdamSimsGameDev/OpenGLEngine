@@ -5,7 +5,6 @@ namespace Cy
 {
 	LayerStack::LayerStack()
 	{
-		m_LayerInsert = m_Layers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -16,7 +15,8 @@ namespace Cy
 
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
+		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
+		m_LayerInsertIndex++;
 	}
 
 	void LayerStack::PopLayer(Layer* layer)
@@ -25,7 +25,7 @@ namespace Cy
 		if (it != end())
 		{
 			m_Layers.erase(it);
-			m_LayerInsert--;
+			m_LayerInsertIndex--;
 		}
 	}
 

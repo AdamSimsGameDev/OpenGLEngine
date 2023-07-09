@@ -594,6 +594,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp" />
+    <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\CyEngine\Layers\Layer.cpp" />
     <ClCompile Include="src\CyEngine\Layers\LayerStack.cpp" />

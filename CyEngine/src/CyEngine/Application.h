@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Layers/Layer.h"
 #include "Layers/LayerStack.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace Cy
 {
@@ -27,6 +28,7 @@ namespace Cy
 
 		LayerStack m_LayerStack;
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 
 	private:

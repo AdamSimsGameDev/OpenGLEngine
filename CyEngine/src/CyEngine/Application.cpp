@@ -17,6 +17,9 @@ namespace Cy
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -35,32 +38,10 @@ namespace Cy
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
-			if (Input::IsKeyPressed(CY_KEY_SPACE))
-			{
-				CY_CORE_TRACE("Space Pressed");
-			}
-			if (Input::IsKeyDown(CY_KEY_SPACE))
-			{
-				CY_CORE_TRACE("Space Down");
-			}
-			if (Input::IsKeyReleased(CY_KEY_SPACE))
-			{
-				CY_CORE_TRACE("Space Released");
-			}			
-			
-			if (Input::IsMouseButtonPressed(CY_MOUSE_BUTTON_LEFT))
-			{
-				CY_CORE_TRACE("LMB Pressed");
-			}
-			if (Input::IsMouseButtonDown(CY_MOUSE_BUTTON_LEFT))
-			{
-				CY_CORE_TRACE("LMB Down");
-			}
-			if (Input::IsMouseButtonReleased(CY_MOUSE_BUTTON_LEFT))
-			{
-				CY_CORE_TRACE("LMB Released");
-			}
-
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
