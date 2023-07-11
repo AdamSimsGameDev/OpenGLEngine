@@ -1,6 +1,8 @@
 #pragma once
 #include "CyEngine/Window.h"
-#include "GLFW/glfw3.h"
+#include "CyEngine/Renderer/GraphicsContext.h"
+
+struct GLFWwindow;
 
 namespace Cy
 {
@@ -27,6 +29,7 @@ namespace Cy
 
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{

@@ -143,6 +143,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\CyEngine.h" />
     <ClInclude Include="src\CyEngine\Application.h" />
     <ClInclude Include="src\CyEngine\Core.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="src\CyEngine\Layers\Layer.h" />
     <ClInclude Include="src\CyEngine\Layers\LayerStack.h" />
     <ClInclude Include="src\CyEngine\Log.h" />
+    <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\CyEngine\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -583,8 +587,12 @@
     <ClInclude Include="vendor\glm\glm\vec3.hpp" />
     <ClInclude Include="vendor\glm\glm\vec4.hpp" />
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\CyEngine\Application.cpp" />
     <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
     <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp" />
@@ -601,6 +609,7 @@
     <ClCompile Include="src\cypch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

@@ -113,12 +113,8 @@ namespace Cy
             {
                 Log::Clear();
             }
+        }
 
-            ImGui::End();
-        }
-        else
-        {
-            ImGui::End();
-        }
+        ImGui::End();
 	}
 }

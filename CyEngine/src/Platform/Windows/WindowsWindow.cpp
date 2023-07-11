@@ -5,7 +5,9 @@
 #include <CyEngine/Events/KeyEvent.h>
 #include <CyEngine/Events/MouseEvent.h>
 #include <CyEngine/Events/WindowEvent.h>
+#include <Platform/OpenGL/OpenGLContext.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 namespace Cy
 {
@@ -33,7 +35,7 @@ namespace Cy
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetUseVSync(bool enabled)
@@ -53,7 +55,7 @@ namespace Cy
 		m_Data.Height = props.Height;
 		m_Data.Title = props.Title;
 
-		CY_CORE_INFO("Creating window of size ({1}, {2})", props.Title, props.Width, props.Height);
+		CY_CORE_LOG("Creating window of size ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialised)
 		{
@@ -66,10 +68,9 @@ namespace Cy
 		}
 
 		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		CY_CORE_ASSERT(status, "Failed to initialise glad!");
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetUseVSync(true);

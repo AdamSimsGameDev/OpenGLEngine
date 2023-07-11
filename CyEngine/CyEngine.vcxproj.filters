@@ -1364,6 +1364,11 @@
     </ClInclude>
     <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
     <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
+    <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
@@ -1404,5 +1409,9 @@
     </ClCompile>
     <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
     <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
   </ItemGroup>
 </Project>

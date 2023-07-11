@@ -2,8 +2,10 @@
 #include "EditorLayer.h"
 #include "CyEngine/Editor/InspectorTab.h"
 #include "CyEngine/Editor/OutputTab.h"
+#include "CyEngine/Editor/ViewportTab.h"
 
 #include <imgui.h>
+#include <gl/GL.h>
 
 namespace Cy
 {
@@ -15,6 +17,8 @@ namespace Cy
 
 		PushTab(new OutputTab());
 		PushTab(new InspectorTab());
+		m_ViewportTab = new ViewportTab();
+		PushTab(m_ViewportTab);
 	}
 
 	EditorLayer::~EditorLayer()
@@ -23,6 +27,15 @@ namespace Cy
 		{
 			delete tab.second;
 		}
+	}
+
+	void EditorLayer::OnAttach()
+	{
+		FrameBufferSpec spec;
+		spec.Width = 1280;
+		spec.Height = 720;
+		m_FrameBuffer = FrameBuffer::Create(spec);
+		m_ViewportTab->SetFrameBuffer(m_FrameBuffer);
 	}
 
 	void EditorLayer::PushTab(EditorTab* tab)
@@ -113,5 +126,15 @@ namespace Cy
 		}
 
 		ImGui::End();
+	}
+
+	void EditorLayer::OnUpdate()
+	{
+		m_FrameBuffer->Bind();
+
+		glClearColor(1, 0, 1, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		m_FrameBuffer->Unbind();
 	}
 }
