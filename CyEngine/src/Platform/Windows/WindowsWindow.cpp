@@ -53,7 +53,7 @@ namespace Cy
 		m_Data.Height = props.Height;
 		m_Data.Title = props.Title;
 
-		CY_CORE_INFO("Creating window {0} of size ({1}, {2})", props.Title, props.Width, props.Height);
+		CY_CORE_INFO("Creating window of size ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialised)
 		{

@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "KeyCode.h"
 #include <glad/glad.h>
+#include "CyEngine/Layers/EditorLayer.h"
 
 namespace Cy
 {
@@ -18,8 +19,10 @@ namespace Cy
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 
+		// Push default layers.
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+		PushOverlay(new EditorLayer());
 	}
 
 	Application::~Application()

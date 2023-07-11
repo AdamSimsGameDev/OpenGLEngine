@@ -23,8 +23,9 @@ include "CyEngine/vendor/imgui"
 
 project "CyEngine"
 	location "CyEngine"
-	kind "SharedLib"
-	language "C++"
+	kind "StaticLib"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("int/" .. outputdir .. "/%{prj.name}")
@@ -59,9 +60,12 @@ project "CyEngine"
 		"imgui"
 	}
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+
 	filter "system:windows" 
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -71,31 +75,28 @@ project "CyEngine"
 			"GLFW_INCLUDE_NONE",
 			"IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
 		}
-		
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-		}
 
 	filter "configurations:Debug"
 		defines "CY_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Development"
 		defines "CY_DEVELOPMENT"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "CY_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("int/" .. outputdir .. "/%{prj.name}")
@@ -110,6 +111,7 @@ project "Sandbox"
 	{
 		"CyEngine/vendor/spdlog/include",
 		"CyEngine/src",
+		"CyEngine/vendor",
 		"%{IncludeDirs.glm}"
 	}
 
@@ -119,8 +121,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows" 
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -130,16 +130,16 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "CY_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Development"
 		defines "CY_DEVELOPMENT"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "CY_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 

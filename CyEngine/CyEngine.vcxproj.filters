@@ -84,6 +84,12 @@
     <ClInclude Include="src\CyEngine\KeyCode.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Layers\EditorLayer.h">
+      <Filter>src\CyEngine\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Layers\EditorTab.h">
+      <Filter>src\CyEngine\Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Layers\Layer.h">
       <Filter>src\CyEngine\Layers</Filter>
     </ClInclude>
@@ -1356,6 +1362,8 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
+    <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
@@ -1366,6 +1374,12 @@
     </ClCompile>
     <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp">
       <Filter>src\CyEngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Layers\EditorLayer.cpp">
+      <Filter>src\CyEngine\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Layers\EditorTab.cpp">
+      <Filter>src\CyEngine\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\CyEngine\Layers\Layer.cpp">
       <Filter>src\CyEngine\Layers</Filter>
@@ -1388,5 +1402,7 @@
     <ClCompile Include="src\cypch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
   </ItemGroup>
 </Project>

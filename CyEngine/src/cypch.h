@@ -14,3 +14,6 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+
+#include "CyEngine/Core.h"
+#include "CyEngine/Log.h"

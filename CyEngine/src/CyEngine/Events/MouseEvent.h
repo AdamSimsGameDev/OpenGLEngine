@@ -62,8 +62,8 @@ namespace Cy
 		{
 		}
 
-		inline int GetOffsetX() const { return m_OffsetX; }
-		inline int GetOffsetY() const { return m_OffsetY; }
+		inline float GetOffsetX() const { return m_OffsetX; }
+		inline float GetOffsetY() const { return m_OffsetY; }
 
 		EVENT_TYPE(MouseScroll);
 
