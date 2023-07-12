@@ -143,6 +143,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -168,6 +172,7 @@
     <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\CyEngine\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiRenderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\cypch.h" />
@@ -590,6 +595,10 @@
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
@@ -604,6 +613,7 @@
     <ClCompile Include="src\CyEngine\Layers\LayerStack.cpp" />
     <ClCompile Include="src\CyEngine\Log.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiRenderer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\cypch.cpp">

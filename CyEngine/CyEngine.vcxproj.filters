@@ -1369,6 +1369,11 @@
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
@@ -1413,5 +1418,10 @@
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
   </ItemGroup>
 </Project>
