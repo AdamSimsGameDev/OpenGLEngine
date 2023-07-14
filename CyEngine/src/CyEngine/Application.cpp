@@ -11,6 +11,8 @@
 #include "CyEngine/Renderer/PerspectiveCamera.h"
 #include "Renderer/Renderer.h"
 
+#include "glm/gtx/string_cast.hpp"
+
 namespace Cy
 {
 	Application* Application::s_Instance = nullptr;
@@ -25,15 +27,20 @@ namespace Cy
 		// Push default layers.
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-		// PushOverlay(new EditorLayer());
+		m_EditorLayer = new EditorLayer();
+		PushOverlay(m_EditorLayer);
 
 		m_VertexArray.reset(VertexArray::Create());
 
 		float vertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.5f, 0.5f, 0.0f,
-			-0.5f, 0.5f, 0.0f,
+			-0.5f,	-0.5f,	 0.5f,
+			 0.5f,	-0.5f,	 0.5f,
+			-0.5f,	 0.5f,	 0.5f,
+			 0.5f,	 0.5f,	 0.5f,
+			-0.5f,	-0.5f,	-0.5f,
+			 0.5f,	-0.5f,	-0.5f,
+			-0.5f,	 0.5f,	-0.5f,
+			 0.5f,	 0.5f,	-0.5f,
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
@@ -45,7 +52,33 @@ namespace Cy
 
 		m_VertexBuffer->SetLayout(layout);
 
-		uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
+		uint32_t indices[] = 
+		{ 
+			//Top
+			2, 6, 7,
+			2, 3, 7,
+
+			//Bottom
+			0, 4, 5,
+			0, 1, 5,
+
+			//Left
+			0, 2, 6,
+			0, 4, 6,
+
+			//Right
+			1, 3, 7,
+			1, 5, 7,
+
+			//Front
+			0, 2, 3,
+			0, 1, 3,
+
+			//Back
+			4, 6, 7,
+			4, 5, 7
+		};
+
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
@@ -63,6 +96,19 @@ namespace Cy
 	{
 	}
 
+	void rotateAround(glm::vec3& pos, glm::quat& rot, const glm::vec3& point, float rad, const glm::vec3& axis)
+	{
+		// create the rotation matrix
+		glm::mat4 rot_mat = glm::rotate(glm::mat4(1.f), rad, axis);
+		// get the rotation quat
+		glm::quat act_rot = glm::quat_cast(rot_mat);
+		// get the position relative to the point
+		glm::vec3 pos_rel = pos - point;
+		// rotate both the relative position and rot
+		rot = rot * glm::inverse(act_rot);
+		pos = (pos_rel * act_rot) + point;
+	}
+
 	void Application::Run()
 	{
 		uint32_t frame = 0;
@@ -70,9 +116,16 @@ namespace Cy
 		{
 			Input::Update();
 
-			float sin = sinf(frame / 120.0f);
-			CY_CORE_LOG("{0}", sin);
-			m_Camera->SetPosition(glm::vec3(sin, 0.0f, 2.0f));
+			glm::vec3 pos = m_Camera->GetPosition();
+			glm::quat rot = m_Camera->GetRotation();
+			rotateAround(pos, rot, glm::vec3(0.0f, 0.0f, 0.0f), glm::radians(0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+			m_Camera->SetPosition(pos);
+			m_Camera->SetRotation(rot);
+
+			CY_CORE_LOG("Pos: {0}, Rot: {1}", glm::to_string(pos), glm::to_string(rot));
+
+			m_EditorLayer->GetFrameBuffer()->Bind();
 
 			RenderCommand::SetClearColour({0.2f, 0.2f, 0.2f, 1.0f});
 			RenderCommand::Clear();
@@ -86,6 +139,8 @@ namespace Cy
 			Renderer::Submit(m_VertexArray);
 
 			Renderer::EndScene();
+
+			m_EditorLayer->GetFrameBuffer()->Unbind();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

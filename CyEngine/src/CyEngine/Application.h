@@ -11,6 +11,8 @@
 
 namespace Cy
 {
+	class EditorLayer;
+
 	class CY_API Application
 	{
 	public:
@@ -33,6 +35,7 @@ namespace Cy
 		LayerStack m_LayerStack;
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
+		EditorLayer* m_EditorLayer;
 		bool m_Running = true;
 
 		std::shared_ptr<class Camera> m_Camera;

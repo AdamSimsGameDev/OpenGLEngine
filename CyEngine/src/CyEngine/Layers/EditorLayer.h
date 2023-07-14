@@ -19,6 +19,8 @@ namespace Cy
 		void PushTab(EditorTab* tab);
 		void PopTab(unsigned int id);
 
+		FrameBuffer* GetFrameBuffer() const { return m_FrameBuffer.get(); }
+
 		static EditorLayer& Get() { return *s_Instance; }
 
 	protected:

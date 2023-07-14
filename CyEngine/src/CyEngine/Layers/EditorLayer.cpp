@@ -130,8 +130,6 @@ namespace Cy
 
 	void EditorLayer::OnUpdate()
 	{
-		m_FrameBuffer->Bind();
 
-		m_FrameBuffer->Unbind();
 	}
 }

@@ -1,6 +1,7 @@
 #include "cypch.h"
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 namespace Cy
 {
