@@ -5,8 +5,11 @@
 #include "Input.h"
 #include "Log.h"
 #include "KeyCode.h"
-#include <glad/glad.h>
 #include "CyEngine/Layers/EditorLayer.h"
+
+#include "CyEngine/Renderer/OrthographicCamera.h"
+#include "CyEngine/Renderer/PerspectiveCamera.h"
+#include "Renderer/Renderer.h"
 
 namespace Cy
 {
@@ -24,9 +27,8 @@ namespace Cy
 		PushOverlay(m_ImGuiLayer);
 		// PushOverlay(new EditorLayer());
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
-		
+		m_VertexArray.reset(VertexArray::Create());
+
 		float vertices[] = {
 			-0.5f, -0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f,
@@ -36,15 +38,25 @@ namespace Cy
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		BufferLayout layout = 
+		{
+			{ ShaderDataType::Float3, "a_Position" }
+		};
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+		m_VertexBuffer->SetLayout(layout);
 
 		uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+
 		m_Shader.reset(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
+
+		m_Camera.reset(new PerspectiveCamera(45.0f, 1280, 720, 0.1f, 150.0f));
+		//m_Camera.reset(new OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f));
+		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 2.0f));
+		m_Camera->SetRotation(glm::quat(1, 0, 0, 0));
 	}
 
 	Application::~Application()
@@ -53,16 +65,27 @@ namespace Cy
 
 	void Application::Run()
 	{
+		uint32_t frame = 0;
 		while (m_Running)
 		{
 			Input::Update();
 
-			glClearColor(0.2f, 0.2f, 0.2f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			float sin = sinf(frame / 120.0f);
+			CY_CORE_LOG("{0}", sin);
+			m_Camera->SetPosition(glm::vec3(sin, 0.0f, 2.0f));
+
+			RenderCommand::SetClearColour({0.2f, 0.2f, 0.2f, 1.0f});
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			glm::mat4 matrix = m_Camera->GetProjectionViewMatrix();
+
+			m_Shader->UploadUniformMat4("u_ViewProjection", matrix);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
@@ -73,6 +96,7 @@ namespace Cy
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
+			frame++;
 		}
 	}
 

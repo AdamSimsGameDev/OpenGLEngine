@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Cy
 {
@@ -13,6 +15,8 @@ namespace Cy
 	
 		static Shader* CreateFromFiles(const std::string& vertexPath, const std::string& fragmentPath);
 		static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+
+		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
 
 	private:
 		static void ParseShader(const std::string& filePath, std::string& outSource);

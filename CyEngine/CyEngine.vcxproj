@@ -143,9 +143,16 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h" />
     <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
+    <ClInclude Include="src\CyEngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
@@ -173,6 +180,7 @@
     <ClInclude Include="src\CyEngine\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\cypch.h" />
@@ -595,9 +603,16 @@
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
@@ -614,6 +629,7 @@
     <ClCompile Include="src\CyEngine\Log.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiRenderer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\cypch.cpp">

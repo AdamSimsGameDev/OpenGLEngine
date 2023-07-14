@@ -17,12 +17,13 @@ namespace Cy
 		ParseShader(fragmentPath, fragment);
 		return Create(vertex, fragment);
 	}
+
 	Shader* Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
-		case RendererAPI::None: return nullptr;
-		case RendererAPI::OpenGL: return new OpenGLShader(vertexSrc, fragmentSrc);
+		case RendererAPI::API::None: return nullptr;
+		case RendererAPI::API::OpenGL: return new OpenGLShader(vertexSrc, fragmentSrc);
 		}
 		return nullptr;
 	}
