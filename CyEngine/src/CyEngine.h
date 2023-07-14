@@ -14,3 +14,7 @@
 
 // Renderer
 #include "CyEngine/Renderer/FrameBuffer.h"
+
+// Math
+#include "CyEngine/Maths/Colour.h"
+#include "CyEngine/Maths/Vector.h"

@@ -143,6 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\CyEngine\Maths\Colour.h" />
+    <ClInclude Include="src\CyEngine\Maths\Vector.h" />
     <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
     <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
@@ -603,6 +605,8 @@
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CyEngine\Maths\Colour.cpp" />
+    <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />

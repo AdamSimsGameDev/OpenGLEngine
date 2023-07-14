@@ -8,15 +8,15 @@ namespace Cy
 	class Camera
 	{
 	public:
-		Camera() : m_ProjectionMatrix(1.0f), m_ViewMatrix(1.0f), m_ProjectionViewMatrix(1.0f), m_Position(0.0f), m_Rotation(1.0f, 0.0f, 0.0f, 0.0f)
+		Camera() : m_ProjectionMatrix(1.0f), m_ViewMatrix(1.0f), m_ProjectionViewMatrix(1.0f), m_Position(0.0f, 0.0f, 0.0f), m_Rotation(1.0f, 0.0f, 0.0f, 0.0f)
 		{
 		}
 		virtual ~Camera() { }
 
-		virtual void SetPosition(const glm::vec3& position);
+		virtual void SetPosition(const Vector3& position);
 		virtual void SetRotation(const glm::quat& rotation);
 
-		const glm::vec3& GetPosition() const { return m_Position; }
+		const Vector3& GetPosition() const { return m_Position; }
 		const glm::quat& GetRotation() const { return m_Rotation; }
 
 		glm::mat4 GetProjectionMatrix() const { return m_ProjectionMatrix; }
@@ -29,7 +29,7 @@ namespace Cy
 	protected:
 		glm::mat4 m_ProjectionMatrix, m_ViewMatrix, m_ProjectionViewMatrix;
 
-		glm::vec3 m_Position;
+		Vector3 m_Position;
 		glm::quat m_Rotation;
 	};
 }

@@ -7,7 +7,7 @@ namespace Cy
 	class RenderCommand
 	{
 	public:
-		inline static void SetClearColour(const glm::vec4& colour)
+		inline static void SetClearColour(const Colour& colour)
 		{
 			s_RenderAPI->SetClearColour(colour);
 		}

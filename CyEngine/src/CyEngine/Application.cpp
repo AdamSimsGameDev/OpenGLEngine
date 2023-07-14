@@ -88,7 +88,7 @@ namespace Cy
 
 		m_Camera.reset(new PerspectiveCamera(45.0f, 1280, 720, 0.1f, 150.0f));
 		//m_Camera.reset(new OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f));
-		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 2.0f));
+		m_Camera->SetPosition(Vector3(0.0f, 0.0f, 2.0f));
 		m_Camera->SetRotation(glm::quat(1, 0, 0, 0));
 	}
 
@@ -96,7 +96,7 @@ namespace Cy
 	{
 	}
 
-	void rotateAround(glm::vec3& pos, glm::quat& rot, const glm::vec3& point, float rad, const glm::vec3& axis)
+	void rotateAround(Vector3& pos, glm::quat& rot, const glm::vec3& point, float rad, const glm::vec3& axis)
 	{
 		// create the rotation matrix
 		glm::mat4 rot_mat = glm::rotate(glm::mat4(1.f), rad, axis);
@@ -116,14 +116,15 @@ namespace Cy
 		{
 			Input::Update();
 
-			glm::vec3 pos = m_Camera->GetPosition();
+			Vector3 pos = m_Camera->GetPosition();
 			glm::quat rot = m_Camera->GetRotation();
 			rotateAround(pos, rot, glm::vec3(0.0f, 0.0f, 0.0f), glm::radians(0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 			m_Camera->SetPosition(pos);
+
 			m_Camera->SetRotation(rot);
 
-			CY_CORE_LOG("Pos: {0}, Rot: {1}", glm::to_string(pos), glm::to_string(rot));
+			CY_CORE_LOG("Pos: {0}, Rot: {1}", pos.ToString(), glm::to_string(rot));
 
 			m_EditorLayer->GetFrameBuffer()->Bind();
 

@@ -5,9 +5,9 @@
 
 namespace Cy
 {
-	void OpenGLRendererAPI::SetClearColour(const glm::vec4& colour)
+	void OpenGLRendererAPI::SetClearColour(const Colour& colour)
 	{
-		glClearColor(colour.x, colour.y, colour.z, colour.w);
+		glClearColor(colour.r, colour.g, colour.b, colour.a);
 	}
 
 	void OpenGLRendererAPI::Clear()
