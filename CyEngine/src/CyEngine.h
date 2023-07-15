@@ -3,6 +3,7 @@
 #include "CyEngine/Application.h"
 #include "CyEngine/Log.h"
 #include "CyEngine/EntryPoint.h"
+#include "CyEngine/Transform.h"
 
 // Layers
 #include "CyEngine/Layers/Layer.h"

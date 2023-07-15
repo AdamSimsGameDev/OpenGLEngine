@@ -142,6 +142,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="imgui.ini" />
     <None Include="resources\Shader.frag" />
     <None Include="resources\Shader.vert" />
   </ItemGroup>

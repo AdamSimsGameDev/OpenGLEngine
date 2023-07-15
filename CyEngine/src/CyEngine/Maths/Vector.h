@@ -61,6 +61,7 @@ namespace Cy
 	struct Vector3 : public glm::vec3
 	{
 	public:
+		Vector3() : glm::vec3(0.f, 0.f, 0.f) { }
 		Vector3(const glm::vec3& vec) : glm::vec3(vec) { }
 		Vector3(float _x, float _y, float _z) : glm::vec3(_x, _y, _z) { }
 

@@ -41,6 +41,9 @@ namespace Cy
 			return (x * x) + (y * y) + (z * z) + (w * w);
 		}
 
+		static Vector3 ToEuler(const Quat& quat);
+		static Quat FromEuler(const Vector3& euler);
+
 		Vector3 xyz() const;
 
 		static Quat Identity;

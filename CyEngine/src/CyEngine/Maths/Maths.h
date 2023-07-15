@@ -3,8 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-namespace Cy
-{
-#define DEG_TO_RAD(x) glm::radians(x)
-#define RAD_TO_DEG(x) glm::degrees(x)
-}
+#define PI() glm::pi<float>()
+#define RAD_TO_DEG 180.f/PI()
+#define DEG_TO_RAD PI()/180.f

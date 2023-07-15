@@ -17,6 +17,7 @@
 
 #include "CyEngine/Core.h"
 #include "CyEngine/Log.h"
+#include "CyEngine/Transform.h"
 
 // Input
 #include "CyEngine/Input.h"

@@ -113,7 +113,7 @@ namespace Cy
 
 			Vector3 pos = m_Camera->GetPosition();
 			Quat rot = m_Camera->GetRotation();
-			rotateAround(pos, rot, Vector3::Zero, DEG_TO_RAD(0.1f), Vector3::Up);
+			rotateAround(pos, rot, Vector3::Zero, DEG_TO_RAD * 0.1f, Vector3::Up);
 
 			m_Camera->SetPosition(pos);
 			m_Camera->SetRotation(rot);
