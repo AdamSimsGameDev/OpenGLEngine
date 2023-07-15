@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\CyEngine\Maths\Colour.h" />
+    <ClInclude Include="src\CyEngine\Maths\Matrix.h" />
     <ClInclude Include="src\CyEngine\Maths\Maths.h" />
     <ClInclude Include="src\CyEngine\Maths\Quat.h" />
     <ClInclude Include="src\CyEngine\Maths\Vector.h" />
@@ -608,6 +609,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Maths\Colour.cpp" />
+    <ClCompile Include="src\CyEngine\Maths\Matrix.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />

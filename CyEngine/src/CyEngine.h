@@ -18,5 +18,6 @@
 // Math
 #include "CyEngine/Maths/Colour.h"
 #include "CyEngine/Maths/Maths.h"
+#include "CyEngine/Maths/Matrix.h"
 #include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"

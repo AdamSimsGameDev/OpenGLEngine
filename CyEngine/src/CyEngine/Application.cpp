@@ -94,9 +94,9 @@ namespace Cy
 	void rotateAround(Vector3& pos, Quat& rot, const Vector3& point, float rad, const Vector3& axis)
 	{
 		// create the rotation matrix
-		glm::mat4 rot_mat = glm::rotate(glm::mat4(1.f), rad, (glm::vec3)axis);
+		Matrix4x4 rot_mat = Matrix4x4::Rotate(Matrix4x4(1.f), rad, axis);
 		// get the rotation quat
-		Quat act_rot = glm::quat_cast(rot_mat);
+		Quat act_rot = Matrix4x4::QuatCast(rot_mat);
 		// get the position relative to the point
 		Vector3 pos_rel = pos - point;
 		// rotate both the relative position and rot
@@ -128,7 +128,7 @@ namespace Cy
 			Renderer::BeginScene();
 
 			m_Shader->Bind();
-			glm::mat4 matrix = m_Camera->GetProjectionViewMatrix();
+			Matrix4x4 matrix = m_Camera->GetProjectionViewMatrix();
 
 			m_Shader->UploadUniformMat4("u_ViewProjection", matrix);
 			Renderer::Submit(m_VertexArray);
