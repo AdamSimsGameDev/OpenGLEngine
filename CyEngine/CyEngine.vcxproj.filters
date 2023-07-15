@@ -1384,6 +1384,7 @@
     <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\CyEngine\Maths\Vector.h" />
     <ClInclude Include="src\CyEngine\Maths\Colour.h" />
+    <ClInclude Include="src\CyEngine\Maths\Quat.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
@@ -1443,5 +1444,6 @@
     <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Colour.cpp" />
+    <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
   </ItemGroup>
 </Project>

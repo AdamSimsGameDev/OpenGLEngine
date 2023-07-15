@@ -89,23 +89,23 @@ namespace Cy
 		m_Camera.reset(new PerspectiveCamera(45.0f, 1280, 720, 0.1f, 150.0f));
 		//m_Camera.reset(new OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f));
 		m_Camera->SetPosition(Vector3(0.0f, 0.0f, 2.0f));
-		m_Camera->SetRotation(glm::quat(1, 0, 0, 0));
+		m_Camera->SetRotation(Quat::Identity);
 	}
 
 	Application::~Application()
 	{
 	}
 
-	void rotateAround(Vector3& pos, glm::quat& rot, const glm::vec3& point, float rad, const glm::vec3& axis)
+	void rotateAround(Vector3& pos, Quat& rot, const Vector3& point, float rad, const Vector3& axis)
 	{
 		// create the rotation matrix
-		glm::mat4 rot_mat = glm::rotate(glm::mat4(1.f), rad, axis);
+		glm::mat4 rot_mat = glm::rotate(glm::mat4(1.f), rad, (glm::vec3)axis);
 		// get the rotation quat
-		glm::quat act_rot = glm::quat_cast(rot_mat);
+		Quat act_rot = glm::quat_cast(rot_mat);
 		// get the position relative to the point
-		glm::vec3 pos_rel = pos - point;
+		Vector3 pos_rel = pos - point;
 		// rotate both the relative position and rot
-		rot = rot * glm::inverse(act_rot);
+		rot = rot * Quat::Inverse(act_rot);
 		pos = (pos_rel * act_rot) + point;
 	}
 
@@ -117,14 +117,14 @@ namespace Cy
 			Input::Update();
 
 			Vector3 pos = m_Camera->GetPosition();
-			glm::quat rot = m_Camera->GetRotation();
-			rotateAround(pos, rot, glm::vec3(0.0f, 0.0f, 0.0f), glm::radians(0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Quat rot = m_Camera->GetRotation();
+			rotateAround(pos, rot, Vector3::Zero, glm::radians(0.1f), Vector3::Up);
 
 			m_Camera->SetPosition(pos);
 
 			m_Camera->SetRotation(rot);
 
-			CY_CORE_LOG("Pos: {0}, Rot: {1}", pos.ToString(), glm::to_string(rot));
+			CY_CORE_LOG("Pos: {0}, Rot: {1}", pos.ToString(), rot.ToString());
 
 			m_EditorLayer->GetFrameBuffer()->Bind();
 

@@ -11,7 +11,7 @@ namespace Cy
 		RecalculateViewMatrix();
 	}
 
-	void Camera::SetRotation(const glm::quat& rotation)
+	void Camera::SetRotation(const Quat& rotation)
 	{
 		m_Rotation = rotation;
 		RecalculateViewMatrix();
@@ -19,7 +19,7 @@ namespace Cy
 
 	void Camera::RecalculateViewMatrix()
 	{
-		glm::mat4 rotate = glm::mat4_cast(m_Rotation);
+		glm::mat4 rotate = glm::mat4_cast((glm::quat)m_Rotation);
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), (glm::vec3)m_Position) * rotate;
 		m_ViewMatrix = glm::inverse(transform);
 		m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;

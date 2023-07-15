@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
 
 namespace Cy
 {
@@ -14,10 +13,10 @@ namespace Cy
 		virtual ~Camera() { }
 
 		virtual void SetPosition(const Vector3& position);
-		virtual void SetRotation(const glm::quat& rotation);
+		virtual void SetRotation(const Quat& rotation);
 
 		const Vector3& GetPosition() const { return m_Position; }
-		const glm::quat& GetRotation() const { return m_Rotation; }
+		const Quat& GetRotation() const { return m_Rotation; }
 
 		glm::mat4 GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		glm::mat4 GetViewMatrix() const { return m_ViewMatrix; }
@@ -30,7 +29,7 @@ namespace Cy
 		glm::mat4 m_ProjectionMatrix, m_ViewMatrix, m_ProjectionViewMatrix;
 
 		Vector3 m_Position;
-		glm::quat m_Rotation;
+		Quat m_Rotation;
 	};
 }
 

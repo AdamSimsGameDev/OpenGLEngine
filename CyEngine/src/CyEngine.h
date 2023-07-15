@@ -17,4 +17,5 @@
 
 // Math
 #include "CyEngine/Maths/Colour.h"
+#include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"

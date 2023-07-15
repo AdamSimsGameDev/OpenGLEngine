@@ -18,4 +18,5 @@
 #include "CyEngine/Core.h"
 #include "CyEngine/Log.h"
 #include "CyEngine/Maths/Colour.h"
+#include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"

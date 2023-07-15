@@ -1,11 +1,17 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <string>
 #include <sstream>
 
 namespace Cy
 {
+	struct Quat;
+	struct Vector2;
+	struct Vector3;
+	struct Vector4;
+
 	struct Vector2
 	{
 	public:
@@ -119,6 +125,15 @@ namespace Cy
 		inline Vector3 operator/(float divisor) const { return Vector3(x / divisor, y / divisor, z / divisor); }
 		inline void operator/=(float divisor) { x /= divisor; y /= divisor; z /= divisor; }
 
+		inline Vector3 operator*(Quat rotator) const { return (glm::vec3)*this * (glm::quat)rotator; }
+		inline void operator*=(Quat rotator) 
+		{ 
+			Vector3 n = (glm::vec3)*this* (glm::quat)rotator;
+			x = n.x;
+			y = n.y;
+			z = n.z;
+		}
+
 		const float& operator[](int index) const
 		{
 			switch (index)
@@ -179,7 +194,6 @@ namespace Cy
 		static Vector3 Zero;
 		static Vector3 One;
 
-	private:
 		float x;
 		float y;
 		float z;
@@ -239,6 +253,16 @@ namespace Cy
 			case 3:
 				return w;
 			}
+		}
+
+		inline float Magnitude() const
+		{
+			return sqrtf((x * x) + (y * y) + (z * z) + (w * w));
+		}
+
+		inline float SqrMagnitude() const
+		{
+			return (x * x) + (y * y) + (z * z) + (w * w);
 		}
 
 		operator glm::vec4() const { return glm::vec4(x, y, z, w); }
