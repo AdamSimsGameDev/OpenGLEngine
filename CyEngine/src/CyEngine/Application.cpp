@@ -2,16 +2,11 @@
 #include "Application.h"
 #include "Events/Event.h"
 #include "Events/WindowEvent.h"
-#include "Input.h"
-#include "Log.h"
-#include "KeyCode.h"
 #include "CyEngine/Layers/EditorLayer.h"
 
 #include "CyEngine/Renderer/OrthographicCamera.h"
 #include "CyEngine/Renderer/PerspectiveCamera.h"
 #include "Renderer/Renderer.h"
-
-#include "glm/gtx/string_cast.hpp"
 
 namespace Cy
 {
@@ -118,10 +113,9 @@ namespace Cy
 
 			Vector3 pos = m_Camera->GetPosition();
 			Quat rot = m_Camera->GetRotation();
-			rotateAround(pos, rot, Vector3::Zero, glm::radians(0.1f), Vector3::Up);
+			rotateAround(pos, rot, Vector3::Zero, DEG_TO_RAD(0.1f), Vector3::Up);
 
 			m_Camera->SetPosition(pos);
-
 			m_Camera->SetRotation(rot);
 
 			CY_CORE_LOG("Pos: {0}, Rot: {1}", pos.ToString(), rot.ToString());

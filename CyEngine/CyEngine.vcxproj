@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\CyEngine\Maths\Colour.h" />
+    <ClInclude Include="src\CyEngine\Maths\Maths.h" />
     <ClInclude Include="src\CyEngine\Maths\Quat.h" />
     <ClInclude Include="src\CyEngine\Maths\Vector.h" />
     <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />

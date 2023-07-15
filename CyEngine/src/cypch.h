@@ -17,6 +17,13 @@
 
 #include "CyEngine/Core.h"
 #include "CyEngine/Log.h"
+
+// Input
+#include "CyEngine/Input.h"
+#include "CyEngine/KeyCode.h"
+
+// Maths
 #include "CyEngine/Maths/Colour.h"
+#include "CyEngine/Maths/Maths.h"
 #include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"
