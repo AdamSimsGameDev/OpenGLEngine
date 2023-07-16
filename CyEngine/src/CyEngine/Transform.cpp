@@ -23,6 +23,11 @@ namespace Cy
 		Rotation = Rotation * rotation;
 	}
 
+	void Transform::SetScale(Vector3 scale)
+	{
+		Scale = scale;
+	}
+
 	Matrix4x4 Transform::GetWorldTransformationMatrix() const
 	{
 		glm::mat4 mat;

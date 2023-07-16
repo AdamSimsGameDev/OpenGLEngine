@@ -19,6 +19,9 @@ namespace Cy
 		Quat GetRotation() const { return Rotation; }
 		void Rotate(Quat rotation);
 
+		void SetScale(Vector3 scale);
+		Quat GetScale() const { return Scale; }
+
 		Matrix4x4 GetWorldTransformationMatrix() const;
 
 	private:
