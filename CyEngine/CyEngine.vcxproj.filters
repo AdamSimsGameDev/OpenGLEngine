@@ -1388,6 +1388,8 @@
     <ClInclude Include="src\CyEngine\Maths\Quat.h" />
     <ClInclude Include="src\CyEngine\Maths\Matrix.h" />
     <ClInclude Include="src\CyEngine\Transform.h" />
+    <ClInclude Include="src\CyEngine\Objects\Object.h" />
+    <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
@@ -1450,5 +1452,7 @@
     <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Matrix.cpp" />
     <ClCompile Include="src\CyEngine\Transform.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
   </ItemGroup>
 </Project>

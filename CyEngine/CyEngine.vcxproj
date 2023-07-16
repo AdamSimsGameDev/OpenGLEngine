@@ -148,6 +148,8 @@
     <ClInclude Include="src\CyEngine\Maths\Maths.h" />
     <ClInclude Include="src\CyEngine\Maths\Quat.h" />
     <ClInclude Include="src\CyEngine\Maths\Vector.h" />
+    <ClInclude Include="src\CyEngine\Objects\Object.h" />
+    <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
     <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
     <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
@@ -613,6 +615,8 @@
     <ClCompile Include="src\CyEngine\Maths\Matrix.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />
