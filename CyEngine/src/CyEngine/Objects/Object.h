@@ -2,10 +2,17 @@
 
 namespace Cy
 {
+#define GENERATE_OBJECT(type)\
+public:\
+	virtual std::string ClassName() const { return #type; }\
+	static std::string ClassNameStatic() { return #type; }
+
 	class Component;
 
 	class Object
 	{
+		GENERATE_OBJECT(Object);
+
 	public:
 		Object() : m_Parent(nullptr) { }
 
@@ -18,8 +25,6 @@ namespace Cy
 		ObjectType* GetParent() const { return Cast<ObjectType>(m_Parent); }
 		template<typename ObjectType>
 		ObjectType* GetParentChecked() const { return CastChecked<ObjectType>(m_Parent); }
-
-		virtual std::string ClassName() const { return "Object"; }
 
 	private:
 		Object* m_Parent;

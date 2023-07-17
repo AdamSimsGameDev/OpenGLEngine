@@ -6,6 +6,8 @@ namespace Cy
 {
 	class SceneObject : public Object
 	{
+		GENERATE_OBJECT(SceneObject);
+
 	public:
 		SceneObject() : Object(), m_Transform() { }
 
@@ -21,8 +23,6 @@ namespace Cy
 			return t;
 		}
 		void AddComponent(Component* component);
-
-		virtual std::string ClassName() const override { return "SceneObject"; }
 
 	private:
 		Transform m_Transform;

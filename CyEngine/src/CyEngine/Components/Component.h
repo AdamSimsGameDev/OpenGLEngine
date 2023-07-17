@@ -6,10 +6,9 @@ namespace Cy
 {
 	class Component : public Object
 	{
+		GENERATE_OBJECT(Component);
+
 	public:
 		virtual void Start() override;
-
-		virtual std::string ClassName() const override { return "Component"; }
-		static std::string ClassNameStatic() { return "Component"; }
 	};
 }

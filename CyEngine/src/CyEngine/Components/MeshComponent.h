@@ -7,12 +7,11 @@ namespace Cy
 
     class MeshComponent : public Component
     {
+        GENERATE_OBJECT(MeshComponent);
+
     public:
         void SetMesh(Mesh* mesh) { m_Mesh = mesh; }
         Mesh* GetMesh() const { return m_Mesh; }
-
-        virtual std::string ClassName() const override { return "MeshComponent"; }
-        static std::string ClassNameStatic() { return "MeshComponent"; }
 
     private:
         Mesh* m_Mesh;

@@ -7,10 +7,10 @@ namespace Cy
 {
 	class CubeObject : public SceneObject
 	{
+		GENERATE_OBJECT(CubeObject);
+
 	public:
 		CubeObject();
-
-		virtual std::string ClassName() const override { return "CubeObject"; }
 
 	private:
 		MeshComponent* m_MeshComponent;
