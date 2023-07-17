@@ -10,3 +10,6 @@
 [submodule "CyEngine/vendor/glm"]
 	path = CyEngine/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "CyEngine/vendor/refl-cpp"]
+	path = CyEngine/vendor/refl-cpp
+	url = https://github.com/veselink1/refl-cpp
