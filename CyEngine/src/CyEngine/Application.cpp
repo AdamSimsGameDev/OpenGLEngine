@@ -75,10 +75,8 @@ namespace Cy
 
 			m_Shader->UploadUniformMat4("u_ViewProjection", matrix);
 
-			CY_CORE_LOG("Begin Scene");
 			Renderer::BeginScene(m_Scenes[0]);
 
-			CY_CORE_LOG("End Scene");
 			Renderer::EndScene();
 
 			m_EditorLayer->GetFrameBuffer()->Unbind();

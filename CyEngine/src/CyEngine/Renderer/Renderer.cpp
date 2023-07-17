@@ -15,7 +15,6 @@ namespace Cy
 		{
 			if (MeshComponent* meshComp = CastChecked<MeshComponent>(comp))
 			{
-				CY_CORE_LOG("Rendering Mesh {0}", meshComp->GetMesh()->GetName());
 				Submit(meshComp->GetMesh());
 			}
 		}
