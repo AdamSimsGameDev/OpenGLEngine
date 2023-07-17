@@ -17,7 +17,10 @@
 
 #include "CyEngine/Core.h"
 #include "CyEngine/Log.h"
-#include "CyEngine/Transform.h"
+#include "CyEngine/Objects/Object.h"
+#include "CyEngine/Objects/SceneObject.h"
+#include "CyEngine/Scene.h"
+#include "CyEngine/Components/Component.h"
 
 // Input
 #include "CyEngine/Input.h"
@@ -29,3 +32,4 @@
 #include "CyEngine/Maths/Matrix.h"
 #include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"
+#include "CyEngine/Transform.h"

@@ -7,6 +7,9 @@
     <Filter Include="src\CyEngine">
       <UniqueIdentifier>{2E7EA38C-1AE1-3231-C366-6BE7AFA8FEB3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\CyEngine\Editor">
+      <UniqueIdentifier>{A43B103C-109D-ED49-990A-34FC056B2409}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\CyEngine\Events">
       <UniqueIdentifier>{52AA533D-BE0B-314B-4779-77FDB3D9670A}</UniqueIdentifier>
     </Filter>
@@ -15,6 +18,15 @@
     </Filter>
     <Filter Include="src\CyEngine\Layers">
       <UniqueIdentifier>{2D95364C-99F6-135A-2264-5A0C8EC44A19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\CyEngine\Maths">
+      <UniqueIdentifier>{1AE90BAD-06CD-CC02-6F2D-C7555B30B784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\CyEngine\Objects">
+      <UniqueIdentifier>{E76A3DBB-D3F9-C684-7C18-DB7F6886D72A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\CyEngine\Renderer">
+      <UniqueIdentifier>{9495E2D7-0002-9ED2-C9F5-35303521C03A}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
@@ -56,6 +68,15 @@
     </ClInclude>
     <ClInclude Include="src\CyEngine\Core.h">
       <Filter>src\CyEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Editor\InspectorTab.h">
+      <Filter>src\CyEngine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Editor\OutputTab.h">
+      <Filter>src\CyEngine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Editor\ViewportTab.h">
+      <Filter>src\CyEngine\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\EntryPoint.h">
       <Filter>src\CyEngine</Filter>
@@ -99,10 +120,88 @@
     <ClInclude Include="src\CyEngine\Log.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Maths\Colour.h">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Maths\Maths.h">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Maths\Matrix.h">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Maths\Quat.h">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Maths\Vector.h">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Objects\Object.h">
+      <Filter>src\CyEngine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Objects\SceneObject.h">
+      <Filter>src\CyEngine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\Buffer.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\Camera.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\Renderer.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\Shader.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Renderer\VertexArray.h">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Scene.h">
+      <Filter>src\CyEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Transform.h">
+      <Filter>src\CyEngine</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Window.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiRenderer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
@@ -1362,38 +1461,23 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
-    <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
-    <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
-    <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\CyEngine\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
-    <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
-    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
-    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\CyEngine\Maths\Colour.h" />
-    <ClInclude Include="src\CyEngine\Maths\Maths.h" />
-    <ClInclude Include="src\CyEngine\Maths\Vector.h" />
-    <ClInclude Include="src\CyEngine\Maths\Quat.h" />
-    <ClInclude Include="src\CyEngine\Maths\Matrix.h" />
-    <ClInclude Include="src\CyEngine\Transform.h" />
-    <ClInclude Include="src\CyEngine\Objects\Object.h" />
-    <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
+    <ClInclude Include="src\CyEngine\Components\Component.h" />
+    <ClInclude Include="src\CyEngine\Components\MeshComponent.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Mesh.h" />
+    <ClInclude Include="src\CyEngine\Objects\CubeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CyEngine\Application.cpp">
       <Filter>src\CyEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp">
+      <Filter>src\CyEngine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp">
+      <Filter>src\CyEngine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp">
+      <Filter>src\CyEngine\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp">
       <Filter>src\CyEngine\ImGui</Filter>
@@ -1416,7 +1500,79 @@
     <ClCompile Include="src\CyEngine\Log.cpp">
       <Filter>src\CyEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\Maths\Colour.cpp">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Maths\Matrix.cpp">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Maths\Quat.cpp">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Maths\Vector.cpp">
+      <Filter>src\CyEngine\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Objects\Object.cpp">
+      <Filter>src\CyEngine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp">
+      <Filter>src\CyEngine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\RendererAPI.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\Shader.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Renderer\VertexArray.cpp">
+      <Filter>src\CyEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Scene.cpp">
+      <Filter>src\CyEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Transform.cpp">
+      <Filter>src\CyEngine</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiRenderer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
@@ -1428,31 +1584,9 @@
     <ClCompile Include="src\cypch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
-    <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
-    <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="src\CyEngine\Maths\Colour.cpp" />
-    <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
-    <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
-    <ClCompile Include="src\CyEngine\Maths\Matrix.cpp" />
-    <ClCompile Include="src\CyEngine\Transform.cpp" />
-    <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
-    <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
+    <ClCompile Include="src\CyEngine\Components\Component.cpp" />
+    <ClCompile Include="src\CyEngine\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\CubeObject.cpp" />
   </ItemGroup>
 </Project>

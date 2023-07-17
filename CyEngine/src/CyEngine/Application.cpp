@@ -25,60 +25,6 @@ namespace Cy
 		m_EditorLayer = new EditorLayer();
 		PushOverlay(m_EditorLayer);
 
-		m_VertexArray.reset(VertexArray::Create());
-
-		float vertices[] = {
-			-0.5f,	-0.5f,	 0.5f,
-			 0.5f,	-0.5f,	 0.5f,
-			-0.5f,	 0.5f,	 0.5f,
-			 0.5f,	 0.5f,	 0.5f,
-			-0.5f,	-0.5f,	-0.5f,
-			 0.5f,	-0.5f,	-0.5f,
-			-0.5f,	 0.5f,	-0.5f,
-			 0.5f,	 0.5f,	-0.5f,
-		};
-
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-
-		BufferLayout layout = 
-		{
-			{ ShaderDataType::Float3, "a_Position" }
-		};
-
-		m_VertexBuffer->SetLayout(layout);
-
-		uint32_t indices[] = 
-		{ 
-			//Top
-			2, 6, 7,
-			2, 3, 7,
-
-			//Bottom
-			0, 4, 5,
-			0, 1, 5,
-
-			//Left
-			0, 2, 6,
-			0, 4, 6,
-
-			//Right
-			1, 3, 7,
-			1, 5, 7,
-
-			//Front
-			0, 2, 3,
-			0, 1, 3,
-
-			//Back
-			4, 6, 7,
-			4, 5, 7
-		};
-
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
-		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
-
 		m_Shader.reset(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
 
 		m_Camera.reset(new PerspectiveCamera(45.0f, 1280, 720, 0.1f, 150.0f));
@@ -106,9 +52,13 @@ namespace Cy
 
 	void Application::Run()
 	{
+		OnStart();
+
 		uint32_t frame = 0;
 		while (m_Running)
 		{
+			OnRunBegin();
+
 			Input::Update();
 
 			Vector3 pos = m_Camera->GetPosition();
@@ -118,21 +68,17 @@ namespace Cy
 			m_Camera->SetPosition(pos);
 			m_Camera->SetRotation(rot);
 
-			CY_CORE_LOG("Pos: {0}, Rot: {1}", pos.ToString(), rot.ToString());
-
 			m_EditorLayer->GetFrameBuffer()->Bind();
-
-			RenderCommand::SetClearColour({0.2f, 0.2f, 0.2f, 1.0f});
-			RenderCommand::Clear();
-
-			Renderer::BeginScene();
 
 			m_Shader->Bind();
 			Matrix4x4 matrix = m_Camera->GetProjectionViewMatrix();
 
 			m_Shader->UploadUniformMat4("u_ViewProjection", matrix);
-			Renderer::Submit(m_VertexArray);
 
+			CY_CORE_LOG("Begin Scene");
+			Renderer::BeginScene(m_Scenes[0]);
+
+			CY_CORE_LOG("End Scene");
 			Renderer::EndScene();
 
 			m_EditorLayer->GetFrameBuffer()->Unbind();
@@ -147,6 +93,8 @@ namespace Cy
 
 			m_Window->OnUpdate();
 			frame++;
+
+			OnRunEnd();
 		}
 	}
 
@@ -173,6 +121,11 @@ namespace Cy
 	{
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+	}
+
+	void Application::AddScene(Scene* scene)
+	{
+		m_Scenes.push_back(scene);
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

@@ -12,6 +12,7 @@
 namespace Cy
 {
 	class EditorLayer;
+	class Scene;
 
 	class CY_API Application
 	{
@@ -21,10 +22,18 @@ namespace Cy
 	
 		void Run();
 
+		virtual void OnStart() {}
+		virtual void OnRunBegin() {}
+		virtual void OnRunEnd() {}
+
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
+
+		void AddScene(Scene* scene);
+
+		class Camera* GetCamera() const { return m_Camera.get(); }
 
 		static inline Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
@@ -40,9 +49,8 @@ namespace Cy
 
 		std::shared_ptr<class Camera> m_Camera;
 		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::shared_ptr<IndexBuffer> m_IndexBuffer;
-		std::shared_ptr<VertexArray> m_VertexArray;
+
+		std::vector<Scene*> m_Scenes;
 
 	private:
 		static Application* s_Instance;

@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>cypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;CY_PLATFORM_WINDOWS;CY_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;CY_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\reflcpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>cypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;CY_PLATFORM_WINDOWS;CY_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;CY_DEVELOPMENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\reflcpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>cypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;CY_PLATFORM_WINDOWS;CY_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;CY_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\reflcpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,32 +143,16 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\CyEngine\Maths\Colour.h" />
-    <ClInclude Include="src\CyEngine\Maths\Matrix.h" />
-    <ClInclude Include="src\CyEngine\Maths\Maths.h" />
-    <ClInclude Include="src\CyEngine\Maths\Quat.h" />
-    <ClInclude Include="src\CyEngine\Maths\Vector.h" />
-    <ClInclude Include="src\CyEngine\Objects\Object.h" />
-    <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
-    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
-    <ClInclude Include="src\CyEngine\Transform.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
-    <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
-    <ClInclude Include="src\CyEngine\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
-    <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\CyEngine\Objects\CubeObject.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Mesh.h" />
+    <ClInclude Include="src\CyEngine\Components\MeshComponent.h" />
     <ClInclude Include="src\CyEngine.h" />
     <ClInclude Include="src\CyEngine\Application.h" />
+    <ClInclude Include="src\CyEngine\Components\Component.h" />
     <ClInclude Include="src\CyEngine\Core.h" />
+    <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
     <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
+    <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
     <ClInclude Include="src\CyEngine\EntryPoint.h" />
     <ClInclude Include="src\CyEngine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\CyEngine\Events\Event.h" />
@@ -177,16 +161,38 @@
     <ClInclude Include="src\CyEngine\Events\WindowEvent.h" />
     <ClInclude Include="src\CyEngine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\CyEngine\Input.h" />
-    <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
     <ClInclude Include="src\CyEngine\KeyCode.h" />
     <ClInclude Include="src\CyEngine\Layers\EditorLayer.h" />
     <ClInclude Include="src\CyEngine\Layers\EditorTab.h" />
     <ClInclude Include="src\CyEngine\Layers\Layer.h" />
     <ClInclude Include="src\CyEngine\Layers\LayerStack.h" />
     <ClInclude Include="src\CyEngine\Log.h" />
+    <ClInclude Include="src\CyEngine\Maths\Colour.h" />
+    <ClInclude Include="src\CyEngine\Maths\Maths.h" />
+    <ClInclude Include="src\CyEngine\Maths\Matrix.h" />
+    <ClInclude Include="src\CyEngine\Maths\Quat.h" />
+    <ClInclude Include="src\CyEngine\Maths\Vector.h" />
+    <ClInclude Include="src\CyEngine\Objects\Object.h" />
+    <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
+    <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
+    <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
+    <ClInclude Include="src\CyEngine\Renderer\VertexArray.h" />
+    <ClInclude Include="src\CyEngine\Scene.h" />
+    <ClInclude Include="src\CyEngine\Transform.h" />
     <ClInclude Include="src\CyEngine\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiRenderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -608,41 +614,46 @@
     <ClInclude Include="vendor\glm\glm\vec3.hpp" />
     <ClInclude Include="vendor\glm\glm\vec4.hpp" />
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
-    <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CyEngine\Objects\CubeObject.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\CyEngine\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\CyEngine\Application.cpp" />
+    <ClCompile Include="src\CyEngine\Components\Component.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
+    <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\CyEngine\Layers\EditorLayer.cpp" />
+    <ClCompile Include="src\CyEngine\Layers\EditorTab.cpp" />
+    <ClCompile Include="src\CyEngine\Layers\Layer.cpp" />
+    <ClCompile Include="src\CyEngine\Layers\LayerStack.cpp" />
+    <ClCompile Include="src\CyEngine\Log.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Colour.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Matrix.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
     <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
     <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />
-    <ClCompile Include="src\CyEngine\Transform.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\CyEngine\Application.cpp" />
-    <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
-    <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp" />
-    <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
-    <ClCompile Include="src\CyEngine\Layers\EditorLayer.cpp" />
-    <ClCompile Include="src\CyEngine\Layers\EditorTab.cpp" />
-    <ClCompile Include="src\CyEngine\Layers\Layer.cpp" />
-    <ClCompile Include="src\CyEngine\Layers\LayerStack.cpp" />
-    <ClCompile Include="src\CyEngine\Log.cpp" />
+    <ClCompile Include="src\CyEngine\Scene.cpp" />
+    <ClCompile Include="src\CyEngine\Transform.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiRenderer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
@@ -650,7 +661,6 @@
     <ClCompile Include="src\cypch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

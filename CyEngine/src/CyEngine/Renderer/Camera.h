@@ -12,11 +12,14 @@ namespace Cy
 		}
 		virtual ~Camera() { }
 
+		const Transform& GetTransform() const { return m_Transform; }
+		Transform& GetTransform() { return m_Transform; }
+
 		virtual void SetPosition(const Vector3& position);
 		virtual void SetRotation(const Quat& rotation);
 
-		const Vector3& GetPosition() const { return m_Transform.GetPosition(); }
-		const Quat& GetRotation() const { return m_Transform.GetRotation(); }
+		Vector3 GetPosition() const { return m_Transform.GetPosition(); }
+		Quat GetRotation() const { return m_Transform.GetRotation(); }
 
 		Matrix4x4 GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		Matrix4x4 GetViewMatrix() const { return m_ViewMatrix; }

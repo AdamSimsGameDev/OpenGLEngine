@@ -16,6 +16,7 @@ IncludeDirs["GLFW"] = "CyEngine/vendor/GLFW/include";
 IncludeDirs["glad"] = "CyEngine/vendor/glad/include";
 IncludeDirs["imgui"] = "CyEngine/vendor/imgui";
 IncludeDirs["glm"] = "CyEngine/vendor/glm";
+IncludeDirs["reflcpp"] = "CyEngine/vendor/reflcpp/include";
 
 include "CyEngine/vendor/GLFW"
 include "CyEngine/vendor/glad"
@@ -48,7 +49,8 @@ project "CyEngine"
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.glad}",
 		"%{IncludeDirs.imgui}",
-		"%{IncludeDirs.glm}"
+		"%{IncludeDirs.glm}",
+		"%{IncludeDirs.reflcpp}"
 	}
 
 	links
