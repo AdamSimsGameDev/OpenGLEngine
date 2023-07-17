@@ -17,6 +17,7 @@ namespace Cy
 	private:
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 		ImVec2 m_ViewportSize;
+		ImVec2 m_AbsViewportSize;
 	};
 }
 
