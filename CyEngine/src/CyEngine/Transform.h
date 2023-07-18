@@ -24,6 +24,9 @@ namespace Cy
 
 		Matrix4x4 GetWorldTransformationMatrix() const;
 
+		void RotateAround(const Vector3& point, float degs, const Vector3& axis);
+		void RotateAroundRads(const Vector3& point, float rad, const Vector3& axis);
+
 	private:
 		Vector3 Position;
 		Quat Rotation;

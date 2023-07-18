@@ -14,6 +14,24 @@ namespace Cy
 		ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
 	}
 
+	void Scene::Tick()
+	{
+		for (auto obj : m_SceneObjects)
+		{
+			obj->Tick();
+		}
+	}
+
+	std::vector<Component*> Scene::GetAllComponentsOfType(std::string typeName) const
+	{
+		const auto it = TrackedComponents.find(typeName.data());
+		if (it != TrackedComponents.end())
+		{
+			return it->second;
+		}
+		return std::vector<Component*>();
+	}
+
 	void Scene::RegisterComponent(Component* component)
 	{
 		s_Scene->RegisterComponent_Internal(component);

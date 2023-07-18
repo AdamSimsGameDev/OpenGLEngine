@@ -144,19 +144,13 @@
     <ClInclude Include="src\CyEngine\Renderer\Buffer.h">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\CyEngine\Renderer\Camera.h">
+    <ClInclude Include="src\CyEngine\Objects\CameraObject.h">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h">
-      <Filter>src\CyEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h">
-      <Filter>src\CyEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h">
@@ -1521,16 +1515,10 @@
     <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp">
+    <ClCompile Include="src\CyEngine\Objects\CameraObject.cpp">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp">
-      <Filter>src\CyEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp">
-      <Filter>src\CyEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp">
       <Filter>src\CyEngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp">

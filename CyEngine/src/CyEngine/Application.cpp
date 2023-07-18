@@ -4,8 +4,6 @@
 #include "Events/WindowEvent.h"
 #include "CyEngine/Layers/EditorLayer.h"
 
-#include "CyEngine/Renderer/OrthographicCamera.h"
-#include "CyEngine/Renderer/PerspectiveCamera.h"
 #include "Renderer/Renderer.h"
 
 namespace Cy
@@ -26,28 +24,10 @@ namespace Cy
 		PushOverlay(m_EditorLayer);
 
 		m_Shader.reset(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
-
-		m_Camera.reset(new PerspectiveCamera(45.0f, 1280, 720, 0.1f, 150.0f));
-		//m_Camera.reset(new OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f));
-		m_Camera->SetPosition(Vector3(0.0f, 0.0f, 2.0f));
-		m_Camera->SetRotation(Quat::Identity);
 	}
 
 	Application::~Application()
 	{
-	}
-
-	void rotateAround(Vector3& pos, Quat& rot, const Vector3& point, float rad, const Vector3& axis)
-	{
-		// create the rotation matrix
-		Matrix4x4 rot_mat = Matrix4x4::Rotate(Matrix4x4(1.f), rad, axis);
-		// get the rotation quat
-		Quat act_rot = Matrix4x4::QuatCast(rot_mat);
-		// get the position relative to the point
-		Vector3 pos_rel = pos - point;
-		// rotate both the relative position and rot
-		rot = rot * Quat::Inverse(act_rot);
-		pos = (pos_rel * act_rot) + point;
 	}
 
 	void Application::Run()
@@ -61,21 +41,9 @@ namespace Cy
 
 			Input::Update();
 
-			Vector3 pos = m_Camera->GetPosition();
-			Quat rot = m_Camera->GetRotation();
-			rotateAround(pos, rot, Vector3::Zero, DEG_TO_RAD * 0.1f, Vector3::Up);
-
-			m_Camera->SetPosition(pos);
-			m_Camera->SetRotation(rot);
-
 			m_EditorLayer->GetFrameBuffer()->Bind();
 
-			m_Shader->Bind();
-			Matrix4x4 matrix = m_Camera->GetProjectionViewMatrix();
-
-			m_Shader->UploadUniformMat4("u_ViewProjection", matrix);
-
-			Renderer::BeginScene(m_Scenes[0]);
+			Renderer::BeginScene(m_Scenes[0], m_Shader.get());
 
 			Renderer::EndScene();
 
@@ -93,6 +61,14 @@ namespace Cy
 			frame++;
 
 			OnRunEnd();
+		}
+	}
+
+	void Application::OnRunBegin()
+	{
+		for (auto scene : m_Scenes)
+		{
+			scene->Tick();
 		}
 	}
 

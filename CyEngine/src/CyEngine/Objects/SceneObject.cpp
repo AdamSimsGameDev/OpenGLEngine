@@ -3,6 +3,11 @@
 
 namespace Cy
 {
+    void SceneObject::Tick()
+    {
+
+    }
+
     void SceneObject::AddComponent(Component* component)
     {
         component->SetParent(this);

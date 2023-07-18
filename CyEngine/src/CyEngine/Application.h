@@ -23,7 +23,7 @@ namespace Cy
 		void Run();
 
 		virtual void OnStart() {}
-		virtual void OnRunBegin() {}
+		virtual void OnRunBegin();
 		virtual void OnRunEnd() {}
 
 		void OnEvent(Event& e);
@@ -32,8 +32,6 @@ namespace Cy
 		void PushOverlay(Layer* layer);
 
 		void AddScene(Scene* scene);
-
-		class Camera* GetCamera() const { return m_Camera.get(); }
 
 		static inline Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
@@ -47,7 +45,6 @@ namespace Cy
 		EditorLayer* m_EditorLayer;
 		bool m_Running = true;
 
-		std::shared_ptr<class Camera> m_Camera;
 		std::shared_ptr<Shader> m_Shader;
 
 		std::vector<Scene*> m_Scenes;

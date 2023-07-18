@@ -175,11 +175,9 @@
     <ClInclude Include="src\CyEngine\Objects\Object.h" />
     <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
     <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Camera.h" />
+    <ClInclude Include="src\CyEngine\Objects\CameraObject.h" />
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\CyEngine\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\CyEngine\Renderer\PerspectiveCamera.h" />
     <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h" />
@@ -638,10 +636,8 @@
     <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
     <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Camera.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\CameraObject.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\PerspectiveCamera.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\RendererAPI.cpp" />

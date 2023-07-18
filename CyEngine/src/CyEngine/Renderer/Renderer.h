@@ -6,11 +6,12 @@
 namespace Cy
 {
 	class Mesh;
+	class Shader;
 
 	class Renderer
 	{
 	public:
-		static void BeginScene(Scene* scene);
+		static void BeginScene(Scene* scene, Shader* shader);
 		static void EndScene();
 
 		static void Submit(Mesh* mesh);

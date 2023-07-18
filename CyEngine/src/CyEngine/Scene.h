@@ -15,6 +15,8 @@ namespace Cy
 	public:
 		Scene();
 
+		virtual void Tick();
+
 		template<typename T>
 		T* CreateSceneObject(Vector3 position, Quat rotation)
 		{
@@ -26,13 +28,20 @@ namespace Cy
 			return t;
 		}
 
-		std::vector<Component*> GetAllComponentsOfType(std::string typeName)
-		{
-			if (TrackedComponents.find(typeName.data()) != TrackedComponents.end())
+		template<typename ComponentType>
+		std::vector<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
+		std::vector<Component*> GetAllComponentsOfType(std::string typeName) const;
+
+		template<typename ObjectType>
+		std::vector<ObjectType*> GetAllObjectsOfType() const 
+		{ 
+			std::vector<ObjectType*> objects;
+			for (SceneObject* obj : GetSceneObjects())
 			{
-				return TrackedComponents[typeName.data()];
+				if (ObjectType* t = Cast<ObjectType>(obj))
+					objects.push_back(t);
 			}
-			return std::vector<Component*>();
+			return objects;
 		}
 
 		const std::vector<SceneObject*>& GetSceneObjects() const { return m_SceneObjects; }
