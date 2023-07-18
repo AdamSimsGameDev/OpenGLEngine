@@ -3,9 +3,9 @@
 
 namespace Cy
 {
-    void SceneObject::Tick()
+    void SceneObject::Tick(float deltaTime)
     {
-
+        // Stub
     }
 
     void SceneObject::AddComponent(Component* component)

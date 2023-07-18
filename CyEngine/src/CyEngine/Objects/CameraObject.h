@@ -32,7 +32,7 @@ namespace Cy
 		}
 		virtual ~CameraObject() { }
 
-		virtual void Tick() override;
+		virtual void Tick(float deltaTime) override;
 
 		virtual void InitPerspectiveCamera(const PerspectiveCameraSettings& settings);
 		virtual void InitOrthographicCamera(const OrthographicCameraSettings& settings);

@@ -42,6 +42,8 @@ namespace Cy
 		template<typename T>
 		T* GetNativeWindowTyped() const { return static_cast<T*>(GetNativeWindow()); }
 
+		virtual float GetTime() const = 0;
+
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
 }

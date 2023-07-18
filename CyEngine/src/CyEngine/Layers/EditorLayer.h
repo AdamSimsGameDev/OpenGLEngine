@@ -25,7 +25,7 @@ namespace Cy
 
 	protected:
 		virtual void OnImGuiRender() override;
-		virtual void OnUpdate() override;
+		virtual void OnUpdate(float deltaTime) override;
 
 	private:
 		bool m_ShowDemo = false;

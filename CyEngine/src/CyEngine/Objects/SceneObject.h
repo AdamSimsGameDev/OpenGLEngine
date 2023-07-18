@@ -11,7 +11,7 @@ namespace Cy
 	public:
 		SceneObject() : Object(), m_Transform() { }
 
-		virtual void Tick();
+		virtual void Tick(float deltaTime);
 
 		const Transform& GetTransform() const { return m_Transform; }
 		Transform& GetTransform() { return m_Transform; }

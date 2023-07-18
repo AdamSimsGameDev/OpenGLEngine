@@ -14,11 +14,11 @@ namespace Cy
 		ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
 	}
 
-	void Scene::Tick()
+	void Scene::Tick(float deltaTime)
 	{
 		for (auto obj : m_SceneObjects)
 		{
-			obj->Tick();
+			obj->Tick(deltaTime);
 		}
 	}
 

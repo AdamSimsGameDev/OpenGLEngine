@@ -34,12 +34,16 @@ namespace Cy
 		{
 			Input::Update();
 
+			float time = m_Window->GetTime();
+			const float deltaTime = time - m_LastFrameTime;
+			m_LastFrameTime = time;
+
 			// Bind the frame buffer, to capture visuals for the editor layer.
 			m_EditorLayer->GetFrameBuffer()->Bind();
 
 			// Update each layer on the stack
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(deltaTime);
 
 			// Unbind the frame buffer, since we finished rendering the frame in OnUpdate
 			m_EditorLayer->GetFrameBuffer()->Unbind();

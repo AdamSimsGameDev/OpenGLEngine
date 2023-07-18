@@ -49,6 +49,11 @@ namespace Cy
 		return m_Data.VSync;
 	}
 
+	float WindowsWindow::GetTime() const
+	{
+		return glfwGetTime();
+	}
+
 	void WindowsWindow::Init(const WindowProps& props)
 	{
 		m_Data.Width = props.Width;

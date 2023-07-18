@@ -128,7 +128,7 @@ namespace Cy
 		ImGui::End();
 	}
 
-	void EditorLayer::OnUpdate()
+	void EditorLayer::OnUpdate(float deltaTime)
 	{
 
 	}

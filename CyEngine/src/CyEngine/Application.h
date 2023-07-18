@@ -42,6 +42,7 @@ namespace Cy
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		EditorLayer* m_EditorLayer;
+		float m_LastFrameTime;
 		bool m_Running = true;
 
 	private:

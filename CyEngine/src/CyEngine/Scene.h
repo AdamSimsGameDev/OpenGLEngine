@@ -15,7 +15,7 @@ namespace Cy
 	public:
 		Scene();
 
-		virtual void Tick();
+		virtual void Tick(float deltaTime);
 
 		template<typename T>
 		T* CreateSceneObject(Vector3 position, Quat rotation)

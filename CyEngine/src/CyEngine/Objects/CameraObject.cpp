@@ -3,9 +3,9 @@
 
 namespace Cy
 {
-	void CameraObject::Tick()
+	void CameraObject::Tick(float deltaTime)
 	{
-		SceneObject::Tick();
+		SceneObject::Tick(deltaTime);
 
 		// TODO: Not do this on tick
 		RecalculateViewMatrix();

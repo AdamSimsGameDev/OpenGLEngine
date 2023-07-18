@@ -18,10 +18,10 @@ public:
 		m_Scene->CreateSceneObject<CubeObject>(Vector3::Zero, Quat::Identity);
 	}
 
-	virtual void OnUpdate() override
+	virtual void OnUpdate(float deltaTime) override
 	{
 		// tick the scene.
-		m_Scene->Tick();
+		m_Scene->Tick(deltaTime);
 
 		// rotate the camera around the cube.
 		m_Camera->GetTransform().RotateAround(Vector3::Zero, 0.1f, Vector3::Up);
