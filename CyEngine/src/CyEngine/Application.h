@@ -22,16 +22,15 @@ namespace Cy
 	
 		void Run();
 
-		virtual void OnStart() {}
-		virtual void OnRunBegin();
-		virtual void OnRunEnd() {}
-
 		void OnEvent(Event& e);
 
+		template<typename LayerType>
+		void PushLayer() { PushLayer(new LayerType()); }
 		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* layer);
 
-		void AddScene(Scene* scene);
+		template<typename LayerType>
+		void PushOverlay() { PushOverlay(new LayerType()); }
+		void PushOverlay(Layer* layer);
 
 		static inline Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
@@ -44,10 +43,6 @@ namespace Cy
 		ImGuiLayer* m_ImGuiLayer;
 		EditorLayer* m_EditorLayer;
 		bool m_Running = true;
-
-		std::shared_ptr<Shader> m_Shader;
-
-		std::vector<Scene*> m_Scenes;
 
 	private:
 		static Application* s_Instance;

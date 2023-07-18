@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "VertexArray.h"
+#include "CyEngine/Maths/Colour.h"
 
 namespace Cy
 {

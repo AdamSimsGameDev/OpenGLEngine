@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CyEngine/Maths/Colour.h"
 #include "RendererAPI.h"
 
 namespace Cy

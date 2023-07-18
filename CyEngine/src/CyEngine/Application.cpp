@@ -22,8 +22,6 @@ namespace Cy
 		PushOverlay(m_ImGuiLayer);
 		m_EditorLayer = new EditorLayer();
 		PushOverlay(m_EditorLayer);
-
-		m_Shader.reset(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
 	}
 
 	Application::~Application()
@@ -32,43 +30,28 @@ namespace Cy
 
 	void Application::Run()
 	{
-		OnStart();
-
-		uint32_t frame = 0;
 		while (m_Running)
 		{
-			OnRunBegin();
-
 			Input::Update();
 
+			// Bind the frame buffer, to capture visuals for the editor layer.
 			m_EditorLayer->GetFrameBuffer()->Bind();
 
-			Renderer::BeginScene(m_Scenes[0], m_Shader.get());
-
-			Renderer::EndScene();
-
-			m_EditorLayer->GetFrameBuffer()->Unbind();
-
+			// Update each layer on the stack
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
+			// Unbind the frame buffer, since we finished rendering the frame in OnUpdate
+			m_EditorLayer->GetFrameBuffer()->Unbind();
+
+			// Handle ImGui for each of the layers.
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
 
+			// Update the window itself.
 			m_Window->OnUpdate();
-			frame++;
-
-			OnRunEnd();
-		}
-	}
-
-	void Application::OnRunBegin()
-	{
-		for (auto scene : m_Scenes)
-		{
-			scene->Tick();
 		}
 	}
 
@@ -95,11 +78,6 @@ namespace Cy
 	{
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
-	}
-
-	void Application::AddScene(Scene* scene)
-	{
-		m_Scenes.push_back(scene);
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

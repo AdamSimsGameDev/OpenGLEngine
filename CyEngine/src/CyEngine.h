@@ -18,6 +18,7 @@
 #include "CyEngine/KeyCode.h"
 
 // Renderer
+#include "CyEngine/Renderer/Renderer.h"
 #include "CyEngine/Renderer/FrameBuffer.h"
 
 // Math

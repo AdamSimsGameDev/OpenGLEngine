@@ -5,18 +5,26 @@
 
 namespace Cy
 {
-	class Mesh;
+	class MeshComponent;
 	class Shader;
 
 	class Renderer
 	{
 	public:
-		static void BeginScene(Scene* scene, Shader* shader);
+		static void BeginScene(Scene* scene);
 		static void EndScene();
 
-		static void Submit(Mesh* mesh);
-		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+		static void Submit(MeshComponent* comp);
+		static void Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+	private:
+		struct SceneData
+		{
+			SceneData() : ViewProjectionMatrix(Matrix4x4(1.0f)) {}
+			Matrix4x4 ViewProjectionMatrix;
+		};
+
+		static SceneData* s_SceneData;
 	};
 }

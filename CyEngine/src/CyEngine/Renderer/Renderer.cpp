@@ -8,12 +8,12 @@
 
 namespace Cy
 {
-	void Renderer::BeginScene(Scene* scene, Shader* shader)
+	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
+
+	void Renderer::BeginScene(Scene* scene)
 	{
 		RenderCommand::SetClearColour({ 0.2f, 0.2f, 0.2f, 1.0f });
 		RenderCommand::Clear();
-
-		shader->Bind();
 
 		// get the first camera.
 		std::vector<CameraObject*> cameras = scene->GetAllObjectsOfType<CameraObject>();
@@ -24,14 +24,13 @@ namespace Cy
 		}
 
 		// set shader view matrix
-		Matrix4x4 matrix = cameras[0]->GetProjectionViewMatrix();
-		shader->UploadUniformMat4("u_ViewProjection", matrix);
+		s_SceneData->ViewProjectionMatrix = cameras[0]->GetProjectionViewMatrix();
 
 		for (Component* comp : scene->GetAllComponentsOfType("MeshComponent"))
 		{
 			if (MeshComponent* meshComp = CastChecked<MeshComponent>(comp))
 			{
-				Submit(meshComp->GetMesh());
+				Submit(meshComp);
 			}
 		}
 	}
@@ -41,13 +40,15 @@ namespace Cy
 
 	}
 
-	void Renderer::Submit(Mesh* mesh)
+	void Renderer::Submit(MeshComponent* comp)
 	{
-		Submit(mesh->m_VertexArray);
+		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray);
 	}
 
-	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray)
 	{
+		shader->Bind();
+		shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

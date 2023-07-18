@@ -42,3 +42,5 @@ static To* CastChecked(From* from)
 	// CY_CORE_ASSERT(cast, "CastChecked failed, {0} cannot be cast to type {1}. ", GET_NAME_SAFE(cast), typeid(from).name());
 	return cast;
 }
+
+#define __CLASS__ 

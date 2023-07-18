@@ -1,6 +1,7 @@
 #include "cypch.h"
 #include "CubeObject.h"
 #include "CyEngine/Renderer/Mesh.h"
+#include "CyEngine/Renderer/Shader.h"
 
 namespace Cy
 {
@@ -56,5 +57,8 @@ namespace Cy
 		
 		// set the mesh.
 		m_MeshComponent->SetMesh(mesh);
+
+		// generate basic shader
+		m_MeshComponent->SetShader(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
 	}
 }
