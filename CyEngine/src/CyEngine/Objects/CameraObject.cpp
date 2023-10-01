@@ -7,6 +7,9 @@ namespace Cy
 	{
 		SceneObject::Tick(deltaTime);
 
+		// rotate the camera around the cube.
+		GetTransform().RotateAround(Vector3::Zero, RotationSpeed * deltaTime, Vector3::Up);
+
 		// TODO: Not do this on tick
 		RecalculateViewMatrix();
 	}

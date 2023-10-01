@@ -15,7 +15,7 @@ namespace Cy
 		static void EndScene();
 
 		static void Submit(MeshComponent* comp);
-		static void Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray);
+		static void Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray, const Matrix4x4& objectMatrix);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	private:

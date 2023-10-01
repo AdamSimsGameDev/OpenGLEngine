@@ -1,5 +1,4 @@
 #include <CyEngine.h>
-
 #include "CyEngine/Objects/CameraObject.h"
 #include "CyEngine/Objects/CubeObject.h"
 
@@ -8,7 +7,11 @@ using namespace Cy;
 class MainLayer : public Layer
 {
 public:
-	MainLayer() : Layer("Main Layer") { }
+	MainLayer() : Layer("Main Layer") 
+	{ 
+		m_Scene = nullptr;
+		m_Camera = nullptr;
+	}
 
 	virtual void OnAttach() override
 	{
@@ -22,9 +25,6 @@ public:
 	{
 		// tick the scene.
 		m_Scene->Tick(deltaTime);
-
-		// rotate the camera around the cube.
-		m_Camera->GetTransform().RotateAround(Vector3::Zero, 0.1f, Vector3::Up);
 
 		Renderer::BeginScene(m_Scene);
 

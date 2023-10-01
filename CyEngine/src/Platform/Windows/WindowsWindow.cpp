@@ -51,7 +51,7 @@ namespace Cy
 
 	float WindowsWindow::GetTime() const
 	{
-		return glfwGetTime();
+		return (float)glfwGetTime();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)

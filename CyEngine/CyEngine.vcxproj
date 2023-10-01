@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>cypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;CY_PLATFORM_WINDOWS;CY_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;CY_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\reflcpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\generated;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -91,6 +91,9 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
     <ClCompile>
@@ -98,7 +101,7 @@
       <PrecompiledHeaderFile>cypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;CY_PLATFORM_WINDOWS;CY_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;CY_DEVELOPMENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\reflcpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\generated;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,6 +119,9 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -123,7 +129,7 @@
       <PrecompiledHeaderFile>cypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;CY_PLATFORM_WINDOWS;CY_BUILD_DLL;GLFW_INCLUDE_NONE;IMGUI_IMPL_OPENGL_LOADER_CUSTOM;CY_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\reflcpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\generated;vendor\spdlog\include;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -141,15 +147,18 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\CyEngine\Objects\CubeObject.h" />
-    <ClInclude Include="src\CyEngine\Renderer\Mesh.h" />
-    <ClInclude Include="src\CyEngine\Components\MeshComponent.h" />
     <ClInclude Include="src\CyEngine.h" />
     <ClInclude Include="src\CyEngine\Application.h" />
+    <ClInclude Include="src\CyEngine\Class.h" />
     <ClInclude Include="src\CyEngine\Components\Component.h" />
+    <ClInclude Include="src\CyEngine\Components\MeshComponent.h" />
     <ClInclude Include="src\CyEngine\Core.h" />
+    <ClInclude Include="src\CyEngine\CoreMinimal.h" />
     <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
     <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
@@ -172,12 +181,14 @@
     <ClInclude Include="src\CyEngine\Maths\Matrix.h" />
     <ClInclude Include="src\CyEngine\Maths\Quat.h" />
     <ClInclude Include="src\CyEngine\Maths\Vector.h" />
+    <ClInclude Include="src\CyEngine\Objects\CameraObject.h" />
+    <ClInclude Include="src\CyEngine\Objects\CubeObject.h" />
     <ClInclude Include="src\CyEngine\Objects\Object.h" />
     <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
     <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\CyEngine\Objects\CameraObject.h" />
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\CyEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\CyEngine\Renderer\Mesh.h" />
     <ClInclude Include="src\CyEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\CyEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\CyEngine\Renderer\RendererAPI.h" />
@@ -196,6 +207,13 @@
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\cypch.h" />
+    <ClInclude Include="src\generated\CameraObject.gen.h" />
+    <ClInclude Include="src\generated\Component.gen.h" />
+    <ClInclude Include="src\generated\CubeObject.gen.h" />
+    <ClInclude Include="src\generated\MeshComponent.gen.h" />
+    <ClInclude Include="src\generated\Object.gen.h" />
+    <ClInclude Include="src\generated\SceneObject.gen.h" />
+    <ClInclude Include="src\generated\Transform.gen.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -614,11 +632,10 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CyEngine\Objects\CubeObject.cpp" />
-    <ClCompile Include="src\CyEngine\Renderer\Mesh.cpp" />
-    <ClCompile Include="src\CyEngine\Components\MeshComponent.cpp" />
     <ClCompile Include="src\CyEngine\Application.cpp" />
+    <ClCompile Include="src\CyEngine\Class.cpp" />
     <ClCompile Include="src\CyEngine\Components\Component.cpp" />
+    <ClCompile Include="src\CyEngine\Components\MeshComponent.cpp" />
     <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
     <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
     <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
@@ -633,11 +650,13 @@
     <ClCompile Include="src\CyEngine\Maths\Matrix.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Quat.cpp" />
     <ClCompile Include="src\CyEngine\Maths\Vector.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\CameraObject.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\CubeObject.cpp" />
     <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
     <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\CyEngine\Objects\CameraObject.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\CyEngine\Renderer\Mesh.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\RendererAPI.cpp" />
@@ -657,6 +676,13 @@
     <ClCompile Include="src\cypch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\generated\CameraObject.gen.cpp" />
+    <ClCompile Include="src\generated\Component.gen.cpp" />
+    <ClCompile Include="src\generated\CubeObject.gen.cpp" />
+    <ClCompile Include="src\generated\MeshComponent.gen.cpp" />
+    <ClCompile Include="src\generated\Object.gen.cpp" />
+    <ClCompile Include="src\generated\SceneObject.gen.cpp" />
+    <ClCompile Include="src\generated\Transform.gen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

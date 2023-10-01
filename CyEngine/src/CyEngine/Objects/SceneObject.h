@@ -1,12 +1,14 @@
 #pragma once
 #include "CyEngine/Transform.h"
 #include "Object.h"
+#include "generated/SceneObject.gen.h"
 
 namespace Cy
 {
+	CLASS()
 	class SceneObject : public Object
 	{
-		GENERATE_OBJECT(SceneObject);
+		GENERATED_CLASS(SceneObject)
 
 	public:
 		SceneObject() : Object(), m_Transform() { }
@@ -26,8 +28,10 @@ namespace Cy
 		}
 		void AddComponent(Component* component);
 
-	private:
+		PROPERTY()
 		Transform m_Transform;
+		
+		PROPERTY()
 		std::vector<Component*> m_Components;
 	};
 }

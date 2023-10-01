@@ -1,7 +1,7 @@
 #pragma once
 #include "SceneObject.h"
-
 #include <glm/glm.hpp>
+#include "generated/CameraObject.gen.h"
 
 namespace Cy
 {
@@ -22,9 +22,10 @@ namespace Cy
 		float Bottom;
 	};
 
+	CLASS()
 	class CameraObject : public SceneObject
 	{
-		GENERATE_OBJECT(CameraObject);
+		GENERATED_CLASS(CameraObject)
 
 	public:
 		CameraObject() : SceneObject(), m_ProjectionMatrix(1.0f), m_ViewMatrix(1.0f), m_ProjectionViewMatrix(1.0f)
@@ -40,6 +41,9 @@ namespace Cy
 		Matrix4x4 GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		Matrix4x4 GetViewMatrix() const { return m_ViewMatrix; }
 		Matrix4x4 GetProjectionViewMatrix() const { return m_ProjectionViewMatrix;  }
+
+		PROPERTY()
+		float RotationSpeed = 10.0f;
 
 	protected:
 		void RecalculateViewMatrix();

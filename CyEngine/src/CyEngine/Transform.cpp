@@ -30,7 +30,7 @@ namespace Cy
 
 	Matrix4x4 Transform::GetWorldTransformationMatrix() const
 	{
-		glm::mat4 mat;
+		glm::mat4 mat(1.0f);
 		mat = glm::translate(mat, Position);
 		mat = glm::scale(mat, Scale);
 		mat *= glm::mat4_cast(Rotation);

@@ -2,12 +2,14 @@
 
 #include "CyEngine/Components/MeshComponent.h"
 #include "CyEngine/Objects/SceneObject.h"
+#include "generated/CubeObject.gen.h"
 
 namespace Cy
 {
+	CLASS()
 	class CubeObject : public SceneObject
 	{
-		GENERATE_OBJECT(CubeObject);
+		GENERATED_CLASS(CubeObject)
 
 	public:
 		CubeObject();

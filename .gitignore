@@ -2,6 +2,9 @@
 .vs/
 bin/
 int/
+CyEngine/tools/CyEngineBuildTool/x64/Debug
 
 # files
 *.user
+*.gen.h
+*.gen.cpp

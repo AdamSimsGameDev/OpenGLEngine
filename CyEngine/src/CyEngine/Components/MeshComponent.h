@@ -1,14 +1,16 @@
 #pragma once
 #include "Component.h"
+#include "generated/MeshComponent.gen.h"
 
 namespace Cy
 {
     class Mesh;
     class Shader;
 
+    CLASS()
     class MeshComponent : public Component
     {
-        GENERATE_OBJECT(MeshComponent);
+        GENERATED_CLASS(MeshComponent)
 
         friend class Renderer;
 

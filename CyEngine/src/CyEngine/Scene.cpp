@@ -39,8 +39,8 @@ namespace Cy
 
 	void Scene::RegisterComponent_Internal(Component* component)
 	{
-		CY_CORE_LOG("Registering component of type {0}", component->ClassName());
-		const std::string _id = component->ClassName();
+		CY_CORE_LOG("Registering component of type {0}", component->GetStaticClass()->Name);
+		const std::string _id = component->GetClass()->Name;
 		if (TrackedComponents.find(_id) != TrackedComponents.end())
 			TrackedComponents[_id].push_back(component);
 	}

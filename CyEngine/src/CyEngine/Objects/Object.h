@@ -1,17 +1,16 @@
 #pragma once
 
+#include "CyEngine/CoreMinimal.h"
+#include "generated/Object.gen.h"
+
 namespace Cy
 {
-#define GENERATE_OBJECT(type)\
-public:\
-	virtual std::string ClassName() const { return #type; }\
-	static std::string ClassNameStatic() { return #type; }
-
 	class Component;
 
+	CLASS()
 	class Object
 	{
-		GENERATE_OBJECT(Object);
+		GENERATED_CLASS(Object);
 
 	public:
 		Object() : m_Parent(nullptr) { }

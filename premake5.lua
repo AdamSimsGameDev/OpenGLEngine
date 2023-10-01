@@ -16,7 +16,6 @@ IncludeDirs["GLFW"] = "CyEngine/vendor/GLFW/include";
 IncludeDirs["glad"] = "CyEngine/vendor/glad/include";
 IncludeDirs["imgui"] = "CyEngine/vendor/imgui";
 IncludeDirs["glm"] = "CyEngine/vendor/glm";
-IncludeDirs["reflcpp"] = "CyEngine/vendor/reflcpp/include";
 
 include "CyEngine/vendor/GLFW"
 include "CyEngine/vendor/glad"
@@ -34,6 +33,8 @@ project "CyEngine"
 	pchheader "cypch.h"
 	pchsource "CyEngine/src/cypch.cpp"
 
+	prebuildcommands { "%{prj.location}/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe" }
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -45,12 +46,12 @@ project "CyEngine"
 	includedirs
 	{
 		"CyEngine/src",
+		"CyEngine/src/generated",
 		"CyEngine/vendor/spdlog/include",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.glad}",
 		"%{IncludeDirs.imgui}",
-		"%{IncludeDirs.glm}",
-		"%{IncludeDirs.reflcpp}"
+		"%{IncludeDirs.glm}"
 	}
 
 	links

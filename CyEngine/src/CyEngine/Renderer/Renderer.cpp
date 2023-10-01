@@ -42,13 +42,13 @@ namespace Cy
 
 	void Renderer::Submit(MeshComponent* comp)
 	{
-		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray);
+		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray, comp->GetParent<SceneObject>()->GetTransform().GetWorldTransformationMatrix());
 	}
 
-	void Renderer::Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray, const Matrix4x4& objectMatrix)
 	{
 		shader->Bind();
-		shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+		shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix * objectMatrix);
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

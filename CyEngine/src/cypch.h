@@ -15,7 +15,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "CyEngine/Class.h"
 #include "CyEngine/Core.h"
+#include "CyEngine/CoreMinimal.h"
 #include "CyEngine/Log.h"
 #include "CyEngine/Objects/Object.h"
 #include "CyEngine/Objects/SceneObject.h"
@@ -33,3 +35,4 @@
 #include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"
 #include "CyEngine/Transform.h"
+

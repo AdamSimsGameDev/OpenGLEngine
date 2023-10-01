@@ -1,12 +1,13 @@
 #pragma once
-
 #include "CyEngine/Objects/Object.h"
+#include "generated/Component.gen.h"
 
 namespace Cy
 {
+	CLASS()
 	class Component : public Object
 	{
-		GENERATE_OBJECT(Component);
+		GENERATED_CLASS(Component);
 
 	public:
 		virtual void Start() override;

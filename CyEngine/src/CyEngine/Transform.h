@@ -3,11 +3,14 @@
 #include "Maths/Matrix.h"
 #include "Maths/Quat.h"
 #include "Maths/Vector.h"
+#include "generated/Transform.gen.h"
 
 namespace Cy
 {
 	class Transform
 	{
+		friend class InspectorTab;
+
 	public:
 		Transform() : Position(Vector3::Zero), Rotation(Quat::Identity), Scale(Vector3::One) { }
 

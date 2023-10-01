@@ -5,7 +5,7 @@
 namespace Cy
 {
 
-#define ADD_TRACKED_COMPONENT_TYPE(type) TrackedComponents.emplace(type::ClassNameStatic(), std::vector<Component*>());
+#define ADD_TRACKED_COMPONENT_TYPE(type) TrackedComponents.emplace(type::GetStaticClass()->Name, std::vector<Component*>());
 
 	class Component;
 	class MeshComponent;
