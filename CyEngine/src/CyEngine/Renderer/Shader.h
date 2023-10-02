@@ -16,6 +16,7 @@ namespace Cy
 		static Shader* CreateFromFiles(const std::string& vertexPath, const std::string& fragmentPath);
 		static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
 
+		virtual void UploadUniformVec3(const std::string& name, const glm::vec3& vector) = 0;
 		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
 
 	private:

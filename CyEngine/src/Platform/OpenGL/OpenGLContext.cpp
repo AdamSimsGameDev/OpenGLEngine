@@ -16,6 +16,7 @@ namespace Cy
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		CY_CORE_ASSERT(status, "Failed to initialise glad!");
+		glEnable(GL_CULL_FACE);
 	}
 
 	void OpenGLContext::SwapBuffers()
