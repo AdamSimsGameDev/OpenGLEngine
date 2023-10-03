@@ -10,6 +10,7 @@ namespace Cy
 		InspectorTab()
 			: EditorTab("Inspector") {}
 
+		void RenderObject(Object* obj);
 		virtual void OnRender() override;
 	};
 }

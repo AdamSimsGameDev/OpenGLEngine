@@ -1,6 +1,7 @@
 #include <CyEngine.h>
 #include "CyEngine/Objects/CameraObject.h"
 #include "CyEngine/Objects/CubeObject.h"
+#include <CyEngine/Objects/PlaneObject.h>
 
 using namespace Cy;
 
@@ -16,9 +17,10 @@ public:
 	virtual void OnAttach() override
 	{
 		m_Scene = new Scene();
-		m_Camera = m_Scene->CreateSceneObject<CameraObject>(Vector3(0, 0, 2), Quat::Identity);
+		m_Camera = m_Scene->CreateSceneObject<CameraObject>(Vector3(0, 0.5f, 2), Quat::Identity);
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 		m_Scene->CreateSceneObject<CubeObject>(Vector3::Zero, Quat::Identity);
+		m_Scene->CreateSceneObject<PlaneObject>(Vector3::Zero, Quat::Identity, Vector3(10.0f, 1.0f, 10.0f));
 	}
 
 	virtual void OnUpdate(float deltaTime) override

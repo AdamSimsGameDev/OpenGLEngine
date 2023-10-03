@@ -30,6 +30,8 @@ namespace Cy
 		{
 			if (MeshComponent* meshComp = CastChecked<MeshComponent>(comp))
 			{
+				if (!meshComp->bIsVisible)
+					continue;
 				Submit(meshComp);
 			}
 		}
@@ -48,7 +50,7 @@ namespace Cy
 	void Renderer::Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray, const Matrix4x4& objectMatrix)
 	{
 		shader->Bind();
-		shader->UploadUniformVec3("u_LightPosition", glm::vec3(1.5f, 0.0f, 1.5f));
+		shader->UploadUniformVec3("u_LightPosition", glm::vec3(1.5f, 1.5f, 1.5f));
 		shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
 		shader->UploadUniformMat4("u_Model", objectMatrix);
 		vertexArray->Bind();

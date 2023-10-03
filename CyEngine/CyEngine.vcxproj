@@ -184,6 +184,7 @@
     <ClInclude Include="src\CyEngine\Objects\CameraObject.h" />
     <ClInclude Include="src\CyEngine\Objects\CubeObject.h" />
     <ClInclude Include="src\CyEngine\Objects\Object.h" />
+    <ClInclude Include="src\CyEngine\Objects\PlaneObject.h" />
     <ClInclude Include="src\CyEngine\Objects\SceneObject.h" />
     <ClInclude Include="src\CyEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\CyEngine\Renderer\FrameBuffer.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\generated\CubeObject.gen.h" />
     <ClInclude Include="src\generated\MeshComponent.gen.h" />
     <ClInclude Include="src\generated\Object.gen.h" />
+    <ClInclude Include="src\generated\PlaneObject.gen.h" />
     <ClInclude Include="src\generated\SceneObject.gen.h" />
     <ClInclude Include="src\generated\Transform.gen.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -653,6 +655,7 @@
     <ClCompile Include="src\CyEngine\Objects\CameraObject.cpp" />
     <ClCompile Include="src\CyEngine\Objects\CubeObject.cpp" />
     <ClCompile Include="src\CyEngine\Objects\Object.cpp" />
+    <ClCompile Include="src\CyEngine\Objects\PlaneObject.cpp" />
     <ClCompile Include="src\CyEngine\Objects\SceneObject.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\FrameBuffer.cpp" />
@@ -681,6 +684,7 @@
     <ClCompile Include="src\generated\CubeObject.gen.cpp" />
     <ClCompile Include="src\generated\MeshComponent.gen.cpp" />
     <ClCompile Include="src\generated\Object.gen.cpp" />
+    <ClCompile Include="src\generated\PlaneObject.gen.cpp" />
     <ClCompile Include="src\generated\SceneObject.gen.cpp" />
     <ClCompile Include="src\generated\Transform.gen.cpp" />
   </ItemGroup>

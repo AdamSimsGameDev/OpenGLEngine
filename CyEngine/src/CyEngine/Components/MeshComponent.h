@@ -21,6 +21,9 @@ namespace Cy
         Shader* GetShader() const { return m_Shader; }
         void SetShader(Shader* shader) { m_Shader = shader; }
 
+        PROPERTY()
+        bool bIsVisible = true;
+
     private:
         Shader* m_Shader;
         Mesh* m_Mesh;

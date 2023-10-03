@@ -20,9 +20,16 @@ namespace Cy
 		template<typename T>
 		T* CreateSceneObject(Vector3 position, Quat rotation)
 		{
+			return CreateSceneObject<T>(position, rotation, Vector3::One);
+		}
+
+		template<typename T>
+		T* CreateSceneObject(Vector3 position, Quat rotation, Vector3 scale)
+		{
 			T* t = new T();
 			t->GetTransform().SetPosition(position);
 			t->GetTransform().SetRotation(rotation);
+			t->GetTransform().SetScale(scale);
 			m_SceneObjects.push_back(t);
 			t->Start();
 			return t;

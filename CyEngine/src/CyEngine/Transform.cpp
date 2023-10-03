@@ -32,8 +32,8 @@ namespace Cy
 	{
 		glm::mat4 mat(1.0f);
 		mat = glm::translate(mat, Position);
-		mat = glm::scale(mat, Scale);
 		mat *= glm::mat4_cast(Rotation);
+		mat = glm::scale(mat, Scale);
 		return mat;
 	}
 
