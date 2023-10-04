@@ -38,11 +38,13 @@ namespace Cy
 	void OpenGLVertexArray::Bind() const
 	{
 		glBindVertexArray(m_RendererId);
+		m_IndexBuffer->Bind();
 	}
 
 	void OpenGLVertexArray::Unbind() const
 	{
 		glBindVertexArray(0);
+		m_IndexBuffer->Unbind();
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)

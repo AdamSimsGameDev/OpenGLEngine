@@ -11,7 +11,7 @@ namespace Cy
 		friend class Renderer;
 
 	public:
-		Mesh(const std::string& name) : m_Name(name) { }
+		Mesh(const std::string& name);
 
 		void SetVertices(const std::vector<Vector3>& vertices);
 		void SetVertices(const std::vector<float>& vertices);

@@ -5,6 +5,11 @@
 
 namespace Cy
 {
+	Mesh::Mesh(const std::string& name)
+	{
+		m_Name = name;
+	}
+
 	void Mesh::SetVertices(const std::vector<Vector3>& vertices)
 	{
 		for (int i = 0; i < vertices.size(); i++)

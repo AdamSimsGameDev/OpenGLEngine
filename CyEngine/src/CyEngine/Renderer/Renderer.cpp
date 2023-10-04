@@ -32,7 +32,7 @@ namespace Cy
 			{
 				if (!meshComp->bIsVisible)
 					continue;
-				Submit(meshComp); break;
+				Submit(meshComp);
 			}
 		}
 	}
