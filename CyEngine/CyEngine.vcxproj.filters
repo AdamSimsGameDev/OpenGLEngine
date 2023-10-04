@@ -237,6 +237,9 @@
     <ClInclude Include="src\generated\CameraObject.gen.h">
       <Filter>src\generated</Filter>
     </ClInclude>
+    <ClInclude Include="src\generated\ClassLibrary.h">
+      <Filter>src\generated</Filter>
+    </ClInclude>
     <ClInclude Include="src\generated\Component.gen.h">
       <Filter>src\generated</Filter>
     </ClInclude>
@@ -1638,6 +1641,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\generated\CameraObject.gen.cpp">
+      <Filter>src\generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generated\ClassLibrary.cpp">
       <Filter>src\generated</Filter>
     </ClCompile>
     <ClCompile Include="src\generated\Component.gen.cpp">

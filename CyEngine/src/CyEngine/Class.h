@@ -2,7 +2,10 @@
 
 #include "CyEngine/Core.h"
 #include "CyEngine/CoreMinimal.h"
+#include "CyEngine/String.h"
 #include <unordered_map>
+#include <typeinfo>
+#include "generated/ClassLibrary.h"
 
 namespace Cy
 {
@@ -39,16 +42,37 @@ namespace Cy
 
 		const ClassProperty* GetPropertyFromName(const std::string& property_name) const;
 
-		template<typename ObjectType, typename ValueType>
-		void SetPropertyValueFromName(const std::string& property_name, ObjectType* obj, ValueType value) const
+		static const Class* GetClassFromName(const std::string& class_name)
 		{
-			const auto* prop = GetPropertyFromName(property_name);
-			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
+			if (ClassLibrary::ClassMap.find(class_name) != ClassLibrary::ClassMap.end())
 			{
-				return;
+				return ClassLibrary::ClassMap[class_name]();
 			}
-			prop->Setter(reinterpret_cast<void*>(obj), reinterpret_cast<void*>(value));
+			return nullptr;
 		}
+
+		std::vector<std::string> split(const std::string& stringIn, const char& seperator) const
+		{
+			std::vector<std::string> outstr;
+			std::string cur;
+			for (const auto& ch : stringIn)
+			{
+				if (ch == seperator)
+				{
+					if (cur.length() > 0)
+						outstr.push_back(cur);
+					cur = "";
+				}
+				else
+				{
+					cur += ch;
+				}
+			}
+			if (cur.length() > 0)
+				outstr.push_back(cur);
+			return outstr;
+		}
+
 		template<typename ObjectType, typename ValueType>
 		const ValueType* GetPropertyValueFromName(const std::string& property_name, const ObjectType* obj) const
 		{
@@ -62,12 +86,37 @@ namespace Cy
 		template<typename ObjectType, typename ValueType>
 		ValueType* GetPropertyValueFromName(const std::string& property_name, ObjectType* obj) const
 		{
-			const auto* prop = GetPropertyFromName(property_name);
-			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
+			std::vector<std::string> spl = split(property_name, '|');
+			const ClassProperty* prop = nullptr;
+			const Class* currentClass = this;
+			void* obj_ptr = reinterpret_cast<void*>(obj);
+			for (const auto& str : spl)
+			{
+				prop = currentClass->GetPropertyFromName(str);
+				if (prop == nullptr)
+				{
+					return nullptr;
+				}
+
+				if (prop->TypeInfo == &typeid(ValueType))
+				{
+					break;
+				}
+
+				const Class* foundClass = GetClassFromName(prop->Type);
+				if (!foundClass)
+				{
+					return nullptr;
+				}
+
+				currentClass = foundClass;
+				obj_ptr = prop->Getter(obj_ptr);
+			}
+			if (prop->TypeInfo != &typeid(ValueType))
 			{
 				return nullptr;
 			}
-			return reinterpret_cast<ValueType*>(prop->Getter(reinterpret_cast<void*>(obj)));
+			return reinterpret_cast<ValueType*>(prop->Getter(obj_ptr));
 		}
 	};
 }

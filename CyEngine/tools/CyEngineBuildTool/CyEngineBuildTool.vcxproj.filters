@@ -29,5 +29,8 @@
     <ClInclude Include="class_data.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="class_library.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

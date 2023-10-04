@@ -7,8 +7,11 @@
 
 namespace Cy
 {
+	CLASS()
 	class Transform
 	{
+		GENERATED_CLASS(Transform)
+
 		friend class InspectorTab;
 
 	public:
@@ -30,9 +33,11 @@ namespace Cy
 		void RotateAround(const Vector3& point, float degs, const Vector3& axis);
 		void RotateAroundRads(const Vector3& point, float rad, const Vector3& axis);
 
-	private:
+		PROPERTY()
 		Vector3 Position;
+		PROPERTY()
 		Quat Rotation;
+		PROPERTY()
 		Vector3 Scale;
 	};
 }

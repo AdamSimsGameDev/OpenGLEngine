@@ -5,50 +5,76 @@
 
 namespace Cy
 {
-	void InspectorTab::RenderObject(Object* obj)
+	bool InspectorTab::RenderProperty(Object* obj, const std::string& prefix, const std::pair<std::string, ClassProperty>& prop)
 	{
 		const Class* cl = obj->GetClass();
+		if (int* i = cl->GetPropertyValueFromName<Object, int>(prefix + prop.first, obj))
+		{
+			ImGui::DragInt(prop.first.c_str(), i);
+			return true;
+		}
+		else if (float* i = cl->GetPropertyValueFromName<Object, float>(prefix + prop.first, obj))
+		{
+			ImGui::DragFloat(prop.first.c_str(), i);
+			return true;
+		}
+		else if (bool* i = cl->GetPropertyValueFromName<Object, bool>(prefix + prop.first, obj))
+		{
+			ImGui::Checkbox(prop.first.c_str(), i);
+			return true;
+		}
+		else if (Vector3* i = cl->GetPropertyValueFromName<Object, Vector3>(prefix + prop.first, obj))
+		{
+			float pos[3]{ i->x, i->y, i->z };
+			ImGui::DragFloat3(prop.first.c_str(), pos);
+			i->x = pos[0];
+			i->y = pos[1];
+			i->z = pos[2];
+			return true;
+		}
+		else if (Quat* i = cl->GetPropertyValueFromName<Object, Quat>(prefix + prop.first, obj))
+		{
+			Vector3 v = Quat::ToEuler(*i);
+			float rot[3]{ v.x, v.y, v.z };
+			ImGui::DragFloat3(prop.first.c_str(), rot);
+			*i = Quat::FromEuler({ rot[0], rot[1], rot[2] });
+			return true;
+		}
+		return false;
+	}
+
+	void InspectorTab::RenderObject(Object* obj)
+	{
+		RenderObjectClass(obj, obj->GetClass());
+	}
+
+	void InspectorTab::RenderObjectClass(Object* obj, const Class* cl, std::string prefix)
+	{
 		if (ImGui::TreeNode(cl->Name.c_str()))
 		{
 			for (const auto& pair : cl->Properties)
 			{
-				if (Transform* t = cl->GetPropertyValueFromName<Object, Transform>(pair.first, obj))
+				if (RenderProperty(obj, prefix, pair))
 				{
-					// POSITION
-					float pos[3]{ t->Position.x, t->Position.y, t->Position.z };
-					ImGui::DragFloat3("Position", pos);
-					t->SetPosition({ pos[0], pos[1], pos[2] });
+					continue;
+				}
 
-					// ROTATION
-					Vector3 v = Quat::ToEuler(t->Rotation);
-					float rot[3]{ v.x, v.y, v.z };
-					ImGui::DragFloat3("Rotation", rot);
-					t->SetRotation(Quat::FromEuler({ rot[0], rot[1], rot[2] }));
-
-					// SCALE
-					float scl[3]{ t->Scale.x, t->Scale.y, t->Scale.z };
-					ImGui::DragFloat3("Scale", scl);
-					t->SetScale({ scl[0], scl[1], scl[2] });
-				}
-				else if (int* i = cl->GetPropertyValueFromName<Object, int>(pair.first, obj))
+				// see if the property itself is a class
+				const Class* ncl = Class::GetClassFromName(pair.second.Type);
+				if (ncl)
 				{
-					ImGui::DragInt(pair.first.c_str(), i);
-				}
-				else if (float* i = cl->GetPropertyValueFromName<Object, float>(pair.first, obj))
-				{
-					ImGui::DragFloat(pair.first.c_str(), i);
-				}
-				else if (bool* i = cl->GetPropertyValueFromName<Object, bool>(pair.first, obj))
-				{
-					ImGui::Checkbox(pair.first.c_str(), i);
+					RenderObjectClass(obj, ncl, prefix + pair.first + "|");
 				}
 			}
 
-			if (SceneObject* so = Cast<SceneObject>(obj))
+			if (cl == obj->GetClass())
 			{
-				for (const auto& comp : so->m_Components)
+				if (SceneObject* so = Cast<SceneObject>(obj))
 				{
-					RenderObject(comp);
+					for (const auto& comp : so->m_Components)
+					{
+						RenderObject(comp);
+					}
 				}
 			}
 

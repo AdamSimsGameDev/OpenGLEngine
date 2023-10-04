@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="class_data.h" />
+    <ClInclude Include="class_library.h" />
     <ClInclude Include="property_data.h" />
     <ClInclude Include="std_extensions.h" />
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include "std_extensions.h"
 #include "property_data.h"
 #include "class_data.h"
+#include "class_library.h"
 #include <unordered_map>
 
 std::vector<std::string> files_to_skip =
@@ -282,6 +283,30 @@ int main()
             }
             return -1;
         }
+    }
+
+    // create the class library.
+    std::cout << "Creating class library!" << std::endl;
+    if (found_classes.size() > 0)
+    {
+        // generate the property list string
+        std::string properties_include_string;
+        std::string properties_string;
+        for (const auto& f : found_classes)
+        {
+            if (!f.second->is_generated)
+                continue;
+            properties_include_string += "#include \"" + f.first + ".gen.h\"\n";
+            properties_string += string_format(class_library_entry, f.first.c_str(), f.first.c_str()) + ",\n";
+        }
+
+        std::ofstream outcpp(generated_path + "\\ClassLibrary.cpp");
+        outcpp << string_format(class_library_format_cpp, properties_include_string.c_str(), properties_string.c_str()) << std::endl;
+        outcpp.close();
+
+        std::ofstream outh(generated_path + "\\ClassLibrary.h");
+        outh << class_library_format_h << std::endl;
+        outh.close();
     }
 
     std::cout << "Build tool finished successfully! " << std::endl;

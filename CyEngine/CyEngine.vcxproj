@@ -196,6 +196,7 @@
     <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
     <ClInclude Include="src\CyEngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\CyEngine\Scene.h" />
+    <ClInclude Include="src\CyEngine\String.h" />
     <ClInclude Include="src\CyEngine\Transform.h" />
     <ClInclude Include="src\CyEngine\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiRenderer.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\cypch.h" />
     <ClInclude Include="src\generated\CameraObject.gen.h" />
+    <ClInclude Include="src\generated\ClassLibrary.h" />
     <ClInclude Include="src\generated\Component.gen.h" />
     <ClInclude Include="src\generated\CubeObject.gen.h" />
     <ClInclude Include="src\generated\MeshComponent.gen.h" />
@@ -680,6 +682,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\generated\CameraObject.gen.cpp" />
+    <ClCompile Include="src\generated\ClassLibrary.cpp" />
     <ClCompile Include="src\generated\Component.gen.cpp" />
     <ClCompile Include="src\generated\CubeObject.gen.cpp" />
     <ClCompile Include="src\generated\MeshComponent.gen.cpp" />
