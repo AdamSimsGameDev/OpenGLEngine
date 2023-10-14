@@ -10,15 +10,15 @@
 
 namespace Cy
 {
-	Shader* Shader::CreateFromFiles(const std::string& vertexPath, const std::string& fragmentPath)
+	Shader* Shader::CreateFromFiles(const String& vertexPath, const String& fragmentPath)
 	{
-		std::string vertex, fragment;
+		String vertex, fragment;
 		ParseShader(vertexPath, vertex);
 		ParseShader(fragmentPath, fragment);
 		return Create(vertex, fragment);
 	}
 
-	Shader* Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
+	Shader* Shader::Create(const String& vertexSrc, const String& fragmentSrc)
 	{
 		switch (RendererAPI::GetAPI())
 		{
@@ -28,7 +28,7 @@ namespace Cy
 		return nullptr;
 	}
 
-	void Shader::ParseShader(const std::string& filePath, std::string& outSource)
+	void Shader::ParseShader(const String& filePath, String& outSource)
 	{
 		std::ifstream stream(filePath);
 		std::string line;

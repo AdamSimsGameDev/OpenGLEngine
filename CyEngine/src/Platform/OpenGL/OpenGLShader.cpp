@@ -5,14 +5,14 @@
 
 namespace Cy
 {
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
+	OpenGLShader::OpenGLShader(const String& vertexSource, const String& fragmentSource)
 	{
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 		// Send the vertex shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
-		const char* source = vertexSource.c_str();
+		const char* source = *vertexSource;
 		glShaderSource(vertexShader, 1, &source, 0);
 
 		// Compile the vertex shader
@@ -44,7 +44,7 @@ namespace Cy
 
 		// Send the fragment shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
-		source = (const GLchar*)fragmentSource.c_str();
+		source = (const GLchar*)*fragmentSource;
 		glShaderSource(fragmentShader, 1, &source, 0);
 
 		// Compile the fragment shader
@@ -130,15 +130,15 @@ namespace Cy
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUniformVec3(const std::string& name, const glm::vec3& vector)
+	void OpenGLShader::UploadUniformVec3(const String& name, const glm::vec3& vector)
 	{
-		uint32_t location = glGetUniformLocation(m_RendererId, name.c_str());
+		uint32_t location = glGetUniformLocation(m_RendererId, *name);
 		glUniform3fv(location, 1, &vector[0]);
 	}
 
-	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
+	void OpenGLShader::UploadUniformMat4(const String& name, const glm::mat4& matrix)
 	{
-		uint32_t location = glGetUniformLocation(m_RendererId, name.c_str());
+		uint32_t location = glGetUniformLocation(m_RendererId, *name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 

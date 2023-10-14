@@ -3,11 +3,11 @@
 
 namespace Cy
 {
-	Layer::Layer(const std::string& name)
+	Layer::Layer(const String& name)
 	{
 		m_DebugName = name;
 
-		CY_CORE_TRACE("Created Layer {0}", m_DebugName.c_str());
+		CY_CORE_TRACE("Created Layer {0}", *m_DebugName);
 	}
 
 	Layer::~Layer()

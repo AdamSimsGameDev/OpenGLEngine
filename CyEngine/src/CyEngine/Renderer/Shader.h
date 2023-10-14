@@ -1,10 +1,10 @@
 #pragma once
-#include <string>
+#include <CyEngine/String.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Cy
-{
+{	
 	class Shader
 	{
 	public:
@@ -13,13 +13,13 @@ namespace Cy
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 	
-		static Shader* CreateFromFiles(const std::string& vertexPath, const std::string& fragmentPath);
-		static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+		static Shader* CreateFromFiles(const String& vertexPath, const String& fragmentPath);
+		static Shader* Create(const String& vertexSrc, const String& fragmentSrc);
 
-		virtual void UploadUniformVec3(const std::string& name, const glm::vec3& vector) = 0;
-		virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
+		virtual void UploadUniformVec3(const String& name, const glm::vec3& vector) = 0;
+		virtual void UploadUniformMat4(const String& name, const glm::mat4& matrix) = 0;
 
 	private:
-		static void ParseShader(const std::string& filePath, std::string& outSource);
+		static void ParseShader(const String& filePath, String& outSource);
 	};
 }

@@ -20,8 +20,6 @@ namespace Cy
 			ImVec2 newSize = ImGui::GetContentRegionAvail();
 			uint64_t textureId = m_FrameBuffer->GetColorAttachmentRendererId();
 
-			// ImGui::Text(std::string("" + std::to_string(val) + ", " + std::to_string(val2)).data());
-
 			if (m_AbsViewportSize.x != newSize.x || m_AbsViewportSize.y != newSize.y)
 			{
 				float scale = 16.0f / 9.0f;

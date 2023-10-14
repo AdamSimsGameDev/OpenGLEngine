@@ -2,10 +2,11 @@
 #include "Mesh.h"
 #include "CyEngine/Renderer/VertexArray.h"
 #include "CyEngine/Renderer/Buffer.h"
+#include "CyEngine/String.h"
 
 namespace Cy
 {
-	Mesh::Mesh(const std::string& name)
+	Mesh::Mesh(const String& name)
 	{
 		m_Name = name;
 	}

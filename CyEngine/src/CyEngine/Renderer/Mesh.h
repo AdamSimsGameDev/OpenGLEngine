@@ -1,11 +1,14 @@
 #pragma once
 
+#include "CyEngine/Core.h"
+
 namespace Cy
 {
 	class VertexBuffer;
 	class IndexBuffer;
 	class VertexArray;
 
+	struct String;
 	struct Vector3;
 
 	class Mesh
@@ -13,7 +16,7 @@ namespace Cy
 		friend class Renderer;
 
 	public:
-		Mesh(const std::string& name);
+		Mesh(const String& name);
 
 		void SetVertices(const std::vector<Vector3>& vertices);
 		void SetVertices(const std::vector<float>& vertices);
@@ -22,12 +25,12 @@ namespace Cy
 
 		void SetTriangles(const std::vector<uint32_t>& triangles);
 
-		std::string GetName() const { return m_Name; }
+		String GetName() const { return m_Name; }
 
 		void Generate();
 
 	private:
-		std::string m_Name;
+		String m_Name;
 
 		std::vector<float> m_Packed;
 		std::vector<float> m_Vertices;

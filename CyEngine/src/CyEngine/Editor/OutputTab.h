@@ -13,6 +13,6 @@ namespace Cy
 	private:
 		bool m_ShouldAutoScroll = true;
 		char m_FilterBuffer[256];
-		std::string m_Filter;
+		String m_Filter;
 	};
 }

@@ -43,7 +43,7 @@ namespace Cy
 		unsigned int id = tab->GetId();
 		if (m_Tabs[id])
 		{
-			CY_CORE_ERROR("Can't push a tab that already exists, id {0}, name {1}", id, tab->GetName().c_str());
+			CY_CORE_ERROR("Can't push a tab that already exists, id {0}, name {1}", id, *tab->GetName());
 			return;
 		}
 
@@ -61,7 +61,7 @@ namespace Cy
 
 		if (!m_Tabs[id])
 		{
-			CY_CORE_ERROR("Can't pop a tab that doesn't exist, id {0}, name {1}", id, m_Tabs[id]->GetName().c_str());
+			CY_CORE_ERROR("Can't pop a tab that doesn't exist, id {0}, name {1}", id, *m_Tabs[id]->GetName());
 			return;
 		}
 
@@ -99,7 +99,7 @@ namespace Cy
 		{
 			for (auto& tab : m_Tabs)
 			{
-				ImGui::MenuItem(tab.second->GetName().c_str(), nullptr, &(tab.second->GetIsTabOpen()));
+				ImGui::MenuItem(*tab.second->GetName(), nullptr, &(tab.second->GetIsTabOpen()));
 			}
 			ImGui::Separator();
 			ImGui::MenuItem("Demo", nullptr, &m_ShowDemo);

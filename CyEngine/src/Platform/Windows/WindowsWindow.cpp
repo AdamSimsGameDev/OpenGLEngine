@@ -60,7 +60,7 @@ namespace Cy
 		m_Data.Height = props.Height;
 		m_Data.Title = props.Title;
 
-		CY_CORE_LOG("Creating window of size ({1}, {2})", props.Title, props.Width, props.Height);
+		CY_CORE_LOG("Creating window of size ({1}, {2})", *props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialised)
 		{
@@ -72,7 +72,7 @@ namespace Cy
 			s_GLFWInitialised = true;
 		}
 
-		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, *m_Data.Title, nullptr, nullptr);
 
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();

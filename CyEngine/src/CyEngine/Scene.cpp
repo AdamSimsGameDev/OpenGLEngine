@@ -22,9 +22,9 @@ namespace Cy
 		}
 	}
 
-	std::vector<Component*> Scene::GetAllComponentsOfType(std::string typeName) const
+	std::vector<Component*> Scene::GetAllComponentsOfType(String typeName) const
 	{
-		const auto it = TrackedComponents.find(typeName.data());
+		const auto it = TrackedComponents.find(typeName);
 		if (it != TrackedComponents.end())
 		{
 			return it->second;
@@ -40,7 +40,7 @@ namespace Cy
 	void Scene::RegisterComponent_Internal(Component* component)
 	{
 		CY_CORE_LOG("Registering component of type {0}", component->GetClass()->Name);
-		const std::string _id = component->GetClass()->Name;
+		const String _id = component->GetClass()->Name;
 		if (TrackedComponents.find(_id) == TrackedComponents.end())
 			TrackedComponents[_id] = {};
 		TrackedComponents[_id].push_back(component);

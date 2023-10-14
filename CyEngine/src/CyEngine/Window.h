@@ -10,13 +10,13 @@ namespace Cy
 	{
 		int Width;
 		int Height;
-		std::string Title;
+		String Title;
 
 		WindowProps()
 			: Width(1280), Height(720), Title("CyEngine Application")
 		{
 		}
-		WindowProps(int width, int height, std::string title)
+		WindowProps(int width, int height, String title)
 			: Width(width), Height(height), Title(title)
 		{
 		}

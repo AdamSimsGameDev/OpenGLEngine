@@ -6,7 +6,7 @@ namespace Cy
 	class EditorTab
 	{
 	public:
-		EditorTab(std::string name = "");
+		EditorTab(String name = "");
 		virtual ~EditorTab() {}
 
 		virtual void OnBegin() { }
@@ -15,7 +15,7 @@ namespace Cy
 		virtual void OnUpdate() { }
 		virtual void OnRender() = 0;
 
-		inline std::string GetName() const { return m_DebugName; }
+		inline String GetName() const { return m_DebugName; }
 		inline unsigned int GetId() const { return m_TabId; }
 		inline bool IsTabOpen() const { return m_TabOpen; }
 		inline bool& GetIsTabOpen() { return m_TabOpen; }
@@ -24,7 +24,7 @@ namespace Cy
 		bool m_TabOpen;
 
 	private:
-		std::string m_DebugName;
+		String m_DebugName;
 		unsigned int m_TabId;
 
 		static unsigned int s_NextId;

@@ -41,7 +41,7 @@ namespace Cy
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetDisplayName() const = 0;
 
-		virtual std::string ToString() const { return GetDisplayName(); }
+		virtual String ToString() const { return GetDisplayName(); }
 		inline bool IsHandled() const { return m_Handled; }
 
 	protected:

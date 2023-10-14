@@ -38,7 +38,7 @@ namespace Cy
 
 		template<typename ComponentType>
 		std::vector<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
-		std::vector<Component*> GetAllComponentsOfType(std::string typeName) const;
+		std::vector<Component*> GetAllComponentsOfType(String typeName) const;
 
 		template<typename ObjectType>
 		std::vector<ObjectType*> GetAllObjectsOfType() const 
@@ -62,7 +62,7 @@ namespace Cy
 		// Storage of all existing SceneObjects
 		std::vector<SceneObject*> m_SceneObjects;
 
-		std::unordered_map<std::string, std::vector<Component*>> TrackedComponents;
+		std::unordered_map<String, std::vector<Component*>> TrackedComponents;
 
 		virtual void RegisterComponent_Internal(Component* component);
 
