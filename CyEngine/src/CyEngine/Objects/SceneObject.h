@@ -32,6 +32,9 @@ namespace Cy
 		void AddComponent(Component* component);
 
 		PROPERTY()
+		String Name;
+
+		PROPERTY()
 		Transform m_Transform;
 		
 		PROPERTY()

@@ -74,7 +74,8 @@ namespace Cy
 
 		operator std::string() const { return _StringInternal; }
 
-		const char* operator *() const { return _StringInternal.c_str(); }
+		char* operator *() { return &_StringInternal[0]; }
+		const char* operator *() const { return &_StringInternal[0]; }
 
 	private:
 		_NODISCARD StringItrConst begin() const { return _StringInternal.begin(); }
