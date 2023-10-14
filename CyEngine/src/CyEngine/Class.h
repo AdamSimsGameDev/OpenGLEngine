@@ -1,19 +1,16 @@
 #pragma once
 
-#include "CyEngine/Core.h"
-#include "CyEngine/CoreMinimal.h"
-#include "CyEngine/String.h"
-#include <unordered_map>
+#include <string>
 #include <typeinfo>
-#include "generated/ClassLibrary.h"
+#include <unordered_map>
 
 namespace Cy
 {
 	struct ClassProperty
 	{
 	public:
-		std::string Name;
-		std::string Type;
+		const char* Name;
+		const char* Type;
 		const std::type_info* TypeInfo;
 		void(*Setter)(void*, void*);
 		void* (*Getter)(void*);
@@ -40,41 +37,12 @@ namespace Cy
 		std::string Name;
 		std::unordered_map<std::string, ClassProperty> Properties;
 
-		const ClassProperty* GetPropertyFromName(const std::string& property_name) const;
+		const ClassProperty* GetPropertyFromName(std::string property_name) const;
 
-		static const Class* GetClassFromName(const std::string& class_name)
-		{
-			if (ClassLibrary::ClassMap.find(class_name) != ClassLibrary::ClassMap.end())
-			{
-				return ClassLibrary::ClassMap[class_name]();
-			}
-			return nullptr;
-		}
-
-		std::vector<std::string> split(const std::string& stringIn, const char& seperator) const
-		{
-			std::vector<std::string> outstr;
-			std::string cur;
-			for (const auto& ch : stringIn)
-			{
-				if (ch == seperator)
-				{
-					if (cur.length() > 0)
-						outstr.push_back(cur);
-					cur = "";
-				}
-				else
-				{
-					cur += ch;
-				}
-			}
-			if (cur.length() > 0)
-				outstr.push_back(cur);
-			return outstr;
-		}
+		static const Class* GetClassFromName(std::string class_name);
 
 		template<typename ObjectType, typename ValueType>
-		const ValueType* GetPropertyValueFromName(const std::string& property_name, const ObjectType* obj) const
+		const ValueType* GetPropertyValueFromName(std::string property_name, const ObjectType* obj) const
 		{
 			const auto* prop = GetPropertyFromName(property_name);
 			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
@@ -84,7 +52,7 @@ namespace Cy
 			return reinterpret_cast<const ValueType*>(prop->Getter(reinterpret_cast<void*>(obj)));
 		}
 		template<typename ObjectType, typename ValueType>
-		ValueType* GetPropertyValueFromName(const std::string& property_name, ObjectType* obj) const
+		ValueType* GetPropertyValueFromName(std::string property_name, ObjectType* obj) const
 		{
 			std::vector<std::string> spl = split(property_name, '|');
 			const ClassProperty* prop = nullptr;
@@ -117,6 +85,29 @@ namespace Cy
 				return nullptr;
 			}
 			return reinterpret_cast<ValueType*>(prop->Getter(obj_ptr));
+		}
+
+	private:
+		static std::vector<std::string> split(const std::string str, const char& separator)
+		{
+			std::vector<std::string> outstr;
+			std::string cur;
+			for (const auto& ch : str)
+			{
+				if (ch == separator)
+				{
+					if (cur.length() > 0)
+						outstr.push_back(cur);
+					cur = "";
+				}
+				else
+				{
+					cur += ch;
+				}
+			}
+			if (cur.length() > 0)
+				outstr.push_back(cur);
+			return outstr;
 		}
 	};
 }

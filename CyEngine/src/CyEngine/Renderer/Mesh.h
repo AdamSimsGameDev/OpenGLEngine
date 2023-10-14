@@ -6,6 +6,8 @@ namespace Cy
 	class IndexBuffer;
 	class VertexArray;
 
+	struct Vector3;
+
 	class Mesh
 	{
 		friend class Renderer;

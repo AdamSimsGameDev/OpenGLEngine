@@ -217,6 +217,7 @@
     <ClInclude Include="src\generated\Object.gen.h" />
     <ClInclude Include="src\generated\PlaneObject.gen.h" />
     <ClInclude Include="src\generated\SceneObject.gen.h" />
+    <ClInclude Include="src\generated\String.gen.h" />
     <ClInclude Include="src\generated\Transform.gen.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
@@ -668,6 +669,7 @@
     <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\CyEngine\Scene.cpp" />
+    <ClCompile Include="src\CyEngine\String.cpp" />
     <ClCompile Include="src\CyEngine\Transform.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiRenderer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
@@ -689,6 +691,7 @@
     <ClCompile Include="src\generated\Object.gen.cpp" />
     <ClCompile Include="src\generated\PlaneObject.gen.cpp" />
     <ClCompile Include="src\generated\SceneObject.gen.cpp" />
+    <ClCompile Include="src\generated\String.gen.cpp" />
     <ClCompile Include="src\generated\Transform.gen.cpp" />
   </ItemGroup>
   <ItemGroup>

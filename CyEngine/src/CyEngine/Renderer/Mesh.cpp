@@ -51,7 +51,7 @@ namespace Cy
 		}
 
 		m_VertexArray.reset(VertexArray::Create());
-		m_VertexBuffer.reset(VertexBuffer::Create(m_Packed.data(), sizeof(float) * m_Packed.size()));
+		m_VertexBuffer.reset(VertexBuffer::Create(m_Packed.data(), (uint32_t)(sizeof(float) * m_Packed.size())));
 
 		BufferLayout layout =
 		{
@@ -61,7 +61,7 @@ namespace Cy
 
 		m_VertexBuffer->SetLayout(layout);
 
-		m_IndexBuffer.reset(IndexBuffer::Create(m_Triangles.data(), m_Triangles.size()));
+		m_IndexBuffer.reset(IndexBuffer::Create(m_Triangles.data(), (uint32_t)m_Triangles.size()));
 
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);

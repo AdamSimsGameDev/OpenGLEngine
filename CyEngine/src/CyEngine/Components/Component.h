@@ -1,4 +1,5 @@
 #pragma once
+#include "CyEngine/Core.h"
 #include "CyEngine/Objects/Object.h"
 #include "generated/Component.gen.h"
 

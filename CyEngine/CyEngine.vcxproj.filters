@@ -198,6 +198,9 @@
     <ClInclude Include="src\CyEngine\Scene.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\String.h">
+      <Filter>src\CyEngine</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\Transform.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
@@ -256,6 +259,9 @@
       <Filter>src\generated</Filter>
     </ClInclude>
     <ClInclude Include="src\generated\SceneObject.gen.h">
+      <Filter>src\generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generated\String.gen.h">
       <Filter>src\generated</Filter>
     </ClInclude>
     <ClInclude Include="src\generated\Transform.gen.h">
@@ -1607,6 +1613,9 @@
     <ClCompile Include="src\CyEngine\Scene.cpp">
       <Filter>src\CyEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\String.cpp">
+      <Filter>src\CyEngine</Filter>
+    </ClCompile>
     <ClCompile Include="src\CyEngine\Transform.cpp">
       <Filter>src\CyEngine</Filter>
     </ClCompile>
@@ -1662,6 +1671,9 @@
       <Filter>src\generated</Filter>
     </ClCompile>
     <ClCompile Include="src\generated\SceneObject.gen.cpp">
+      <Filter>src\generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generated\String.gen.cpp">
       <Filter>src\generated</Filter>
     </ClCompile>
     <ClCompile Include="src\generated\Transform.gen.cpp">

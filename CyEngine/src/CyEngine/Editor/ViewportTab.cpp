@@ -18,7 +18,7 @@ namespace Cy
 		if (ImGui::Begin("Viewport", &m_TabOpen))
 		{
 			ImVec2 newSize = ImGui::GetContentRegionAvail();
-			uint32_t textureId = m_FrameBuffer->GetColorAttachmentRendererId();
+			uint64_t textureId = m_FrameBuffer->GetColorAttachmentRendererId();
 
 			// ImGui::Text(std::string("" + std::to_string(val) + ", " + std::to_string(val2)).data());
 
@@ -48,7 +48,7 @@ namespace Cy
 			float _y = (m_AbsViewportSize.y - m_ViewportSize.y) * 0.5f;
 			ImGui::SetCursorPosX(_x);
 			ImGui::SetCursorPosY(_y + 26.0f);
-			ImGui::Image((void*)textureId, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)textureId, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 		}
 
 		ImGui::End();

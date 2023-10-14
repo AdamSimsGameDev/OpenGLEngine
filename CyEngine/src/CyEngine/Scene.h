@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CyEngine/Core.h"
 #include "Objects/SceneObject.h"
 
 namespace Cy

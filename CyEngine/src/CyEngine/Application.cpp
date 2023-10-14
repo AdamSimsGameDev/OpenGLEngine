@@ -3,7 +3,6 @@
 #include "Events/Event.h"
 #include "Events/WindowEvent.h"
 #include "CyEngine/Layers/EditorLayer.h"
-
 #include "Renderer/Renderer.h"
 
 namespace Cy

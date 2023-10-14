@@ -1,5 +1,6 @@
 #include "cypch.h"
 #include "Component.h"
+#include "CyEngine/Scene.h"
 
 namespace Cy
 {

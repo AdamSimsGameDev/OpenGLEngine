@@ -65,7 +65,7 @@ namespace Cy
 				ShaderDataTypeToOpenGLBaseType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				l.GetStride(),
-				(const void*)element.Offset
+				(const void*)static_cast<uint64_t>(element.Offset)
 			);
 			index++;
 		}

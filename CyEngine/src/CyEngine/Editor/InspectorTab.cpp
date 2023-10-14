@@ -2,31 +2,34 @@
 #include "InspectorTab.h"
 #include <imgui.h>
 #include "CyEngine/Application.h"
+#include "CyEngine/Components/Component.h"
+#include "CyEngine/Objects/SceneObject.h"
+#include "CyEngine/Scene.h"
 
 namespace Cy
 {
-	bool InspectorTab::RenderProperty(Object* obj, const std::string& prefix, const std::pair<std::string, ClassProperty>& prop)
+	bool InspectorTab::RenderProperty(Object* obj, const String& prefix, const std::pair<String, ClassProperty>& prop)
 	{
 		const Class* cl = obj->GetClass();
 		if (int* i = cl->GetPropertyValueFromName<Object, int>(prefix + prop.first, obj))
 		{
-			ImGui::DragInt(prop.first.c_str(), i);
+			ImGui::DragInt(*prop.first, i);
 			return true;
 		}
 		else if (float* i = cl->GetPropertyValueFromName<Object, float>(prefix + prop.first, obj))
 		{
-			ImGui::DragFloat(prop.first.c_str(), i);
+			ImGui::DragFloat(*prop.first, i);
 			return true;
 		}
 		else if (bool* i = cl->GetPropertyValueFromName<Object, bool>(prefix + prop.first, obj))
 		{
-			ImGui::Checkbox(prop.first.c_str(), i);
+			ImGui::Checkbox(*prop.first, i);
 			return true;
 		}
 		else if (Vector3* i = cl->GetPropertyValueFromName<Object, Vector3>(prefix + prop.first, obj))
 		{
 			float pos[3]{ i->x, i->y, i->z };
-			ImGui::DragFloat3(prop.first.c_str(), pos);
+			ImGui::DragFloat3(*prop.first, pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			i->z = pos[2];
@@ -36,7 +39,7 @@ namespace Cy
 		{
 			Vector3 v = Quat::ToEuler(*i);
 			float rot[3]{ v.x, v.y, v.z };
-			ImGui::DragFloat3(prop.first.c_str(), rot);
+			ImGui::DragFloat3(*prop.first, rot);
 			*i = Quat::FromEuler({ rot[0], rot[1], rot[2] });
 			return true;
 		}
@@ -48,7 +51,7 @@ namespace Cy
 		RenderObjectClass(obj, obj->GetClass());
 	}
 
-	void InspectorTab::RenderObjectClass(Object* obj, const Class* cl, std::string prefix)
+	void InspectorTab::RenderObjectClass(Object* obj, const Class* cl, String prefix)
 	{
 		if (ImGui::TreeNode(cl->Name.c_str()))
 		{

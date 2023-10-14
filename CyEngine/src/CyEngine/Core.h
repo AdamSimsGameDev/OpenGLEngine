@@ -44,3 +44,27 @@ static To* CastChecked(From* from)
 }
 
 #define __CLASS__ 
+
+#define CLASS()
+#define STRUCT()
+#define PROPERTY()
+#define GENERATED_CLASS(type) public:\
+	static Class* GetStaticClass() { return type##Class::Get(); }\
+	virtual Class* GetClass() const { return type##::GetStaticClass(); }
+
+#include "CyEngine/Core.h"
+#include "CyEngine/Class.h"
+#include "CyEngine/String.h"
+
+// Maths
+#include "CyEngine/Maths/Colour.h"
+#include "CyEngine/Maths/Maths.h"
+#include "CyEngine/Maths/Matrix.h"
+#include "CyEngine/Maths/Quat.h"
+#include "CyEngine/Maths/Vector.h"
+
+#include "CyEngine/Log.h"
+
+// Input
+#include "CyEngine/Input.h"
+#include "CyEngine/KeyCode.h"

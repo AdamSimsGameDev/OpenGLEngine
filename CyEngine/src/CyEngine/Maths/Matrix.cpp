@@ -1,5 +1,7 @@
 #include "cypch.h"
 #include "Matrix.h"
+#include "Quat.h"
+#include "Vector.h"
 
 namespace Cy
 {

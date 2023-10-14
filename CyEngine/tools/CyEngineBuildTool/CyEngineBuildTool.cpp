@@ -168,7 +168,7 @@ int main()
             else
             {
                 // check if we expect the next line to tell us the class
-                if (contains(line, "class ") && !contains(line, ";"))
+                if ((contains(line, "class ") || contains(line, "struct ")) && !contains(line, ";"))
                 {
                     std::vector<std::string> split_line = split(line, ':');
                     std::string pre_colon = split_line[0];
@@ -193,11 +193,13 @@ int main()
                     else
                     {
                         class_info->is_generated = false;
-                    }
+                    }                        
+                    
+                    class_info->is_struct = contains(line, "struct ");
 
                     found_classes.emplace(class_info->name, class_info);
                 }
-                else if (contains(line, "CLASS()") && !contains(line, "GENERATED_CLASS()"))
+                else if ((contains(line, "CLASS()") || contains(line, "STRUCT()")) && !contains(line, "GENERATED_CLASS()"))
                 {
                     next_line_class = true;
                 }
@@ -254,12 +256,21 @@ int main()
             outcpp << "#include \"cypch.h\"" << std::endl;
             outcpp << "#include \"" + h_name + "\"" << std::endl;
             outcpp << "#include \"" + entry + "\"" << std::endl;
+            outcpp << "#include \"ClassLibrary.h\"" << std::endl;
             outcpp << generated_cpp << std::endl;
             outcpp.close();
 
             std::ofstream outh(generated_path + "\\" + h_name);
             outh << "#pragma once" << std::endl;
-            outh << "#include \"CyEngine/Class.h\"" << std::endl << std::endl;
+            auto* cl = found_classes[class_name];
+            if (cl->parent_class.empty())
+            {
+                outh << "#include \"CyEngine/Class.h\"" << std::endl << std::endl;
+            }
+            else
+            {
+                outh << string_format("#include \"generated/%s.gen.h\"", cl->parent_class.c_str()) << std::endl << std::endl;
+            }
             outh << generated_h << std::endl;
             outh.close();
         }
@@ -268,7 +279,7 @@ int main()
     // iterate over all of the classes, and make sure that if a class isn't generated, it's parent also isn't generated, and vice-versa
     for (const auto& pair : found_classes)
     {
-        if (pair.second->parent_class.size() == 0)
+        if (pair.second->is_struct || pair.second->parent_class.size() == 0)
             continue;
         const auto* parent = found_classes[pair.second->parent_class];
         if (parent->is_generated != pair.second->is_generated)

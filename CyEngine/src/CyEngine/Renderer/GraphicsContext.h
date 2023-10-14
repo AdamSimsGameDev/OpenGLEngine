@@ -1,4 +1,5 @@
 #pragma once
+#include "CyEngine/Core.h"
 
 namespace Cy
 {

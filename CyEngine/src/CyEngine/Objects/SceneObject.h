@@ -1,10 +1,13 @@
 #pragma once
-#include "CyEngine/Transform.h"
+#include "CyEngine/Core.h"
 #include "Object.h"
+#include "CyEngine/Transform.h"
 #include "generated/SceneObject.gen.h"
 
 namespace Cy
 {
+	class Component;
+
 	CLASS()
 	class SceneObject : public Object
 	{

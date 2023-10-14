@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CyEngine/Core.h"
 #include "RendererAPI.h"
 #include "RenderCommand.h"
 
@@ -7,6 +8,7 @@ namespace Cy
 {
 	class MeshComponent;
 	class Shader;
+	class Scene;
 
 	class Renderer
 	{

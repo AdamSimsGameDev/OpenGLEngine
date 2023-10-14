@@ -1,12 +1,10 @@
 #pragma once
 
-#include "CyEngine/CoreMinimal.h"
+#include "CyEngine/Core.h"
 #include "generated/Object.gen.h"
 
 namespace Cy
 {
-	class Component;
-
 	CLASS()
 	class Object
 	{

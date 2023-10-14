@@ -2,8 +2,8 @@
 
 static std::string class_library_format_h = 
 "#pragma once\n\n\
-#include <unordered_map>\n\
 #include <string>\n\
+#include <unordered_map>\n\
 namespace Cy\n\
 {\n\
 	class ClassLibrary\n\
@@ -17,6 +17,7 @@ namespace Cy\n\
 static std::string class_library_format_cpp =
 "#include \"cypch.h\"\n\
 #include \"ClassLibrary.h\"\n\n\
+#include \"CyEngine/String.h\"\n\n\
 %s\n\n\
 namespace Cy\n\
 {\n\

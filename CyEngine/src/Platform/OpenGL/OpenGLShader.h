@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CyEngine/Core.h"
 #include "CyEngine/Renderer/Shader.h"
 
 namespace Cy

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "CyEngine/Core.h"
 #include "Maths/Matrix.h"
 #include "Maths/Quat.h"
 #include "Maths/Vector.h"
