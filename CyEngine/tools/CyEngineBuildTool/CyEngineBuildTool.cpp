@@ -97,6 +97,7 @@ int main()
         bool found_class = false;
         bool found_generated_class = false;
         bool in_comment_block = false;
+        std::unordered_map<std::string, std::string> meta_data;
 
         // parse the file, looking for any generated objects or properties.
         while (std::getline(infile, line))
@@ -152,13 +153,84 @@ int main()
                         return -1;
                     }
 
-                    current_class->properties.push_back(PropertyInfo(name, type));
+                    current_class->properties.push_back(PropertyInfo(name, type, meta_data));
+                    meta_data.clear();
 
                     next_line_property = false;
                 }
-                else if (contains(line, "PROPERTY()"))
+                else if (contains(line, "PROPERTY("))
                 {
                     next_line_property = true;
+
+                    if (!contains(line, "PROPERTY()"))
+                    {
+                        // store data
+                        std::string meta_key;
+                        std::string meta_value;
+                        bool is_quoted = false;
+                        bool has_started = false;
+                        bool is_key = false;
+                        int brackets_depth = 0;
+
+                        // format the line
+                        std::string test = line;
+                        test.erase(std::remove(test.begin(), test.end(), ';'), test.end());
+                        test.erase(std::remove(test.begin(), test.end(), '\t'), test.end());
+
+                        // loop over the line
+                        for (const char& c : test)
+                        {
+                            if (!has_started && c == '(')
+                            {
+                                has_started = true;
+                                is_key = true;
+                                brackets_depth++;
+                                continue;
+                            }
+
+                            if (!has_started)
+                            {
+                                continue;
+                            }
+
+
+                            if (!is_quoted && (c == ',' || c == ')'))
+                            {
+                                meta_data.emplace(meta_key, meta_value);
+                                meta_key.clear();
+                                meta_value.clear();
+                                is_key = true;
+
+                                if (c == ')')
+                                {
+                                    brackets_depth--;
+                                    if (brackets_depth == 0)
+                                        break;
+                                }
+                                continue;
+                            }
+                            else if (c == '=')
+                            {
+                                is_key = false;
+                            }
+                            else if (c == '"')
+                            {
+                                if (is_quoted)
+                                {
+                                    is_quoted = false;
+                                }
+                                else
+                                {
+                                    is_quoted = true;
+                                }
+                                (is_key ? meta_key : meta_value) += c;
+                            }
+                            else if (is_quoted || c != ' ')
+                            {
+                                (is_key ? meta_key : meta_value) += c;
+                            }
+                        }
+                    }
                 }
                 else if (contains(line, "GENERATED_CLASS("))
                 {
@@ -168,15 +240,16 @@ int main()
             else
             {
                 // check if we expect the next line to tell us the class
-                if ((contains(line, "class ") || contains(line, "struct ")) && !contains(line, ";"))
+                if ((contains(line, "class ") || contains(line, "struct ")) && !contains(line, ";") && !contains(line, "template<"))
                 {
-                    std::vector<std::string> split_line = split(line, ':');
-                    std::string pre_colon = split_line[0];
+                    std::vector<std::string> split_line = split_nonencased(line, ':');
+                    std::string pre_colon = split(split_line[0], '<')[0];
                     std::string post_colon = (split_line.size() > 1 ? split_line[1] : "");
                     std::vector<std::string> split_class = split(pre_colon, ' ');
                     std::vector<std::string> split_parent_class = split(post_colon.size() > 0 ? split(post_colon, ',')[0] : "", ' ');
+                    std::vector<std::string> non_templated_parent = split(split_parent_class.size() > 1 ? split_parent_class[1] : "", '<');
 
-                    ClassInfo* class_info = new ClassInfo(split_class[split_class.size() == 2 ? 1 : 2], split_parent_class.size() > 1 ? split_parent_class[1] : "");
+                    ClassInfo* class_info = new ClassInfo(split_class[split_class.size() == 2 ? 1 : 2], non_templated_parent.size() > 0 ? non_templated_parent[0] : "");
 
                     if (next_line_class)
                     {
@@ -282,7 +355,7 @@ int main()
         if (pair.second->is_struct || pair.second->parent_class.size() == 0)
             continue;
         const auto* parent = found_classes[pair.second->parent_class];
-        if (parent->is_generated != pair.second->is_generated)
+        if (parent && parent->is_generated != pair.second->is_generated)
         {
             if (parent->is_generated)
             {

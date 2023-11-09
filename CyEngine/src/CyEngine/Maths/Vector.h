@@ -4,6 +4,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <string>
 #include <sstream>
+#include "CyEngine/Serialization/Serialization.h"
 
 namespace Cy
 {
@@ -130,4 +131,49 @@ namespace Cy
 			return (x * x) + (y * y) + (z * z) + (w * w);
 		}
 	};
+
+	struct SerializableVector2 : Serializable<SerializableVector2>
+	{
+		virtual std::string GetType() const { return "Vector2"; }
+		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override 
+		{
+			const Vector2* data = reinterpret_cast<const Vector2*>(obj);
+			buffer.Write(data->ToString());
+		}
+		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
+		{
+
+		}
+	};
+	DEFINE_SERIALIZABLE_OBJECT(SerializableVector2)
+
+	struct SerializableVector3 : Serializable<SerializableVector3>
+	{
+		virtual std::string GetType() const { return "Vector3"; }
+		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override
+		{
+			const Vector3* data = reinterpret_cast<const Vector3*>(obj);
+			buffer.Write(data->ToString());
+		}
+		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
+		{
+
+		}
+	};
+	DEFINE_SERIALIZABLE_OBJECT(SerializableVector3)
+
+	struct SerializableVector4 : Serializable<SerializableVector4>
+	{
+		virtual std::string GetType() const { return "Vector4"; }
+		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override
+		{
+			const Vector4* data = reinterpret_cast<const Vector4*>(obj);
+			buffer.Write(data->ToString());
+		}
+		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
+		{
+
+		}
+	};
+	DEFINE_SERIALIZABLE_OBJECT(SerializableVector4)
 }

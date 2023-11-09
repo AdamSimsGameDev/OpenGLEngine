@@ -3,6 +3,11 @@
 
 namespace Cy
 {
+	String::String()
+	{
+		_StringInternal = "";
+	}
+
 	std::vector<String> String::Split(const String& str, const char& separator)
 	{
 		std::vector<String> outstr;
@@ -23,5 +28,16 @@ namespace Cy
 		if (cur.Length() > 0)
 			outstr.push_back(cur);
 		return outstr;
+	}
+
+	DEFINE_SERIALIZABLE_OBJECT(SerializableString)
+	void SerializableString::Serialize(const void* obj, SerializationBufferWrite& buffer) const
+	{
+		const String* data = reinterpret_cast<const String*>(obj);
+		buffer.Write("\"" + data->GetStringInternal() + "\"");
+	}
+	void SerializableString::Deserialize(void* obj, const SerializationBufferRead& buffer) const
+	{
+
 	}
 }

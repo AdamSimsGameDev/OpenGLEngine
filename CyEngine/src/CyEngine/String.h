@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "Serialization/Serialization.h"
 #include "generated/String.gen.h"
 
 namespace Cy
@@ -13,7 +14,7 @@ namespace Cy
 		GENERATED_CLASS(String);
 
 	public:
-		String() { _StringInternal = ""; }
+		String();
 		String(const char* chr) { _StringInternal = std::string(chr); }
 		String(const String& other) { _StringInternal = other._StringInternal; }
 		String(const std::string& other) { _StringInternal = other; }
@@ -77,6 +78,9 @@ namespace Cy
 		char* operator *() { return &_StringInternal[0]; }
 		const char* operator *() const { return &_StringInternal[0]; }
 
+		std::string GetStringInternal() { return _StringInternal; }
+		std::string GetStringInternal() const { return _StringInternal; }
+
 	private:
 		_NODISCARD StringItrConst begin() const { return _StringInternal.begin(); }
 		_NODISCARD StringItrConst end() const { return _StringInternal.end(); }
@@ -84,6 +88,13 @@ namespace Cy
 		_NODISCARD StringRItrConst rend() const { return _StringInternal.rend(); }
 	private:
 		std::string _StringInternal;
+	};
+
+	struct SerializableString : Serializable<SerializableString>
+	{
+		virtual std::string GetType() const { return "String"; }
+		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override;
+		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override;
 	};
 }
 

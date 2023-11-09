@@ -31,7 +31,7 @@ namespace Cy
 		}
 		void AddComponent(Component* component);
 
-		PROPERTY()
+		PROPERTY(Tooltip="Testing a string with spaces (and brackets), oh and commas too")
 		String Name;
 
 		PROPERTY()

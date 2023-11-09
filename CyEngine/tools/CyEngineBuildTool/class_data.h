@@ -42,7 +42,7 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
     std::string properties_string;
     for (const auto& prop : class_info->properties)
     {
-        properties_string += generate_property_for_constructor(prop.name, prop.type, true_class_name);
+        properties_string += generate_property_for_constructor(prop, true_class_name);
     }
 
     std::string properties_func_string;

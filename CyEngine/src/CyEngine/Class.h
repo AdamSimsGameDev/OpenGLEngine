@@ -3,31 +3,116 @@
 #include <string>
 #include <typeinfo>
 #include <unordered_map>
+#include <algorithm>
+#include <variant>
 
 namespace Cy
 {
+	struct ClassPropertyMetaData
+	{
+		enum Type
+		{
+			Bool,
+			String,
+			Float,
+			Int
+		};
+
+	public:
+		std::string Key;
+		std::variant<bool, int, float, std::string> Value;
+		Type PropertyType;
+
+		ClassPropertyMetaData(std::string key, bool value)
+		{
+			Key = key;
+			Value = value;
+			PropertyType = Type::Bool;
+		}
+		ClassPropertyMetaData(std::string key, std::string value)
+		{
+			Key = key;
+			Value = value;
+			PropertyType = Type::String;
+		}		
+		ClassPropertyMetaData(std::string key, int value)
+		{
+			Key = key;
+			Value = value;
+			PropertyType = Type::Int;
+		}		
+		ClassPropertyMetaData(std::string key, float value)
+		{
+			Key = key;
+			Value = value;
+			PropertyType = Type::Float;
+		}
+
+		template<typename T>
+		T GetValue() const { return default(T); }
+
+		template<>
+		bool GetValue<bool>() const
+		{
+			return std::get<bool>(Value);
+		}
+		template<>
+		std::string GetValue<std::string>() const
+		{
+			return std::get<std::string>(Value);
+		}
+		template<>
+		float GetValue<float>() const
+		{
+			return std::get<float>(Value);
+		}
+		template<>
+		int GetValue<int>() const
+		{
+			return std::get<int>(Value);
+		}
+
+		bool operator==(const ClassPropertyMetaData& other) const { return !other.Key.compare(Key); }
+		bool operator==(const std::string& key) const { return !key.compare(Key); }
+	};
+
 	struct ClassProperty
 	{
 	public:
 		const char* Name;
 		const char* Type;
 		const std::type_info* TypeInfo;
+		std::vector<ClassPropertyMetaData> MetaData;
 		void(*Setter)(void*, void*);
 		void* (*Getter)(void*);
 
-		ClassProperty(const char name[], const char type[], const std::type_info* type_id, void* (*getter)(void*), void(*setter)(void*, void*))
+		ClassProperty(const char name[], const char type[], const std::type_info* type_id, void* (*getter)(void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
 		{
 			Name = name;
 			Type = type;
 			TypeInfo = type_id;
 			Getter = getter;
 			Setter = setter;
+			MetaData = metaData;
 		}
 
 		template<typename T>
 		T Get(void* obj, void* src)
 		{
 			return *(static_cast<T*>(Getter(obj, src)));
+		}
+
+		const ClassPropertyMetaData* GetMetaData(std::string key) const
+		{
+			for (auto it = MetaData.begin(); it != MetaData.end(); ++it)
+			{
+				const ClassPropertyMetaData& m = *it;
+				if (m == key)
+				{
+					return &m;
+				}
+			}
+			return nullptr;
 		}
 	};
 
@@ -51,8 +136,40 @@ namespace Cy
 			}
 			return reinterpret_cast<const ValueType*>(prop->Getter(reinterpret_cast<void*>(obj)));
 		}
+
+		template<typename ObjectType>
+		void* GetPropertyValuePtrFromName(std::string property_name, std::string property_type, ObjectType* obj) const
+		{
+			std::vector<std::string> spl = split(property_name, '|');
+			const ClassProperty* prop = nullptr;
+			const Class* currentClass = this;
+			void* obj_ptr = reinterpret_cast<void*>(obj);
+			for (const auto& str : spl)
+			{
+				prop = currentClass->GetPropertyFromName(str);
+				if (prop == nullptr)
+				{
+					return nullptr;
+				}
+
+				if (prop->Type == property_type)
+				{
+					break;
+				}
+
+				const Class* foundClass = GetClassFromName(prop->Type);
+				if (!foundClass)
+				{
+					return nullptr;
+				}
+
+				currentClass = foundClass;
+				obj_ptr = prop->Getter(obj_ptr);
+			}
+			return prop->Getter(obj_ptr);
+		}
 		template<typename ObjectType, typename ValueType>
-		ValueType* GetPropertyValueFromName(std::string property_name, ObjectType* obj) const
+		void* GetPropertyValuePtrFromName(std::string property_name, ObjectType* obj) const
 		{
 			std::vector<std::string> spl = split(property_name, '|');
 			const ClassProperty* prop = nullptr;
@@ -80,11 +197,18 @@ namespace Cy
 				currentClass = foundClass;
 				obj_ptr = prop->Getter(obj_ptr);
 			}
-			if (prop->TypeInfo != &typeid(ValueType))
-			{
-				return nullptr;
-			}
-			return reinterpret_cast<ValueType*>(prop->Getter(obj_ptr));
+			return prop->Getter(obj_ptr);
+		}
+
+		template<typename ObjectType, typename ValueType>
+		ValueType* GetPropertyValueFromName(std::string property_name, ObjectType* obj) const
+		{
+			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName<ObjectType, ValueType>(property_name, obj));
+		}
+		template<typename ObjectType, typename ValueType>
+		ValueType* GetPropertyValueFromName(std::string property_name, std::string property_type, ObjectType* obj) const
+		{
+			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName<ObjectType>(property_name, property_type, obj));
 		}
 
 	private:

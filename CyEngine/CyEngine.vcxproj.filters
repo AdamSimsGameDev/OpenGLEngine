@@ -84,13 +84,13 @@
     <ClInclude Include="src\CyEngine\Core.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
-    <ClInclude Include="src\CyEngine\CoreMinimal.h">
-      <Filter>src\CyEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\CyEngine\Editor\InspectorTab.h">
       <Filter>src\CyEngine\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\Editor\OutputTab.h">
+      <Filter>src\CyEngine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CyEngine\Editor\PropertyField.h">
       <Filter>src\CyEngine\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h">
@@ -1533,6 +1533,9 @@
       <Filter>src\CyEngine\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp">
+      <Filter>src\CyEngine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CyEngine\Editor\PropertyField.cpp">
       <Filter>src\CyEngine\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp">

@@ -2,6 +2,7 @@
 
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
+#include "CyEngine/Serialization/Serialization.h"
 #include "CyEngine/Scene.h"
 #include "CyEngine/Application.h"
 #include "CyEngine/Log.h"

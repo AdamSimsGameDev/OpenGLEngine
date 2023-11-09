@@ -4,6 +4,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <string>
 #include <sstream>
+#include "CyEngine/Serialization/Serialization.h"
 
 namespace Cy
 {
@@ -48,4 +49,19 @@ namespace Cy
 
 		static Quat Identity;
 	};
+
+	struct SerializableQuat : Serializable<SerializableQuat>
+	{
+		virtual std::string GetType() const { return "Quat"; }
+		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override
+		{
+			const Quat* data = reinterpret_cast<const Quat*>(obj);
+			buffer.Write(data->ToString());
+		}
+		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
+		{
+
+		}
+	};
+	DEFINE_SERIALIZABLE_OBJECT(SerializableQuat)
 }

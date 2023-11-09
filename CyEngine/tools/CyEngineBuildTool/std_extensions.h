@@ -18,6 +18,42 @@ bool contains(const std::string& src, const std::string& to_find)
     return (src.find(to_find) != std::string::npos);
 }
 
+void to_lower(std::string& data)
+{
+    std::transform(data.begin(), data.end(), data.begin(),
+        [](unsigned char c) { return std::tolower(c); });
+}
+
+std::vector<std::string> split_nonencased(const std::string& stringIn, const char& seperator)
+{
+    std::vector<std::string> outstr;
+    std::string cur;
+    int depth = 0;
+    for (const auto& ch : stringIn)
+    {
+        if (ch == seperator && depth == 0)
+        {
+            if (cur.length() > 0)
+                outstr.push_back(cur);
+            cur = "";
+            continue;
+        }
+        else if (ch == '(' || ch == '{' || ch == '<')
+        {
+            depth++;
+        }
+        else if (ch == ')' || ch == '}' || ch == '>')
+        {
+            depth--;
+        }
+
+        cur += ch;
+    }
+    if (cur.length() > 0)
+        outstr.push_back(cur);
+    return outstr;
+}
+
 std::vector<std::string> split(const std::string& stringIn, const char& seperator)
 {
     std::vector<std::string> outstr;

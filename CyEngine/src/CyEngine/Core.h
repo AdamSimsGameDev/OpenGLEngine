@@ -39,22 +39,22 @@ template<typename To, typename From>
 static To* CastChecked(From* from)
 {
 	auto cast = Cast<To>(from);
-	// CY_CORE_ASSERT(cast, "CastChecked failed, {0} cannot be cast to type {1}. ", GET_NAME_SAFE(cast), typeid(from).name());
+	//CY_CORE_ASSERT(cast, "CastChecked failed, {0} cannot be cast to type {1}. ", GET_NAME_SAFE(cast), typeid(from).name());
 	return cast;
 }
 
 #define __CLASS__ 
 
-#define CLASS()
-#define STRUCT()
-#define PROPERTY()
+#define CLASS(...)
+#define STRUCT(...)
+#define PROPERTY(...)
 #define GENERATED_CLASS(type) public:\
 	static Class* GetStaticClass() { return type##Class::Get(); }\
 	virtual Class* GetClass() const { return type##::GetStaticClass(); }
 
-#include "CyEngine/Core.h"
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
+#include "CyEngine/Core.h"
 
 // Maths
 #include "CyEngine/Maths/Colour.h"

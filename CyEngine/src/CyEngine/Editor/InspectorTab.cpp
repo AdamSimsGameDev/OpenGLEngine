@@ -3,52 +3,16 @@
 #include <imgui.h>
 #include "CyEngine/Application.h"
 #include "CyEngine/Components/Component.h"
+#include "CyEngine/Editor/PropertyField.h"
 #include "CyEngine/Objects/SceneObject.h"
 #include "CyEngine/Scene.h"
+#include "CyEngine/Serialization/Serialization.h"
 
 namespace Cy
 {
 	bool InspectorTab::RenderProperty(Object* obj, const String& prefix, const std::pair<String, ClassProperty>& prop)
 	{
-		const Class* cl = obj->GetClass();
-		if (int* i = cl->GetPropertyValueFromName<Object, int>(prefix + prop.first, obj))
-		{
-			ImGui::DragInt(*prop.first, i);
-			return true;
-		}
-		else if (float* i = cl->GetPropertyValueFromName<Object, float>(prefix + prop.first, obj))
-		{
-			ImGui::DragFloat(*prop.first, i);
-			return true;
-		}
-		else if (bool* i = cl->GetPropertyValueFromName<Object, bool>(prefix + prop.first, obj))
-		{
-			ImGui::Checkbox(*prop.first, i);
-			return true;
-		}
-		else if (Vector3* i = cl->GetPropertyValueFromName<Object, Vector3>(prefix + prop.first, obj))
-		{
-			float pos[3]{ i->x, i->y, i->z };
-			ImGui::DragFloat3(*prop.first, pos);
-			i->x = pos[0];
-			i->y = pos[1];
-			i->z = pos[2];
-			return true;
-		}
-		else if (Quat* i = cl->GetPropertyValueFromName<Object, Quat>(prefix + prop.first, obj))
-		{
-			Vector3 v = Quat::ToEuler(*i);
-			float rot[3]{ v.x, v.y, v.z };
-			ImGui::DragFloat3(*prop.first, rot);
-			*i = Quat::FromEuler({ rot[0], rot[1], rot[2] });
-			return true;
-		}
-		else if (String* i = cl->GetPropertyValueFromName<Object, String>(prefix + prop.first, obj))
-		{
-			ImGui::InputText(*prop.first, *(*i), 256);
-			return true;
-		}
-		return false;
+		return PropertyFieldBase::RenderPropertyOfType(obj, prefix + prop.first, prop);
 	}
 
 	void InspectorTab::RenderObject(Object* obj)
@@ -64,6 +28,11 @@ namespace Cy
 			{
 				if (RenderProperty(obj, prefix, pair))
 				{
+					const ClassPropertyMetaData* md = pair.second.GetMetaData("Tooltip");
+					if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+					{
+						ImGui::SetTooltip(md->GetValue<std::string>().c_str());
+					}
 					continue;
 				}
 
@@ -84,6 +53,11 @@ namespace Cy
 						RenderObject(comp);
 					}
 				}
+			}
+
+			if (ImGui::Button("Serialize"))
+			{
+				Serialization::SerializeObject(obj);
 			}
 
 			ImGui::TreePop();

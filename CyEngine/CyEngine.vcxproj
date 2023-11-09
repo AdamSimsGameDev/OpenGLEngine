@@ -158,9 +158,9 @@
     <ClInclude Include="src\CyEngine\Components\Component.h" />
     <ClInclude Include="src\CyEngine\Components\MeshComponent.h" />
     <ClInclude Include="src\CyEngine\Core.h" />
-    <ClInclude Include="src\CyEngine\CoreMinimal.h" />
     <ClInclude Include="src\CyEngine\Editor\InspectorTab.h" />
     <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
+    <ClInclude Include="src\CyEngine\Editor\PropertyField.h" />
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
     <ClInclude Include="src\CyEngine\EntryPoint.h" />
     <ClInclude Include="src\CyEngine\Events\ApplicationEvent.h" />
@@ -196,6 +196,7 @@
     <ClInclude Include="src\CyEngine\Renderer\Shader.h" />
     <ClInclude Include="src\CyEngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\CyEngine\Scene.h" />
+    <ClInclude Include="src\CyEngine\Serialization\Serialization.h" />
     <ClInclude Include="src\CyEngine\String.h" />
     <ClInclude Include="src\CyEngine\Transform.h" />
     <ClInclude Include="src\CyEngine\Window.h" />
@@ -643,6 +644,7 @@
     <ClCompile Include="src\CyEngine\Components\MeshComponent.cpp" />
     <ClCompile Include="src\CyEngine\Editor\InspectorTab.cpp" />
     <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\PropertyField.cpp" />
     <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
     <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp" />
@@ -669,6 +671,7 @@
     <ClCompile Include="src\CyEngine\Renderer\Shader.cpp" />
     <ClCompile Include="src\CyEngine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\CyEngine\Scene.cpp" />
+    <ClCompile Include="src\CyEngine\Serialization\Serialization.cpp" />
     <ClCompile Include="src\CyEngine\String.cpp" />
     <ClCompile Include="src\CyEngine\Transform.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiRenderer.cpp" />
