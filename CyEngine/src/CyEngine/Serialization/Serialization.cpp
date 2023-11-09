@@ -6,7 +6,7 @@
 
 namespace Cy
 {
-	void Serialization::SerializeObject(Object* obj)
+	void Serialization::SaveAsset(Object* obj)
 	{
 		SerializationBufferWrite buffer("test.asset");
 		SerializeObject(buffer, obj, obj->GetClass());
@@ -44,5 +44,16 @@ namespace Cy
 			return true;
 		}
 		return false;
+	}
+
+	void Serialization::LoadAsset(std::string path)
+	{
+		SerializationBufferRead buffer(path);
+		LoadAsset(buffer);
+	}
+
+	void Serialization::LoadAsset(SerializationBufferRead& buffer)
+	{
+
 	}
 }

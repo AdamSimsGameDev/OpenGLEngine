@@ -92,9 +92,12 @@ namespace Cy
 	class Serialization
 	{
 	public:
-		static void SerializeObject(Object* obj);
+		static void SaveAsset(Object* obj);
 		static void SerializeObject(SerializationBufferWrite& buffer, Object* obj, const Class* cl, std::string path = "", std::string prefix = "");
 		static bool SerializeProperty(SerializationBufferWrite& buffer, Object* obj, const std::string& path, const std::pair<std::string, ClassProperty>& prop);
+
+		static void LoadAsset(std::string path);
+		static void LoadAsset(SerializationBufferRead& buffer);
 
 		static std::unordered_map<std::string, SerializableBase*>& GetSerializableObjects()
 		{
