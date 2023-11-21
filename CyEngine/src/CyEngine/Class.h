@@ -126,8 +126,8 @@ namespace Cy
 
 		static const Class* GetClassFromName(std::string class_name);
 
-		template<typename ObjectType, typename ValueType>
-		const ValueType* GetPropertyValueFromName(std::string property_name, const ObjectType* obj) const
+		template<typename ValueType>
+		const ValueType* GetPropertyValueFromName(std::string property_name, const void* obj) const
 		{
 			const auto* prop = GetPropertyFromName(property_name);
 			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
@@ -137,13 +137,11 @@ namespace Cy
 			return reinterpret_cast<const ValueType*>(prop->Getter(reinterpret_cast<void*>(obj)));
 		}
 
-		template<typename ObjectType>
-		void* GetPropertyValuePtrFromName(std::string property_name, std::string property_type, ObjectType* obj) const
+		void* GetPropertyValuePtrFromName(std::string property_name, std::string property_type, void* obj) const
 		{
 			std::vector<std::string> spl = split(property_name, '|');
 			const ClassProperty* prop = nullptr;
 			const Class* currentClass = this;
-			void* obj_ptr = reinterpret_cast<void*>(obj);
 			for (const auto& str : spl)
 			{
 				prop = currentClass->GetPropertyFromName(str);
@@ -164,17 +162,16 @@ namespace Cy
 				}
 
 				currentClass = foundClass;
-				obj_ptr = prop->Getter(obj_ptr);
+				obj = prop->Getter(obj);
 			}
-			return prop->Getter(obj_ptr);
+			return prop->Getter(obj);
 		}
-		template<typename ObjectType, typename ValueType>
-		void* GetPropertyValuePtrFromName(std::string property_name, ObjectType* obj) const
+		template<typename ValueType>
+		void* GetPropertyValuePtrFromName(std::string property_name, void* obj) const
 		{
 			std::vector<std::string> spl = split(property_name, '|');
 			const ClassProperty* prop = nullptr;
 			const Class* currentClass = this;
-			void* obj_ptr = reinterpret_cast<void*>(obj);
 			for (const auto& str : spl)
 			{
 				prop = currentClass->GetPropertyFromName(str);
@@ -195,20 +192,20 @@ namespace Cy
 				}
 
 				currentClass = foundClass;
-				obj_ptr = prop->Getter(obj_ptr);
+				obj = prop->Getter(obj);
 			}
-			return prop->Getter(obj_ptr);
+			return prop->Getter(obj);
 		}
 
-		template<typename ObjectType, typename ValueType>
-		ValueType* GetPropertyValueFromName(std::string property_name, ObjectType* obj) const
+		template<typename ValueType>
+		ValueType* GetPropertyValueFromName(std::string property_name, void* obj) const
 		{
-			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName<ObjectType, ValueType>(property_name, obj));
+			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName<ValueType>(property_name, obj));
 		}
-		template<typename ObjectType, typename ValueType>
-		ValueType* GetPropertyValueFromName(std::string property_name, std::string property_type, ObjectType* obj) const
+		template<typename ValueType>
+		ValueType* GetPropertyValueFromName(std::string property_name, std::string property_type, void* obj) const
 		{
-			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName<ObjectType>(property_name, property_type, obj));
+			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName(property_name, property_type, obj));
 		}
 
 	private:

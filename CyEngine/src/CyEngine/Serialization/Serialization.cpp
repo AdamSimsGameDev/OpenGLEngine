@@ -38,7 +38,7 @@ namespace Cy
 		{
 			if (so.first != prop.second.Type)
 				continue;
-			void* data = cl->GetPropertyValuePtrFromName<Object>(path, prop.second.Type, obj);
+			void* data = cl->GetPropertyValuePtrFromName(path, prop.second.Type, obj);
 			so.second->Serialize(data, buffer);
 			buffer.Write("\n");
 			return true;
