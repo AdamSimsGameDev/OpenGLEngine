@@ -31,6 +31,9 @@
     <Filter Include="src\CyEngine\Renderer">
       <UniqueIdentifier>{9495E2D7-0002-9ED2-C9F5-35303521C03A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\CyEngine\Serialization">
+      <UniqueIdentifier>{3B0F3C6A-271F-E83A-90D8-4C597C07D7D3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -198,6 +201,9 @@
     <ClInclude Include="src\CyEngine\Scene.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\CyEngine\Serialization\Serialization.h">
+      <Filter>src\CyEngine\Serialization</Filter>
+    </ClInclude>
     <ClInclude Include="src\CyEngine\String.h">
       <Filter>src\CyEngine</Filter>
     </ClInclude>
@@ -256,6 +262,9 @@
       <Filter>src\generated</Filter>
     </ClInclude>
     <ClInclude Include="src\generated\PlaneObject.gen.h">
+      <Filter>src\generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\generated\Scene.gen.h">
       <Filter>src\generated</Filter>
     </ClInclude>
     <ClInclude Include="src\generated\SceneObject.gen.h">
@@ -1616,6 +1625,9 @@
     <ClCompile Include="src\CyEngine\Scene.cpp">
       <Filter>src\CyEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\CyEngine\Serialization\Serialization.cpp">
+      <Filter>src\CyEngine\Serialization</Filter>
+    </ClCompile>
     <ClCompile Include="src\CyEngine\String.cpp">
       <Filter>src\CyEngine</Filter>
     </ClCompile>
@@ -1671,6 +1683,9 @@
       <Filter>src\generated</Filter>
     </ClCompile>
     <ClCompile Include="src\generated\PlaneObject.gen.cpp">
+      <Filter>src\generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\generated\Scene.gen.cpp">
       <Filter>src\generated</Filter>
     </ClCompile>
     <ClCompile Include="src\generated\SceneObject.gen.cpp">

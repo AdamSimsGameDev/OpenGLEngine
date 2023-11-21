@@ -26,12 +26,18 @@ namespace Cy
 		{
 			for (const auto& pair : cl->Properties)
 			{
+				const bool hideInEditor = pair.second.GetMetaData("Hidden") != nullptr;
+				if (hideInEditor)
+					continue;
+
 				if (RenderProperty(obj, prefix, pair))
 				{
-					const ClassPropertyMetaData* md = pair.second.GetMetaData("Tooltip");
-					if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 					{
-						ImGui::SetTooltip(md->GetValue<std::string>().c_str());
+						const ClassPropertyMetaData* md = pair.second.GetMetaData("Tooltip");
+						if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(md->GetValue<std::string>().c_str());
+						}
 					}
 					continue;
 				}
@@ -57,7 +63,7 @@ namespace Cy
 
 			if (ImGui::Button("Serialize"))
 			{
-				Serialization::SerializeObject(obj);
+				Serialization::SaveAsset(obj);
 			}
 
 			ImGui::TreePop();

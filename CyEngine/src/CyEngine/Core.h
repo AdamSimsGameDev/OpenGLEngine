@@ -49,6 +49,7 @@ static To* CastChecked(From* from)
 #define STRUCT(...)
 #define PROPERTY(...)
 #define GENERATED_CLASS(type) public:\
+	friend class type##Class;\
 	static Class* GetStaticClass() { return type##Class::Get(); }\
 	virtual Class* GetClass() const { return type##::GetStaticClass(); }
 

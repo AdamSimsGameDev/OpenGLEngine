@@ -20,6 +20,7 @@ static std::string property_constructor_format = "Properties.emplace(\"%s\", Cla
 static std::string property_function_h_format = "static void* execGet%s(void* obj);\nstatic void execSet%s(void* obj, void* val);\n";
 static std::string property_function_cpp_format = "void* %sClass::execGet%s(void* obj) { return reinterpret_cast<void*>(&reinterpret_cast<%s*>(obj)->%s); }\nvoid %sClass::execSet%s(void* obj, void* val) { reinterpret_cast<%s*>(obj)->%s = *reinterpret_cast<%s*>(val); }\n";;
 static std::string meta_data_format = "ClassPropertyMetaData(%s, %s),";
+static std::string meta_data_format_single = "ClassPropertyMetaData(%s, true),";
 
 std::string generate_property_for_constructor(PropertyInfo info, std::string class_name)
 {
@@ -30,7 +31,8 @@ std::string generate_property_for_constructor(PropertyInfo info, std::string cla
     for (auto& meta_data : info.meta_data)
     {
         std::string value;
-        if (meta_data.second != "")
+        bool solo = meta_data.second == "";
+        if (!solo)
         {
             // check for bool
             std::string str_copy = meta_data.second;
@@ -78,7 +80,14 @@ std::string generate_property_for_constructor(PropertyInfo info, std::string cla
             }
         }
 
-        property_meta_data += string_format(meta_data_format, ("\"" + meta_data.first + "\"").c_str(), value.c_str());
+        if (solo)
+        {
+            property_meta_data += string_format(meta_data_format_single, ("\"" + meta_data.first + "\"").c_str());
+        }
+        else
+        {
+            property_meta_data += string_format(meta_data_format, ("\"" + meta_data.first + "\"").c_str(), value.c_str());
+        }
     }
 
     return string_format(property_constructor_format, property_name.c_str(), property_name.c_str(), property_type.c_str(), property_type.c_str(), class_name.c_str(), property_name.c_str(), class_name.c_str(), property_name.c_str(), property_meta_data.c_str());

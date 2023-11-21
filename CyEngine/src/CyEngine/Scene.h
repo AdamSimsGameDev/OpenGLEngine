@@ -2,6 +2,7 @@
 
 #include "CyEngine/Core.h"
 #include "Objects/SceneObject.h"
+#include "generated/Scene.gen.h"
 
 namespace Cy
 {
@@ -11,8 +12,11 @@ namespace Cy
 	class Component;
 	class MeshComponent;
 
-	class Scene
+	CLASS()
+	class Scene : public Object
 	{
+		GENERATED_CLASS(Scene);
+
 	public:
 		Scene();
 
@@ -60,6 +64,7 @@ namespace Cy
 
 	protected:
 		// Storage of all existing SceneObjects
+		PROPERTY(Hidden)
 		std::vector<SceneObject*> m_SceneObjects;
 
 		std::unordered_map<String, std::vector<Component*>> TrackedComponents;
