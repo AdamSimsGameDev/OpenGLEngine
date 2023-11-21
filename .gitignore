@@ -8,3 +8,6 @@ CyEngine/tools/CyEngineBuildTool/x64/Debug
 *.user
 *.gen.h
 *.gen.cpp
+*.vcxproj
+*.vcxproj.filters
+*/imgui.ini
