@@ -84,9 +84,9 @@ namespace Cy
 		const std::type_info* TypeInfo;
 		std::vector<ClassPropertyMetaData> MetaData;
 		void(*Setter)(void*, void*);
-		void* (*Getter)(void*);
+		void* (*Getter)(const void*);
 
-		ClassProperty(const char name[], const char type[], const std::type_info* type_id, void* (*getter)(void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
+		ClassProperty(const char name[], const char type[], const std::type_info* type_id, void* (*getter)(const void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
 		{
 			Name = name;
 			Type = type;
@@ -97,7 +97,7 @@ namespace Cy
 		}
 
 		template<typename T>
-		T Get(void* obj, void* src)
+		T Get(const void* obj, void* src)
 		{
 			return *(static_cast<T*>(Getter(obj, src)));
 		}
@@ -136,63 +136,22 @@ namespace Cy
 			}
 			return reinterpret_cast<const ValueType*>(prop->Getter(reinterpret_cast<void*>(obj)));
 		}
-
 		void* GetPropertyValuePtrFromName(std::string property_name, std::string property_type, void* obj) const
 		{
-			std::vector<std::string> spl = split(property_name, '|');
-			const ClassProperty* prop = nullptr;
-			const Class* currentClass = this;
-			for (const auto& str : spl)
+			const ClassProperty* prop = GetPropertyFromName(property_name);
+			if (prop == nullptr || prop->Type != property_type)
 			{
-				prop = currentClass->GetPropertyFromName(str);
-				if (prop == nullptr)
-				{
-					return nullptr;
-				}
-
-				if (prop->Type == property_type)
-				{
-					break;
-				}
-
-				const Class* foundClass = GetClassFromName(prop->Type);
-				if (!foundClass)
-				{
-					return nullptr;
-				}
-
-				currentClass = foundClass;
-				obj = prop->Getter(obj);
+				return nullptr;
 			}
 			return prop->Getter(obj);
 		}
 		template<typename ValueType>
-		void* GetPropertyValuePtrFromName(std::string property_name, void* obj) const
+		void* GetPropertyValuePtrFromName(std::string property_name, const void* obj) const
 		{
-			std::vector<std::string> spl = split(property_name, '|');
-			const ClassProperty* prop = nullptr;
-			const Class* currentClass = this;
-			for (const auto& str : spl)
+			const auto* prop = GetPropertyFromName(property_name);
+			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
 			{
-				prop = currentClass->GetPropertyFromName(str);
-				if (prop == nullptr)
-				{
-					return nullptr;
-				}
-
-				if (prop->TypeInfo == &typeid(ValueType))
-				{
-					break;
-				}
-
-				const Class* foundClass = GetClassFromName(prop->Type);
-				if (!foundClass)
-				{
-					return nullptr;
-				}
-
-				currentClass = foundClass;
-				obj = prop->Getter(obj);
+				return nullptr;
 			}
 			return prop->Getter(obj);
 		}
@@ -206,29 +165,6 @@ namespace Cy
 		ValueType* GetPropertyValueFromName(std::string property_name, std::string property_type, void* obj) const
 		{
 			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName(property_name, property_type, obj));
-		}
-
-	private:
-		static std::vector<std::string> split(const std::string str, const char& separator)
-		{
-			std::vector<std::string> outstr;
-			std::string cur;
-			for (const auto& ch : str)
-			{
-				if (ch == separator)
-				{
-					if (cur.length() > 0)
-						outstr.push_back(cur);
-					cur = "";
-				}
-				else
-				{
-					cur += ch;
-				}
-			}
-			if (cur.length() > 0)
-				outstr.push_back(cur);
-			return outstr;
 		}
 	};
 }

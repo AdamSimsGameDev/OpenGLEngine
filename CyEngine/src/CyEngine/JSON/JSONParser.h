@@ -62,7 +62,7 @@ namespace Cy
 		}
 
 	private:
-		std::string add_indent(int count) const
+		static std::string add_indent(int count)
 		{
 			std::string s;
 			for (int i = 0; i < count; i++)
@@ -70,7 +70,7 @@ namespace Cy
 			return s;
 		}
 
-		static void ConvertToJsonInternal(void* obj, Class* cl, std::string& buffer, int indent = 0)
+		static void ConvertToJsonInternal(void* obj, const Class* cl, std::string& buffer, int indent = 0)
 		{
 			buffer += add_indent(indent) + "{\n";
 			// loop over the properties.
@@ -78,7 +78,7 @@ namespace Cy
 			{
 				buffer += add_indent(indent + 1);
 				buffer += "\"" + prop.first + "\":";
-				if (Class* ncl = Class::GetClassFromName(prop.second.Type))
+				if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
 				{
 					buffer += "\n";
 					void* n = cl->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj);

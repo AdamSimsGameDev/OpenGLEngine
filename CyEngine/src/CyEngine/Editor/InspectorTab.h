@@ -11,9 +11,9 @@ namespace Cy
 		InspectorTab()
 			: EditorTab("Inspector") {}
 
-		bool RenderProperty(Object* obj, const String& prefix, const std::pair<String, ClassProperty>& prop);
-		void RenderObject(Object* obj);
-		void RenderObjectClass(Object* obj, const Class* cl, String prefix = "");
+		bool RenderProperty(void* obj, const Class* objectClass, const String& prefix, const std::pair<String, ClassProperty>& prop);
+		void RenderObject(void* obj, const Class* cl);
+		void RenderObjectClass(void* obj, const Class* cl);
 		virtual void OnRender() override;
 	};
 }

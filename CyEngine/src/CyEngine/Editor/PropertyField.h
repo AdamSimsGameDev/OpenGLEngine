@@ -11,16 +11,16 @@ namespace Cy
 	{
 	public:
 		virtual String GetType() const { return "NULL"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const { return false; }
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const { return false; }
 
-		static bool RenderPropertyOfType(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop)
+		static bool RenderPropertyOfType(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop)
 		{
 			if (PropertyFields.find(prop.second.Type) == PropertyFields.end())
 			{
 				return false;
 			}
 			const PropertyFieldBase* field = PropertyFields[prop.second.Type];
-			field->RenderProperty(obj, path, prop);
+			field->RenderProperty(obj, cl, prop);
 			return true;
 		}
 
@@ -50,48 +50,48 @@ namespace Cy
 	struct PropertyFieldInt : PropertyField<PropertyFieldInt>
 	{
 		virtual String GetType() const override { return "int"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 
 	struct PropertyFieldFloat : PropertyField<PropertyFieldFloat>
 	{
 		virtual String GetType() const override { return "float"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 
 	struct PropertyFieldBool : PropertyField<PropertyFieldBool>
 	{
 		virtual String GetType() const override { return "bool"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};	
 	
 	struct PropertyFieldString : PropertyField<PropertyFieldString>
 	{
 		virtual String GetType() const override { return "String"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 
 	struct PropertyFieldVector2 : PropertyField<PropertyFieldVector2>
 	{
 		virtual String GetType() const override { return "Vector2"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 
 	struct PropertyFieldVector3 : PropertyField<PropertyFieldVector3>
 	{
 		virtual String GetType() const override { return "Vector3"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 
 	struct PropertyFieldVector4 : PropertyField<PropertyFieldVector4>
 	{
 		virtual String GetType() const override { return "Vector4"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 
 	struct PropertyFieldQuat : PropertyField<PropertyFieldQuat>
 	{
 		virtual String GetType() const override { return "Quat"; }
-		virtual bool RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const override;
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 }

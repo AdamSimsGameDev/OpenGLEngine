@@ -24,7 +24,7 @@ static To* Cast(From* from)
 {
 	if (from)
 	{
-		if (auto cast = dynamic_cast<To*>(from))
+		if (auto cast = static_cast<To*>(from))
 		{
 			return cast;
 		}

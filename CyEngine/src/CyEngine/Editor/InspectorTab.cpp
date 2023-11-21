@@ -10,17 +10,17 @@
 
 namespace Cy
 {
-	bool InspectorTab::RenderProperty(Object* obj, const String& prefix, const std::pair<String, ClassProperty>& prop)
+	bool InspectorTab::RenderProperty(void* obj, const Class* objectClass, const String& prefix, const std::pair<String, ClassProperty>& prop)
 	{
-		return PropertyFieldBase::RenderPropertyOfType(obj, prefix + prop.first, prop);
+		return PropertyFieldBase::RenderPropertyOfType(obj, objectClass, prop);
 	}
 
-	void InspectorTab::RenderObject(Object* obj)
+	void InspectorTab::RenderObject(void* obj, const Class* cl)
 	{
-		RenderObjectClass(obj, obj->GetClass());
+		RenderObjectClass(obj, cl);
 	}
 
-	void InspectorTab::RenderObjectClass(Object* obj, const Class* cl, String prefix)
+	void InspectorTab::RenderObjectClass(void* obj, const Class* cl)
 	{
 		if (ImGui::TreeNode(cl->Name.c_str()))
 		{
@@ -30,7 +30,7 @@ namespace Cy
 				if (hideInEditor)
 					continue;
 
-				if (RenderProperty(obj, prefix, pair))
+				if (RenderProperty(obj, cl, "", pair))
 				{
 					{
 						const ClassPropertyMetaData* md = pair.second.GetMetaData("Tooltip");
@@ -46,24 +46,17 @@ namespace Cy
 				const Class* ncl = Class::GetClassFromName(pair.second.Type);
 				if (ncl)
 				{
-					RenderObjectClass(obj, ncl, prefix + pair.first + "|");
+					RenderObjectClass(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj), ncl);
 				}
 			}
 
-			if (cl == obj->GetClass())
+			SceneObject* so = cl->Name == "SceneObject" ? Cast<SceneObject>(obj) : nullptr;
+			if (so)
 			{
-				if (SceneObject* so = Cast<SceneObject>(obj))
+				for (const auto& comp : so->m_Components)
 				{
-					for (const auto& comp : so->m_Components)
-					{
-						RenderObject(comp);
-					}
+					RenderObject(comp, comp->GetClass());
 				}
-			}
-
-			if (ImGui::Button("Serialize"))
-			{
-				Serialization::SaveAsset(obj);
 			}
 
 			ImGui::TreePop();
@@ -79,7 +72,7 @@ namespace Cy
 		{
 			for (SceneObject* obj : scene->GetSceneObjects())
 			{
-				RenderObject(obj);
+				RenderObject(obj, obj->GetClass());
 			}
 		}
 
