@@ -51,13 +51,13 @@ namespace Cy
 	{
 	public:
 		template<typename T>
-		static std::string ConvertToJson(T type)
+		static std::string ConvertToJson(T* type)
 		{
 			// need some way of getting the serialization info for the type.
 			// either this is a STRUCT or a CLASS and has serialization info.
 			Class* cl = type.GetClass();
 			std::string s;
-			ConvertToJsonInternal(t, cl, s);
+			ConvertToJsonInternal(obj, cl, s);
 			return s;
 		}
 
@@ -70,25 +70,28 @@ namespace Cy
 			return s;
 		}
 
-		template<typename T>
-		static void ConvertToJsonInternal(T type, Class* cl, std::string& str, int indent = 0)
+		static void ConvertToJsonInternal(void* obj, Class* cl, std::string& buffer, int indent = 0)
 		{
-			str += "{\n";
+			buffer += add_indent(indent) + "{\n";
 			// loop over the properties.
 			for (const auto& prop : cl->Properties)
 			{
-				str += add_indent(indent + 1);
-				str += "\"" + prop.first + "\":";
+				buffer += add_indent(indent + 1);
+				buffer += "\"" + prop.first + "\":";
 				if (Class* ncl = Class::GetClassFromName(prop.second.Type))
 				{
-
+					buffer += "\n";
+					void* n = cl->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj);
+					ConvertToJsonInternal(n, ncl, buffer, indent + 1);
 				}
 				else
 				{
 
 				}
 			}
-			str += "}";
+			buffer += add_indent(indent) + "}";
 		}
+
+		static void ParseProperty(std::string& buffer)
 	};
 }
