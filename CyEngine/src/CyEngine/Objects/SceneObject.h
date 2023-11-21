@@ -37,7 +37,6 @@ namespace Cy
 		PROPERTY()
 		Transform m_Transform;
 		
-		PROPERTY()
 		std::vector<Component*> m_Components;
 	};
 }

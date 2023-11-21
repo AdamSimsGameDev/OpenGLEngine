@@ -2,6 +2,7 @@
 
 #include "CyEngine/Core.h"
 #include "CyEngine/Class.h"
+#include "CyEngine/Serialization/Serialization.h"
 
 namespace Cy
 {
@@ -51,11 +52,19 @@ namespace Cy
 	{
 	public:
 		template<typename T>
-		static std::string ConvertToJson(T* type)
+		static std::string ConvertToJson(T* obj)
 		{
 			// need some way of getting the serialization info for the type.
 			// either this is a STRUCT or a CLASS and has serialization info.
 			Class* cl = type.GetClass();
+			std::string s;
+			ConvertToJsonInternal(obj, cl, s);
+			return s;
+		}
+		static std::string ConvertToJson(void* obj, const Class* cl)
+		{
+			// need some way of getting the serialization info for the type.
+			// either this is a STRUCT or a CLASS and has serialization info.
 			std::string s;
 			ConvertToJsonInternal(obj, cl, s);
 			return s;
@@ -74,24 +83,26 @@ namespace Cy
 		{
 			buffer += add_indent(indent) + "{\n";
 			// loop over the properties.
+			int count = 0;
 			for (const auto& prop : cl->Properties)
 			{
+				if (count != 0)
+					buffer += ",\n";
 				buffer += add_indent(indent + 1);
 				buffer += "\"" + prop.first + "\":";
-				if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
+				if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.second.Type))
+				{
+					serializable->Serialize(prop.second.Getter(obj), buffer);
+				}
+				else if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
 				{
 					buffer += "\n";
 					void* n = cl->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj);
 					ConvertToJsonInternal(n, ncl, buffer, indent + 1);
 				}
-				else
-				{
-
-				}
+				count++;
 			}
-			buffer += add_indent(indent) + "}";
+			buffer += "\n" + add_indent(indent) + "}";
 		}
-
-		static void ParseProperty(std::string& buffer)
 	};
 }

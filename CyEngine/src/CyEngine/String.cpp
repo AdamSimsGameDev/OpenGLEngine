@@ -31,13 +31,8 @@ namespace Cy
 	}
 
 	DEFINE_SERIALIZABLE_OBJECT(SerializableString)
-	void SerializableString::Serialize(const void* obj, SerializationBufferWrite& buffer) const
+	void SerializableString::Serialize(const String val, std::string& buffer) const
 	{
-		const String* data = reinterpret_cast<const String*>(obj);
-		buffer.Write("\"" + data->GetStringInternal() + "\"");
-	}
-	void SerializableString::Deserialize(void* obj, const SerializationBufferRead& buffer) const
-	{
-
+		buffer += "\"" + val.GetStringInternal() + "\"";
 	}
 }

@@ -7,6 +7,7 @@
 #include "CyEngine/Objects/SceneObject.h"
 #include "CyEngine/Scene.h"
 #include "CyEngine/Serialization/Serialization.h"
+#include "CyEngine/JSON/JSONUtility.h"
 
 namespace Cy
 {
@@ -57,6 +58,11 @@ namespace Cy
 				{
 					RenderObject(comp, comp->GetClass());
 				}
+			}
+
+			if (ImGui::Button("Serialize"))
+			{
+				CY_CORE_LOG("JSON generated: {0}", JSONUtility::ConvertToJson(obj, cl));
 			}
 
 			ImGui::TreePop();

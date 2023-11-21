@@ -50,17 +50,12 @@ namespace Cy
 		static Quat Identity;
 	};
 
-	struct SerializableQuat : Serializable<SerializableQuat>
+	struct SerializableQuat : Serializable<SerializableQuat, Quat>
 	{
 		virtual std::string GetType() const { return "Quat"; }
-		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override
+		virtual void Serialize(const Quat val, std::string& buffer) const override
 		{
-			const Quat* data = reinterpret_cast<const Quat*>(obj);
-			buffer.Write(data->ToString());
-		}
-		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
-		{
-
+			buffer += val.ToString();
 		}
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableQuat)

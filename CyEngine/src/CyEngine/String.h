@@ -90,11 +90,10 @@ namespace Cy
 		std::string _StringInternal;
 	};
 
-	struct SerializableString : Serializable<SerializableString>
+	struct SerializableString : Serializable<SerializableString, String>
 	{
 		virtual std::string GetType() const { return "String"; }
-		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override;
-		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override;
+		virtual void Serialize(const String val, std::string& buffer) const override;
 	};
 }
 

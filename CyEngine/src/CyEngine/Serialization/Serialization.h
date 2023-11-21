@@ -63,13 +63,13 @@ namespace Cy
 	{
 		friend class Serialization;
 
+	public:
+		virtual void Serialize(const void* obj, std::string& buffer) const = 0;
 	protected:
 		virtual std::string GetType() const { return "NULL"; }
-		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const = 0;
-		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const = 0;
 	};
 
-	template<typename T>
+	template<typename T1, typename T2>
 	struct Serializable : SerializableBase
 	{
 	public:
@@ -80,24 +80,22 @@ namespace Cy
 		static bool reg;
 		static bool Init()
 		{
-			T* t = new T();
+			T1* t = new T1();
 			Serialization::GetSerializableObjects().emplace(t->GetType(), t);
 			return true;
 		}
-	};
 
-	template<class T>
-	bool Serializable<T>::reg = Serializable<T>::Init();
+		virtual void Serialize(const void* obj, std::string& buffer) const override final
+		{
+			Serialize(*reinterpret_cast<const T2*>(obj), buffer);
+		}
+		virtual void Serialize(const T2 val, std::string& buffer) const { };
+	};
 
 	class Serialization
 	{
 	public:
-		static void SaveAsset(Object* obj);
-		static void SerializeObject(SerializationBufferWrite& buffer, Object* obj, const Class* cl, std::string path = "", std::string prefix = "");
-		static bool SerializeProperty(SerializationBufferWrite& buffer, Object* obj, const std::string& path, const std::pair<std::string, ClassProperty>& prop);
-
-		static void LoadAsset(std::string path);
-		static void LoadAsset(SerializationBufferRead& buffer);
+		static const SerializableBase* FindSerializableProperty(std::string type);
 
 		static std::unordered_map<std::string, SerializableBase*>& GetSerializableObjects()
 		{
@@ -107,30 +105,22 @@ namespace Cy
 	};
 
 	// primitive types
-	struct SerializableInt : Serializable<SerializableInt>
+	struct SerializableInt : Serializable<SerializableInt, int>
 	{
 		virtual std::string GetType() const { return "int"; }
-		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override
+		virtual void Serialize(const int val, std::string& buffer) const override
 		{
-			buffer.Write(std::to_string(*reinterpret_cast<const int*>(obj)));
-		}
-		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
-		{
-
+			buffer += std::to_string(val);
 		}
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableInt)
 
-	struct SerializableFloat : Serializable<SerializableFloat>
+	struct SerializableFloat : Serializable<SerializableFloat, float>
 	{
 		virtual std::string GetType() const { return "float"; }
-		virtual void Serialize(const void* obj, SerializationBufferWrite& buffer) const override
+		virtual void Serialize(const float val, std::string& buffer) const override
 		{
-			buffer.Write(std::to_string(*reinterpret_cast<const float*>(obj)));
-		}
-		virtual void Deserialize(void* obj, const SerializationBufferRead& buffer) const override
-		{
-
+			buffer += std::to_string(val);
 		}
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableFloat)
