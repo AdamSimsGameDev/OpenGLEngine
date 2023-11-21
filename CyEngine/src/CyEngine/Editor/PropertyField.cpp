@@ -11,7 +11,7 @@ namespace Cy
 	bool PropertyFieldInt::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (int* i = cl->GetPropertyValueFromName<Object, int>(path, obj))
+		if (int* i = cl->GetPropertyValueFromName<int>(path, obj))
 		{
 			ImGui::DragInt(*prop.first, i);
 			return true;
@@ -23,7 +23,7 @@ namespace Cy
 	bool PropertyFieldFloat::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (float* i = cl->GetPropertyValueFromName<Object, float>(path, obj))
+		if (float* i = cl->GetPropertyValueFromName<float>(path, obj))
 		{
 			ImGui::DragFloat(*prop.first, i);
 			return true;
@@ -35,7 +35,7 @@ namespace Cy
 	bool PropertyFieldBool::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (bool* i = cl->GetPropertyValueFromName<Object, bool>(path, obj))
+		if (bool* i = cl->GetPropertyValueFromName<bool>(path, obj))
 		{
 			ImGui::Checkbox(*prop.first, i);
 			return true;
@@ -47,7 +47,7 @@ namespace Cy
 	bool PropertyFieldString::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (String* i = cl->GetPropertyValueFromName<Object, String>(path, obj))
+		if (String* i = cl->GetPropertyValueFromName<String>(path, obj))
 		{
 			ImGui::InputText(*prop.first, *(*i), 256);
 			return true;
@@ -59,7 +59,7 @@ namespace Cy
 	bool PropertyFieldVector2::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (Vector2* i = cl->GetPropertyValueFromName<Object, Vector2>(path, obj))
+		if (Vector2* i = cl->GetPropertyValueFromName<Vector2>(path, obj))
 		{
 			float pos[2]{ i->x, i->y };
 			ImGui::DragFloat2(*prop.first, pos);
@@ -74,7 +74,7 @@ namespace Cy
 	bool PropertyFieldVector3::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (Vector3* i = cl->GetPropertyValueFromName<Object, Vector3>(path, obj))
+		if (Vector3* i = cl->GetPropertyValueFromName<Vector3>(path, obj))
 		{
 			float pos[3]{ i->x, i->y, i->z };
 			ImGui::DragFloat3(*prop.first, pos);
@@ -90,7 +90,7 @@ namespace Cy
 	bool PropertyFieldVector4::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (Vector4* i = cl->GetPropertyValueFromName<Object, Vector4>(path, obj))
+		if (Vector4* i = cl->GetPropertyValueFromName<Vector4>(path, obj))
 		{
 			float pos[4]{ i->x, i->y, i->z, i->w };
 			ImGui::DragFloat3(*prop.first, pos);
@@ -107,7 +107,7 @@ namespace Cy
 	bool PropertyFieldQuat::RenderProperty(Object* obj, const String& path, const std::pair<String, ClassProperty>& prop) const
 	{
 		const Class* cl = obj->GetClass();
-		if (Quat* i = cl->GetPropertyValueFromName<Object, Quat>(path, obj))
+		if (Quat* i = cl->GetPropertyValueFromName<Quat>(path, obj))
 		{
 			Vector3 v = Quat::ToEuler(*i);
 			float rot[3]{ v.x, v.y, v.z };
