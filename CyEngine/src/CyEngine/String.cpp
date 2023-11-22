@@ -35,4 +35,8 @@ namespace Cy
 	{
 		buffer += "\"" + val.GetStringInternal() + "\"";
 	}
+	void SerializableString::Deserialize(const std::string& buffer, String& out) const
+	{
+		out = buffer.substr(1, buffer.length() - 2);
+	}
 }

@@ -1,8 +1,6 @@
 #include "cypch.h"
 #include "ClassLibrary.h"
 
-#include "CyEngine/String.h"
-
 #include "MeshComponent.gen.h"
 #include "Component.gen.h"
 #include "CameraObject.gen.h"

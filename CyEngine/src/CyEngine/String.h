@@ -94,6 +94,7 @@ namespace Cy
 	{
 		virtual std::string GetType() const { return "String"; }
 		virtual void Serialize(const String val, std::string& buffer) const override;
+		virtual void Deserialize(const std::string& buffer, String& out) const override;
 	};
 }
 

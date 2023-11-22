@@ -7,64 +7,13 @@
 
 namespace Cy
 {
-	class Object;
-
-	template<typename Type>
-	class SerializationBuffer
-	{
-	public:
-		SerializationBuffer(std::string path)
-		{
-			Stream = Type(path);
-		}
-
-		virtual void Write(std::string in) {}
-		virtual void Read(std::string out) {}
-
-		void Close()
-		{
-			Stream.close();
-		}
-
-	protected: 
-		Type Stream;
-	};
-
-	class SerializationBufferWrite : public SerializationBuffer<std::ofstream>
-	{
-	public:
-		SerializationBufferWrite(std::string path) : SerializationBuffer(path)
-		{
-		}
-
-		virtual void Write(std::string in) override
-		{
-			Stream << in;
-		}
-
-	private:
-		int m_WriteCount = 0;
-	};	
-	
-	class SerializationBufferRead : public SerializationBuffer<std::ifstream>
-	{
-	public:
-		SerializationBufferRead(std::string path) : SerializationBuffer(path)
-		{
-		}
-
-		virtual void Read(std::string out) override
-		{
-			std::getline(Stream, out);
-		}
-	};
-
 	class SerializableBase
 	{
 		friend class Serialization;
 
 	public:
 		virtual void Serialize(const void* obj, std::string& buffer) const = 0;
+		virtual void Deserialize(const std::string& buffer, void* out) const = 0;
 	protected:
 		virtual std::string GetType() const { return "NULL"; }
 	};
@@ -90,6 +39,12 @@ namespace Cy
 			Serialize(*reinterpret_cast<const T2*>(obj), buffer);
 		}
 		virtual void Serialize(const T2 val, std::string& buffer) const { };
+
+		virtual void Deserialize(const std::string& buffer, void* out) const override final
+		{
+			Deserialize(buffer, *reinterpret_cast<T2*>(out));
+		}
+		virtual void Deserialize(const std::string& buffer, T2& out) const { };
 	};
 
 	class Serialization
@@ -112,6 +67,10 @@ namespace Cy
 		{
 			buffer += std::to_string(val);
 		}
+		virtual void Deserialize(const std::string& buffer, int& out) const override
+		{
+			out = std::stoi(buffer);
+		}
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableInt)
 
@@ -121,6 +80,10 @@ namespace Cy
 		virtual void Serialize(const float val, std::string& buffer) const override
 		{
 			buffer += std::to_string(val);
+		}		
+		virtual void Deserialize(const std::string& buffer, float& out) const override
+		{
+			out = std::stof(buffer);
 		}
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableFloat)

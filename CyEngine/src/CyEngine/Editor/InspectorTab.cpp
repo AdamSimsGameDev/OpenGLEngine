@@ -21,6 +21,34 @@ namespace Cy
 		RenderObjectClass(obj, cl);
 	}
 
+	void SetClipboardText(std::string text)
+	{
+		const size_t len = text.length() + 1;
+
+		HGLOBAL hgl = GlobalAlloc(GMEM_MOVEABLE, len);
+		memcpy(GlobalLock(hgl), text.c_str(), len);
+		GlobalUnlock(hgl);
+
+		OpenClipboard(NULL);
+		EmptyClipboard();
+		SetClipboardData(CF_TEXT, hgl);
+		CloseClipboard();
+	}
+
+	std::string GetClipboardText()
+	{
+		OpenClipboard(nullptr);
+		HANDLE hData = GetClipboardData(CF_TEXT);
+
+		char* pszText = static_cast<char*>(GlobalLock(hData));
+		std::string text(pszText);
+
+		GlobalUnlock(hData);
+		CloseClipboard();
+
+		return text;
+	}
+
 	void InspectorTab::RenderObjectClass(void* obj, const Class* cl)
 	{
 		if (ImGui::TreeNode(cl->Name.c_str()))
@@ -60,9 +88,15 @@ namespace Cy
 				}
 			}
 
-			if (ImGui::Button("Serialize"))
+			if (ImGui::Button("Copy to Clipboard"))
 			{
-				CY_CORE_LOG("JSON generated: {0}", JSONUtility::ConvertToJson(obj, cl));
+				std::string json = JSONUtility::ConvertToJson(obj, cl);
+				CY_CORE_LOG("JSON generated:\n{0}", json);
+				SetClipboardText(json);
+			}
+			if (ImGui::Button("Paste from Clipboard"))
+			{
+				JSONUtility::ConvertFromJson(GetClipboardText(), obj, cl);
 			}
 
 			ImGui::TreePop();

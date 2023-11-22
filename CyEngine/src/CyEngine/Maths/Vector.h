@@ -135,30 +135,24 @@ namespace Cy
 	struct SerializableVector2 : Serializable<SerializableVector2, Vector2>
 	{
 		virtual std::string GetType() const { return "Vector2"; }
-		virtual void Serialize(const Vector2 val, std::string& buffer) const override 
-		{
-			buffer += val.ToString();
-		}
+		virtual void Serialize(const Vector2 val, std::string& buffer) const override;
+		virtual void Deserialize(const std::string& buffer, Vector2& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableVector2)
 
 	struct SerializableVector3 : Serializable<SerializableVector3, Vector3>
 	{
 		virtual std::string GetType() const { return "Vector3"; }
-		virtual void Serialize(const Vector3 val, std::string& buffer) const override
-		{
-			buffer += val.ToString();
-		}
+		virtual void Serialize(const Vector3 val, std::string& buffer) const override;
+		virtual void Deserialize(const std::string& buffer, Vector3& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableVector3)
 
 	struct SerializableVector4 : Serializable<SerializableVector4, Vector4>
 	{
 		virtual std::string GetType() const { return "Vector4"; }
-		virtual void Serialize(const Vector4 val, std::string& buffer) const override
-		{
-			buffer += val.ToString();
-		}
+		virtual void Serialize(const Vector4 val, std::string& buffer) const override;
+		virtual void Deserialize(const std::string& buffer, Vector4& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableVector4)
 }
