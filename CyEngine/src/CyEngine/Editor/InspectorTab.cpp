@@ -21,12 +21,12 @@ namespace Cy
 		RenderObjectClass(obj, cl);
 	}
 
-	void SetClipboardText(std::string text)
+	void SetClipboardText(String text)
 	{
-		const size_t len = text.length() + 1;
+		const size_t len = text.Length() + 1;
 
 		HGLOBAL hgl = GlobalAlloc(GMEM_MOVEABLE, len);
-		memcpy(GlobalLock(hgl), text.c_str(), len);
+		memcpy(GlobalLock(hgl), *text, len);
 		GlobalUnlock(hgl);
 
 		OpenClipboard(NULL);
@@ -35,13 +35,13 @@ namespace Cy
 		CloseClipboard();
 	}
 
-	std::string GetClipboardText()
+	String GetClipboardText()
 	{
 		OpenClipboard(nullptr);
 		HANDLE hData = GetClipboardData(CF_TEXT);
 
 		char* pszText = static_cast<char*>(GlobalLock(hData));
-		std::string text(pszText);
+		String text(pszText);
 
 		GlobalUnlock(hData);
 		CloseClipboard();
@@ -51,7 +51,7 @@ namespace Cy
 
 	void InspectorTab::RenderObjectClass(void* obj, const Class* cl)
 	{
-		if (ImGui::TreeNode(cl->Name.c_str()))
+		if (ImGui::TreeNode(*cl->Name))
 		{
 			for (const auto& pair : cl->Properties)
 			{
@@ -65,7 +65,7 @@ namespace Cy
 						const ClassPropertyMetaData* md = pair.second.GetMetaData("Tooltip");
 						if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						{
-							ImGui::SetTooltip(md->GetValue<std::string>().c_str());
+							ImGui::SetTooltip(*md->GetValue<String>());
 						}
 					}
 					continue;
@@ -90,8 +90,8 @@ namespace Cy
 
 			if (ImGui::Button("Copy to Clipboard"))
 			{
-				std::string json = JSONUtility::ConvertToJson(obj, cl);
-				CY_CORE_LOG("JSON generated:\n{0}", json);
+				String json = JSONUtility::ConvertToJson(obj, cl);
+				CY_CORE_LOG("JSON generated:\n{0}", *json);
 				SetClipboardText(json);
 			}
 			if (ImGui::Button("Paste from Clipboard"))

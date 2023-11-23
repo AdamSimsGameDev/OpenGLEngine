@@ -29,14 +29,4 @@ namespace Cy
 			outstr.push_back(cur);
 		return outstr;
 	}
-
-	DEFINE_SERIALIZABLE_OBJECT(SerializableString)
-	void SerializableString::Serialize(const String val, std::string& buffer) const
-	{
-		buffer += "\"" + val.GetStringInternal() + "\"";
-	}
-	void SerializableString::Deserialize(const std::string& buffer, String& out) const
-	{
-		out = buffer.substr(1, buffer.length() - 2);
-	}
 }

@@ -9,13 +9,12 @@
 #include "PlaneObject.gen.h"
 #include "SceneObject.gen.h"
 #include "Scene.gen.h"
-#include "String.gen.h"
 #include "Transform.gen.h"
 
 
 namespace Cy
 {
-	std::unordered_map<std::string, Cy::ClassLibrary::ScriptFunction> ClassLibrary::ClassMap =
+	std::unordered_map<String, Cy::ClassLibrary::ScriptFunction> ClassLibrary::ClassMap =
 	{
 		{ "MeshComponent", &MeshComponentClass::Get },
 { "Component", &ComponentClass::Get },
@@ -25,7 +24,6 @@ namespace Cy
 { "PlaneObject", &PlaneObjectClass::Get },
 { "SceneObject", &SceneObjectClass::Get },
 { "Scene", &SceneClass::Get },
-{ "String", &StringClass::Get },
 { "Transform", &TransformClass::Get },
 
 	};

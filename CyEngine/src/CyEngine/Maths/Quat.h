@@ -2,14 +2,12 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <string>
-#include <sstream>
 #include "CyEngine/Serialization/Serialization.h"
 
 namespace Cy
 {
 	struct Vector3;
-
+	struct String;
 
 	struct Quat : public glm::quat
 	{
@@ -25,12 +23,7 @@ namespace Cy
 			return glm::conjugate(quat);
 		}
 
-		inline std::string ToString() const
-		{
-			std::ostringstream ss;
-			ss << "(" << x << ", " << y << ", " << z << ", " << w << ")";
-			return ss.str();
-		}
+		String ToString() const;
 
 		inline float Magnitude() const
 		{
@@ -52,9 +45,9 @@ namespace Cy
 
 	struct SerializableQuat : Serializable<SerializableQuat, Quat>
 	{
-		virtual std::string GetType() const { return "Quat"; }
-		virtual void Serialize(const Quat val, std::string& buffer) const override;
-		virtual void Deserialize(const std::string& buffer, Quat& out) const override;
+		virtual String GetType() const { return "Quat"; }
+		virtual void Serialize(const Quat val, String& buffer) const override;
+		virtual void Deserialize(const String& buffer, Quat& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableQuat)
 }

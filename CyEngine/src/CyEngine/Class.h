@@ -1,16 +1,16 @@
 #pragma once
 
-#include <string>
 #include <typeinfo>
 #include <unordered_map>
 #include <algorithm>
 #include <variant>
+#include "CyEngine/String.h"
 
 namespace Cy
 {
 	struct ClassPropertyMetaData
 	{
-		enum Type
+		enum class Type : uint8_t
 		{
 			Bool,
 			String,
@@ -19,29 +19,29 @@ namespace Cy
 		};
 
 	public:
-		std::string Key;
-		std::variant<bool, int, float, std::string> Value;
+		String Key;
+		std::variant<bool, int, float, String> Value;
 		Type PropertyType;
 
-		ClassPropertyMetaData(std::string key, bool value)
+		ClassPropertyMetaData(String key, bool value)
 		{
 			Key = key;
 			Value = value;
 			PropertyType = Type::Bool;
 		}
-		ClassPropertyMetaData(std::string key, std::string value)
+		ClassPropertyMetaData(String key, String value)
 		{
 			Key = key;
 			Value = value;
 			PropertyType = Type::String;
 		}		
-		ClassPropertyMetaData(std::string key, int value)
+		ClassPropertyMetaData(String key, int value)
 		{
 			Key = key;
 			Value = value;
 			PropertyType = Type::Int;
 		}		
-		ClassPropertyMetaData(std::string key, float value)
+		ClassPropertyMetaData(String key, float value)
 		{
 			Key = key;
 			Value = value;
@@ -57,9 +57,9 @@ namespace Cy
 			return std::get<bool>(Value);
 		}
 		template<>
-		std::string GetValue<std::string>() const
+		String GetValue<String>() const
 		{
-			return std::get<std::string>(Value);
+			return std::get<String>(Value);
 		}
 		template<>
 		float GetValue<float>() const
@@ -72,8 +72,8 @@ namespace Cy
 			return std::get<int>(Value);
 		}
 
-		bool operator==(const ClassPropertyMetaData& other) const { return !other.Key.compare(Key); }
-		bool operator==(const std::string& key) const { return !key.compare(Key); }
+		bool operator==(const ClassPropertyMetaData& other) const { return other.Key == Key; }
+		bool operator==(const String& key) const { return key == Key; }
 	};
 
 	struct ClassProperty
@@ -102,7 +102,7 @@ namespace Cy
 			return *(static_cast<T*>(Getter(obj, src)));
 		}
 
-		const ClassPropertyMetaData* GetMetaData(std::string key) const
+		const ClassPropertyMetaData* GetMetaData(String key) const
 		{
 			for (auto it = MetaData.begin(); it != MetaData.end(); ++it)
 			{
@@ -119,15 +119,15 @@ namespace Cy
 	class Class
 	{
 	public:
-		std::string Name;
-		std::unordered_map<std::string, ClassProperty> Properties;
+		String Name;
+		std::unordered_map<String, ClassProperty> Properties;
 
-		const ClassProperty* GetPropertyFromName(std::string property_name) const;
+		const ClassProperty* GetPropertyFromName(String property_name) const;
 
-		static const Class* GetClassFromName(std::string class_name);
+		static const Class* GetClassFromName(String class_name);
 
 		template<typename ValueType>
-		const ValueType* GetPropertyValueFromName(std::string property_name, const void* obj) const
+		const ValueType* GetPropertyValueFromName(String property_name, const void* obj) const
 		{
 			const auto* prop = GetPropertyFromName(property_name);
 			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
@@ -136,17 +136,17 @@ namespace Cy
 			}
 			return reinterpret_cast<const ValueType*>(prop->Getter(reinterpret_cast<void*>(obj)));
 		}
-		void* GetPropertyValuePtrFromName(std::string property_name, std::string property_type, void* obj) const
+		void* GetPropertyValuePtrFromName(String property_name, String property_type, void* obj) const
 		{
 			const ClassProperty* prop = GetPropertyFromName(property_name);
-			if (prop == nullptr || prop->Type != property_type)
+			if (prop == nullptr || prop->Type != *property_type)
 			{
 				return nullptr;
 			}
 			return prop->Getter(obj);
 		}
 		template<typename ValueType>
-		void* GetPropertyValuePtrFromName(std::string property_name, const void* obj) const
+		void* GetPropertyValuePtrFromName(String property_name, const void* obj) const
 		{
 			const auto* prop = GetPropertyFromName(property_name);
 			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
@@ -157,12 +157,12 @@ namespace Cy
 		}
 
 		template<typename ValueType>
-		ValueType* GetPropertyValueFromName(std::string property_name, void* obj) const
+		ValueType* GetPropertyValueFromName(String property_name, void* obj) const
 		{
 			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName<ValueType>(property_name, obj));
 		}
 		template<typename ValueType>
-		ValueType* GetPropertyValueFromName(std::string property_name, std::string property_type, void* obj) const
+		ValueType* GetPropertyValueFromName(String property_name, String property_type, void* obj) const
 		{
 			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName(property_name, property_type, obj));
 		}

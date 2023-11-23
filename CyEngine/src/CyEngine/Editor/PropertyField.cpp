@@ -5,7 +5,7 @@
 
 namespace Cy
 {
-	std::unordered_map<std::string, PropertyFieldBase*> PropertyFieldBase::PropertyFields;
+	std::unordered_map<String, PropertyFieldBase*> PropertyFieldBase::PropertyFields;
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldInt);
 	bool PropertyFieldInt::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const

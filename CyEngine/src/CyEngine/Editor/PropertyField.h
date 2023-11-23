@@ -24,7 +24,7 @@ namespace Cy
 			return true;
 		}
 
-		static std::unordered_map<std::string, PropertyFieldBase*> PropertyFields;
+		static std::unordered_map<String, PropertyFieldBase*> PropertyFields;
 	};
 
 	template<typename T>

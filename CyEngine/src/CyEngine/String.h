@@ -1,18 +1,12 @@
 #pragma once
-#include "Core.h"
 #include <string>
 #include <vector>
 #include <functional>
-#include "Serialization/Serialization.h"
-#include "generated/String.gen.h"
 
 namespace Cy
 {
-	STRUCT()
 	struct String
 	{
-		GENERATED_CLASS(String);
-
 	public:
 		String();
 		String(const char* chr) { _StringInternal = std::string(chr); }
@@ -44,20 +38,36 @@ namespace Cy
 			TrimRight(s);
 			TrimLeft(s);
 		}
-		static inline std::string TrimLeft_Copy(String s)
+		static inline String TrimLeft_Copy(String s)
 		{
 			TrimLeft(s);
 			return s;
 		}
-		static inline std::string TrimRight_Copy(String s)
+		static inline String TrimRight_Copy(String s)
 		{
 			TrimRight(s);
 			return s;
 		}
-		static inline std::string Trim_Copy(String s) 
+		static inline String Trim_Copy(String s)
 		{
 			Trim(s);
 			return s;
+		}
+
+		template<class... Args>
+		static String Format(const String& format, Args&&... args)
+		{
+			int size_s = std::snprintf(nullptr, 0, *format, args ...) + 1; // Extra space for '\0'
+			if (size_s <= 0) { throw std::runtime_error("Error during formatting."); }
+			auto size = static_cast<size_t>(size_s);
+			std::unique_ptr<char[]> buf(new char[size]);
+			std::snprintf(buf.get(), size, *format, args ...);
+			return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
+		}
+
+		inline String Substring(int position, int length) const
+		{
+			return _StringInternal.substr(position, length);
 		}
 
 		// Members
@@ -81,20 +91,12 @@ namespace Cy
 		std::string GetStringInternal() { return _StringInternal; }
 		std::string GetStringInternal() const { return _StringInternal; }
 
-	private:
 		_NODISCARD StringItrConst begin() const { return _StringInternal.begin(); }
 		_NODISCARD StringItrConst end() const { return _StringInternal.end(); }
 		_NODISCARD StringRItrConst rbegin() const { return _StringInternal.rbegin(); }
 		_NODISCARD StringRItrConst rend() const { return _StringInternal.rend(); }
 	private:
 		std::string _StringInternal;
-	};
-
-	struct SerializableString : Serializable<SerializableString, String>
-	{
-		virtual std::string GetType() const { return "String"; }
-		virtual void Serialize(const String val, std::string& buffer) const override;
-		virtual void Deserialize(const std::string& buffer, String& out) const override;
 	};
 }
 

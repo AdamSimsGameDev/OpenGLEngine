@@ -16,6 +16,11 @@ namespace Cy
 		return glm::inverse(quat);
 	}
 
+	String Quat::ToString() const
+	{
+		return String::Format("(%f, %f, %f, %f)", x, y, z, w);
+	}
+
     Vector3 NormaliseAngles(Vector3 euler)
     {
         euler.x = fmod(euler.x + 360.0f, 360.0f);
@@ -39,13 +44,13 @@ namespace Cy
 		return Vector3(x, y, z);
 	}
 
-	void SerializableQuat::Serialize(const Quat val, std::string& buffer) const
+	void SerializableQuat::Serialize(const Quat val, String& buffer) const
 	{
 		buffer += val.ToString();
 	}
-	void SerializableQuat::Deserialize(const std::string& buffer, Quat& out) const
+	void SerializableQuat::Deserialize(const String& buffer, Quat& out) const
 	{
-		String s = buffer.substr(1, buffer.length() - 2);
+		String s = buffer.Substring(1, buffer.Length() - 2);
 		std::vector<String> spl = String::Split(s, ',');
 		out.x = spl.size() > 0 ? std::stof(spl[0]) : 0.0f;
 		out.y = spl.size() > 1 ? std::stof(spl[1]) : 0.0f;

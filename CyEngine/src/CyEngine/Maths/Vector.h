@@ -2,8 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <string>
-#include <sstream>
 #include "CyEngine/Serialization/Serialization.h"
 
 namespace Cy
@@ -12,6 +10,7 @@ namespace Cy
 	struct Vector2;
 	struct Vector3;
 	struct Vector4;
+	struct String;
 
 	struct Vector2 : public glm::vec2
 	{
@@ -19,12 +18,7 @@ namespace Cy
 		Vector2(const glm::vec2& vec) : glm::vec2(vec) { }
 		Vector2(float _x, float _y) : glm::vec2(_x, _y) { }
 
-		inline std::string ToString() const
-		{
-			std::ostringstream ss;
-			ss << "(" << x << ", " << y << ")";
-			return ss.str();
-		}
+		String ToString() const;
 
 		static inline Vector2 Cross(const Vector2& a, const Vector2& b) { return { a.x * b.x, a.y * b.y }; }
 
@@ -66,12 +60,8 @@ namespace Cy
 		Vector3(const glm::vec3& vec) : glm::vec3(vec) { }
 		Vector3(float _x, float _y, float _z) : glm::vec3(_x, _y, _z) { }
 
-		inline std::string ToString() const 
-		{ 
-			std::ostringstream ss; 
-			ss << "(" << x << ", " << y << ", " << z << ")"; 
-			return ss.str(); 
-		}
+		String ToString() const;
+
 		static inline Vector3 Cross(const Vector3& a, const Vector3& b) { return { a.x * b.x, a.y * b.y, a.z * b.z }; }
 
 		inline Vector3 Normalized(const Vector3& inVector) const
@@ -114,12 +104,7 @@ namespace Cy
 		Vector4(const glm::vec4& vec) : glm::vec4(vec) { }
 		Vector4(float _x, float _y, float _z, float _w) : glm::vec4(_x, _y, _z, _w) { }
 
-		inline std::string ToString() const
-		{
-			std::ostringstream ss;
-			ss << "(" << x << ", " << y << ", " << z << ", " << w << ")";
-			return ss.str();
-		}
+		String ToString() const;
 
 		inline float Magnitude() const
 		{
@@ -134,25 +119,25 @@ namespace Cy
 
 	struct SerializableVector2 : Serializable<SerializableVector2, Vector2>
 	{
-		virtual std::string GetType() const { return "Vector2"; }
-		virtual void Serialize(const Vector2 val, std::string& buffer) const override;
-		virtual void Deserialize(const std::string& buffer, Vector2& out) const override;
+		virtual String GetType() const { return "Vector2"; }
+		virtual void Serialize(const Vector2 val, String& buffer) const override;
+		virtual void Deserialize(const String& buffer, Vector2& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableVector2)
 
 	struct SerializableVector3 : Serializable<SerializableVector3, Vector3>
 	{
-		virtual std::string GetType() const { return "Vector3"; }
-		virtual void Serialize(const Vector3 val, std::string& buffer) const override;
-		virtual void Deserialize(const std::string& buffer, Vector3& out) const override;
+		virtual String GetType() const { return "Vector3"; }
+		virtual void Serialize(const Vector3 val, String& buffer) const override;
+		virtual void Deserialize(const String& buffer, Vector3& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableVector3)
 
 	struct SerializableVector4 : Serializable<SerializableVector4, Vector4>
 	{
-		virtual std::string GetType() const { return "Vector4"; }
-		virtual void Serialize(const Vector4 val, std::string& buffer) const override;
-		virtual void Deserialize(const std::string& buffer, Vector4& out) const override;
+		virtual String GetType() const { return "Vector4"; }
+		virtual void Serialize(const Vector4 val, String& buffer) const override;
+		virtual void Deserialize(const String& buffer, Vector4& out) const override;
 	};
 	DEFINE_SERIALIZABLE_OBJECT(SerializableVector4)
 }

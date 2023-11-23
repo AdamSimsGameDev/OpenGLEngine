@@ -6,7 +6,7 @@
 
 namespace Cy
 {
-	const SerializableBase* Serialization::FindSerializableProperty(std::string type)
+	const SerializableBase* Serialization::FindSerializableProperty(String type)
 	{
 		const auto& cont = Serialization::GetSerializableObjects();
 		const auto& found = cont.find(type);

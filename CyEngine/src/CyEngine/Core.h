@@ -50,12 +50,11 @@ static To* CastChecked(From* from)
 #define PROPERTY(...)
 #define GENERATED_CLASS(type) public:\
 	friend class type##Class;\
-	static Class* GetStaticClass() { return type##Class::Get(); }\
-	virtual Class* GetClass() const { return type##::GetStaticClass(); }
+	static class Class* GetStaticClass() { return type##Class::Get(); }\
+	virtual class Class* GetClass() const { return type##::GetStaticClass(); }
 
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
-#include "CyEngine/Core.h"
 
 // Maths
 #include "CyEngine/Maths/Colour.h"
