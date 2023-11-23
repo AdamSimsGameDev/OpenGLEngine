@@ -65,7 +65,7 @@ namespace Cy
 				buffer += "\"" + prop.first + "\":";
 				if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.second.Type))
 				{
-					serializable->Serialize(prop.second.Getter(obj), buffer);
+					serializable->Serialize(prop.second.Getter(obj), String(buffer));
 				}
 				else if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
 				{
