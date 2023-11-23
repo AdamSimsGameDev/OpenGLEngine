@@ -14,7 +14,7 @@
 
 namespace Cy
 {
-	std::unordered_map<std::string, Cy::ClassLibrary::ScriptFunction> ClassLibrary::ClassMap =
+	std::unordered_map<String, Cy::ClassLibrary::ScriptFunction> ClassLibrary::ClassMap =
 	{
 		{ "MeshComponent", &MeshComponentClass::Get },
 { "Component", &ComponentClass::Get },

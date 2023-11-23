@@ -4,12 +4,12 @@
 
 namespace Cy
 {
-	const ClassProperty* Class::GetPropertyFromName(std::string property_name) const
+	const ClassProperty* Class::GetPropertyFromName(String property_name) const
 	{
 		return &(Properties.find(property_name)->second);
 	}
 
-	const Class* Class::GetClassFromName(std::string class_name)
+	const Class* Class::GetClassFromName(String class_name)
 	{
 		if (ClassLibrary::ClassMap.find(class_name) != ClassLibrary::ClassMap.end())
 		{

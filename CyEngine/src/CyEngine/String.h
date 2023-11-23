@@ -38,17 +38,17 @@ namespace Cy
 			TrimRight(s);
 			TrimLeft(s);
 		}
-		static inline std::string TrimLeft_Copy(String s)
+		static inline String TrimLeft_Copy(String s)
 		{
 			TrimLeft(s);
 			return s;
 		}
-		static inline std::string TrimRight_Copy(String s)
+		static inline String TrimRight_Copy(String s)
 		{
 			TrimRight(s);
 			return s;
 		}
-		static inline std::string Trim_Copy(String s) 
+		static inline String Trim_Copy(String s)
 		{
 			Trim(s);
 			return s;
@@ -98,13 +98,6 @@ namespace Cy
 	private:
 		std::string _StringInternal;
 	};
-
-	//struct SerializableString : Serializable<SerializableString, String>
-	//{
-	//	virtual std::string GetType() const { return "String"; }
-	//	virtual void Serialize(const String val, std::string& buffer) const override;
-	//	virtual void Deserialize(const std::string& buffer, String& out) const override;
-	//};
 }
 
 template<>

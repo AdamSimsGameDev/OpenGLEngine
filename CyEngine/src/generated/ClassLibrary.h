@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include "CyEngine/String.h"
 #include <unordered_map>
 namespace Cy
 {
@@ -8,7 +8,7 @@ namespace Cy
 	{
 		friend class Class;
 		typedef Class* (*ScriptFunction)(void);
-		static std::unordered_map<std::string, ScriptFunction> ClassMap;
+		static std::unordered_map<String, ScriptFunction> ClassMap;
 	};
 }
 
