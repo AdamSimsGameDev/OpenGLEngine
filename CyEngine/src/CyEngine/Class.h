@@ -81,6 +81,7 @@ namespace Cy
 	public:
 		const char* Name;
 		const char* Type;
+		bool IsArray;
 		const std::type_info* TypeInfo;
 		std::vector<ClassPropertyMetaData> MetaData;
 		void(*Setter)(void*, void*);
@@ -94,6 +95,7 @@ namespace Cy
 			Getter = getter;
 			Setter = setter;
 			MetaData = metaData;
+			IsArray = false;
 		}
 
 		template<typename T>

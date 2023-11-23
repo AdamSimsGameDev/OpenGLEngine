@@ -17,7 +17,7 @@ static std::string class_format =
         }\n\n%s\n\
     };\n";
 
-static std::string constructor_format = "%s::%s()\n{\nName = \"%s\";\n%s\n}\n";
+static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n%s\n}\n";
 
 class ClassInfo
 {
