@@ -32,9 +32,9 @@ namespace Cy
 	void SerializableVector2::Deserialize(const String& buffer, Vector2& out) const
 	{
 		String s = buffer.Substring(1, buffer.Length() - 2);
-		std::vector<String> spl = String::Split(s, ',');
-		out.x = spl.size() > 0 ? std::stof(spl[0]) : 0.0f;
-		out.y = spl.size() > 1 ? std::stof(spl[1]) : 0.0f;
+		Array<String> spl = String::Split(s, ',');
+		out.x = spl.Count() > 0 ? std::stof(spl[0]) : 0.0f;
+		out.y = spl.Count() > 1 ? std::stof(spl[1]) : 0.0f;
 	}
 
 	void SerializableVector3::Serialize(const Vector3 val, String& buffer) const
@@ -44,10 +44,10 @@ namespace Cy
 	void SerializableVector3::Deserialize(const String& buffer, Vector3& out) const
 	{
 		String s = buffer.Substring(1, buffer.Length() - 2);
-		std::vector<String> spl = String::Split(s, ',');
-		out.x = spl.size() > 0 ? std::stof(spl[0]) : 0.0f;
-		out.y = spl.size() > 1 ? std::stof(spl[1]) : 0.0f;
-		out.z = spl.size() > 2 ? std::stof(spl[2]) : 0.0f;
+		Array<String> spl = String::Split(s, ',');
+		out.x = spl.Count() > 0 ? std::stof(spl[0]) : 0.0f;
+		out.y = spl.Count() > 1 ? std::stof(spl[1]) : 0.0f;
+		out.z = spl.Count() > 2 ? std::stof(spl[2]) : 0.0f;
 	}
 
 	void SerializableVector4::Serialize(const Vector4 val, String& buffer) const
@@ -57,10 +57,10 @@ namespace Cy
 	void SerializableVector4::Deserialize(const String& buffer, Vector4& out) const
 	{
 		String s = buffer.Substring(1, buffer.Length() - 2);
-		std::vector<String> spl = String::Split(s, ',');
-		out.x = spl.size() > 0 ? std::stof(spl[0]) : 0.0f;
-		out.y = spl.size() > 1 ? std::stof(spl[1]) : 0.0f;
-		out.z = spl.size() > 2 ? std::stof(spl[2]) : 0.0f;
-		out.w = spl.size() > 3 ? std::stof(spl[3]) : 0.0f;
+		Array<String> spl = String::Split(s, ',');
+		out.x = spl.Count() > 0 ? std::stof(spl[0]) : 0.0f;
+		out.y = spl.Count() > 1 ? std::stof(spl[1]) : 0.0f;
+		out.z = spl.Count() > 2 ? std::stof(spl[2]) : 0.0f;
+		out.w = spl.Count() > 3 ? std::stof(spl[3]) : 0.0f;
 	}
 }

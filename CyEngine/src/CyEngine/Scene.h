@@ -1,13 +1,13 @@
 #pragma once
 
-#include "CyEngine/Core.h"
+#include "CoreMinimal.h"
 #include "Objects/SceneObject.h"
 #include "generated/Scene.gen.h"
 
 namespace Cy
 {
 
-#define ADD_TRACKED_COMPONENT_TYPE(type) TrackedComponents.emplace(type::GetStaticClass()->Name, std::vector<Component*>());
+#define ADD_TRACKED_COMPONENT_TYPE(type) TrackedComponents.emplace(type::GetStaticClass()->Name, Array<Component*>());
 
 	class Component;
 	class MeshComponent;
@@ -35,28 +35,28 @@ namespace Cy
 			t->GetTransform().SetPosition(position);
 			t->GetTransform().SetRotation(rotation);
 			t->GetTransform().SetScale(scale);
-			m_SceneObjects.push_back(t);
+			m_SceneObjects.Add(t);
 			t->Start();
 			return t;
 		}
 
 		template<typename ComponentType>
-		std::vector<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
-		std::vector<Component*> GetAllComponentsOfType(String typeName) const;
+		Array<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
+		Array<Component*> GetAllComponentsOfType(String typeName) const;
 
 		template<typename ObjectType>
-		std::vector<ObjectType*> GetAllObjectsOfType() const 
+		Array<ObjectType*> GetAllObjectsOfType() const 
 		{ 
-			std::vector<ObjectType*> objects;
+			Array<ObjectType*> objects;
 			for (SceneObject* obj : GetSceneObjects())
 			{
 				if (ObjectType* t = Cast<ObjectType>(obj))
-					objects.push_back(t);
+					objects.Add(t);
 			}
 			return objects;
 		}
 
-		const std::vector<SceneObject*>& GetSceneObjects() const { return m_SceneObjects; }
+		const Array<SceneObject*>& GetSceneObjects() const { return m_SceneObjects; }
 
 		static void RegisterComponent(Component* component);
 
@@ -65,9 +65,9 @@ namespace Cy
 	protected:
 		// Storage of all existing SceneObjects
 		PROPERTY(Hidden)
-		std::vector<SceneObject*> m_SceneObjects;
+		Array<SceneObject*> m_SceneObjects;
 
-		std::unordered_map<String, std::vector<Component*>> TrackedComponents;
+		std::unordered_map<String, Array<Component*>> TrackedComponents;
 
 		virtual void RegisterComponent_Internal(Component* component);
 

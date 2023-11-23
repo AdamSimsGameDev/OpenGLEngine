@@ -8,16 +8,16 @@ namespace Cy
 		_StringInternal = "";
 	}
 
-	std::vector<String> String::Split(const String& str, const char& separator)
+	Array<String> String::Split(const String& str, const char& separator)
 	{
-		std::vector<String> outstr;
+		Array<String> outstr;
 		String cur;
 		for (const auto& ch : str)
 		{
 			if (ch == separator)
 			{
 				if (cur.Length() > 0)
-					outstr.push_back(cur);
+					outstr.Add(cur);
 				cur = "";
 			}
 			else
@@ -26,7 +26,7 @@ namespace Cy
 			}
 		}
 		if (cur.Length() > 0)
-			outstr.push_back(cur);
+			outstr.Add(cur);
 		return outstr;
 	}
 }

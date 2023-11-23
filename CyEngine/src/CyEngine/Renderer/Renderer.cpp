@@ -17,8 +17,8 @@ namespace Cy
 		RenderCommand::Clear();
 
 		// get the first camera.
-		std::vector<CameraObject*> cameras = scene->GetAllObjectsOfType<CameraObject>();
-		if (cameras.size() == 0)
+		Array<CameraObject*> cameras = scene->GetAllObjectsOfType<CameraObject>();
+		if (cameras.Count() == 0)
 		{
 			CY_CORE_ERROR("Unable to render as no cameras exist in scene! ");
 			return;

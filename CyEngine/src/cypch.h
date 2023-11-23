@@ -14,3 +14,9 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <typeinfo>
+
+#include "CyEngine/String.h"
+#include "CyEngine/Array.h"
+#include "CyEngine/Maths/Vector.h"
+#include "CyEngine/Maths/Quat.h"
+#include "CyEngine/Maths/Matrix.h"

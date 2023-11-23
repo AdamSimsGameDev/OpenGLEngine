@@ -1,4 +1,6 @@
 #pragma once
+
+#include "CoreMinimal.h"
 #include <string>
 #include <vector>
 #include <functional>
@@ -21,7 +23,7 @@ namespace Cy
 		bool Contains(const String& other) const { return _StringInternal.find(*other) != std::string::npos; }
 
 		// Statics
-		static std::vector<String> Split(const String& str, const char& separator);
+		static Array<String> Split(const String& str, const char& separator);
 		static inline void TrimLeft(String& s) 
 		{
 			s.Erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
