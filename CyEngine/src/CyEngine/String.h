@@ -91,7 +91,6 @@ namespace Cy
 		std::string GetStringInternal() { return _StringInternal; }
 		std::string GetStringInternal() const { return _StringInternal; }
 
-	private:
 		_NODISCARD StringItrConst begin() const { return _StringInternal.begin(); }
 		_NODISCARD StringItrConst end() const { return _StringInternal.end(); }
 		_NODISCARD StringRItrConst rbegin() const { return _StringInternal.rbegin(); }
