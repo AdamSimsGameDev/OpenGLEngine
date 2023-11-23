@@ -50,11 +50,11 @@ namespace Cy
 	class Serialization
 	{
 	public:
-		static const SerializableBase* FindSerializableProperty(std::string type);
+		static const SerializableBase* FindSerializableProperty(String type);
 
-		static std::unordered_map<std::string, SerializableBase*>& GetSerializableObjects()
+		static std::unordered_map<String, SerializableBase*>& GetSerializableObjects()
 		{
-			static std::unordered_map<std::string, SerializableBase*> so;
+			static std::unordered_map<String, SerializableBase*> so;
 			return so;
 		}
 	};

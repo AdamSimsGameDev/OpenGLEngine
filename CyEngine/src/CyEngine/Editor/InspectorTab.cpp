@@ -91,7 +91,7 @@ namespace Cy
 			if (ImGui::Button("Copy to Clipboard"))
 			{
 				String json = JSONUtility::ConvertToJson(obj, cl);
-				CY_CORE_LOG("JSON generated:\n{0}", json);
+				CY_CORE_LOG("JSON generated:\n{0}", *json);
 				SetClipboardText(json);
 			}
 			if (ImGui::Button("Paste from Clipboard"))
