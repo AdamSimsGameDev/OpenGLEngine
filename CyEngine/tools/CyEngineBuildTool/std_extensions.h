@@ -3,19 +3,32 @@
 #include <vector>
 #include <filesystem>
 
-void FindFilesOfTypeInDirectory(std::vector<std::string>& outFiles, std::string path, std::string type)
-{
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
-    {
-        if (entry.path().extension().string() != type)
-            continue;
-        outFiles.push_back(entry.path().string());
-    }
-}
-
 bool contains(const std::string& src, const std::string& to_find)
 {
     return (src.find(to_find) != std::string::npos);
+}
+
+void FindFilePathsOfTypeInDirectory(std::vector<std::string>& outFiles, std::string path, std::string type)
+{
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+    {
+        std::string extension = entry.path().extension().string();
+        std::string path = entry.path().string();
+        if (extension != type)
+            continue;
+        outFiles.push_back(path);
+    }
+}
+
+void FindFileNamesOfTypeInDirectory(std::vector<std::string>& outFiles, std::string path, std::string type)
+{
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+    {
+        std::string file_name = entry.path().filename().string();
+        if (!contains(file_name, type))
+            continue;
+        outFiles.push_back(file_name.substr(0, file_name.length() - type.length()));
+    }
 }
 
 void to_lower(std::string& data)

@@ -1,6 +1,7 @@
 // CyEngineBuildTool.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include <algorithm>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -48,6 +49,20 @@ bool check_is_line_commented(const std::string& line, bool& in_comment_block)
     return in_comment_block || is_commented;
 }
 
+bool should_skip_file(const std::string& path, const std::string& file)
+{
+    for (const auto& skipped : files_to_skip)
+    {
+        if (path + skipped == file)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
 int main()
 {
     std::cout << "Running CyEngine Build Tool!\n";
@@ -55,24 +70,19 @@ int main()
     // gather header files
     std::string path = "C:\\dev\\OpenGLEngine\\CyEngine\\src\\CyEngine";
     std::string generated_path = "C:\\dev\\OpenGLEngine\\CyEngine\\src\\generated";
+
     std::vector<std::string> paths;
-    FindFilesOfTypeInDirectory(paths, path, ".h");
+    FindFilePathsOfTypeInDirectory(paths, path, ".h");
+
+    std::vector<std::string> generated_paths;
+    FindFileNamesOfTypeInDirectory(generated_paths, generated_path, ".gen.h");
 
     std::unordered_map<std::string, ClassInfo*> found_classes;
 
     std::ifstream infile;
     for (const auto& entry : paths)
     {
-        bool skip = false;
-        for (const auto& skipped : files_to_skip)
-        {
-            if (path + skipped == entry)
-            {
-                skip = true;
-                break;
-            }
-        }
-        if (skip)
+        if (should_skip_file(path, entry))
         {
             continue;
         }
@@ -80,6 +90,15 @@ int main()
         // get the file name.
         std::vector<std::string> split_path = split(entry, '\\');
         std::string file_name = split(split_path[split_path.size() - 1], '.')[0];
+
+        //// skip unchanged files
+        //if (std::find(generated_paths.begin(), generated_paths.end(), file_name) != generated_paths.end())
+        //{
+        //    if (std::filesystem::last_write_time(entry) <= std::filesystem::last_write_time(generated_path + "//" + file_name + ".gen.h"))
+        //    {
+        //        continue;
+        //    }
+        //}
 
         // load the file
         infile.open(entry);
