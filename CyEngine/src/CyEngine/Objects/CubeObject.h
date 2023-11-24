@@ -14,6 +14,9 @@ namespace Cy
 	public:
 		CubeObject();
 
+		PROPERTY()
+		Array<int> TestArr;
+
 	private:
 		MeshComponent* m_MeshComponent;
 	};

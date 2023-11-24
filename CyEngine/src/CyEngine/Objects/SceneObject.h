@@ -1,5 +1,5 @@
 #pragma once
-#include "CyEngine/Core.h"
+#include "CoreMinimal.h"
 #include "Object.h"
 #include "CyEngine/Transform.h"
 #include "generated/SceneObject.gen.h"
@@ -37,6 +37,6 @@ namespace Cy
 		PROPERTY()
 		Transform m_Transform;
 		
-		std::vector<Component*> m_Components;
+		Array<Component*> m_Components;
 	};
 }

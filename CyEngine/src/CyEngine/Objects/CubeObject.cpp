@@ -10,6 +10,11 @@ namespace Cy
 		CY_CORE_LOG("Creating MeshComponent");
 		m_MeshComponent = CreateAndAddComponent<MeshComponent>();
 		
+		TestArr.Add(10);
+		TestArr.Add(46);
+		TestArr.Add(-12);
+		TestArr.Add(0);
+
 		std::vector<float> vertices = 
 		{
 			// TOP

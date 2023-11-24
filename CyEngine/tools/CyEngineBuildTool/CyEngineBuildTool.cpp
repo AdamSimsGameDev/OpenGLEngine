@@ -172,7 +172,42 @@ int main()
                         return -1;
                     }
 
-                    current_class->properties.push_back(PropertyInfo(name, type, meta_data));
+                    bool is_array = false;
+                    bool is_fixed_array = false;
+
+                    // store the full type.
+                    std::string full_type = type;
+
+                    std::vector<std::string> template_split = split(type, '<');
+                    if (template_split.size() > 1)
+                    {
+                        // we are templated, but are we an array/fixed array.
+                        if (template_split[0] == "FixedArray")
+                        {
+                            is_array = true;
+                            is_fixed_array = true;
+                            type = template_split[1].substr(0, template_split[1].length() - 1);
+                        }
+                        else if (template_split[0] == "Array")
+                        {
+                            is_array = true;
+                            is_fixed_array = false;
+                            type = template_split[1].substr(0, template_split[1].length() - 1);
+                        }
+                    }
+
+                    // check if we are a pointer to the type.
+                    bool is_pointer = false;
+                    if (type[type.length() - 1] == '*')
+                    {
+                        is_pointer = true;
+                    }
+
+                    PropertyInfo info = PropertyInfo(name, full_type, type, meta_data);
+                    info.is_array = is_array;
+                    info.is_fixed_array = is_fixed_array;
+                    info.is_pointer = is_pointer;
+                    current_class->properties.push_back(info);
                     meta_data.clear();
 
                     next_line_property = false;

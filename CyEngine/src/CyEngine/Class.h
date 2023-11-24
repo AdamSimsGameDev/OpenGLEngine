@@ -80,22 +80,34 @@ namespace Cy
 	{
 	public:
 		const char* Name;
+		const char* FullType;
 		const char* Type;
 		bool IsArray;
+		bool IsFixedArray;
 		const std::type_info* TypeInfo;
 		std::vector<ClassPropertyMetaData> MetaData;
 		void(*Setter)(void*, void*);
-		void* (*Getter)(const void*);
+		void*(*Getter)(const void*);
 
-		ClassProperty(const char name[], const char type[], const std::type_info* type_id, void* (*getter)(const void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
+		//size_t(*GetArraySize)(const void*);
+		//void*(*GetArrayElement)(const void*, size_t);
+		//void(*AddArrayElement)(const void*, void*);
+
+		ClassProperty(const char name[], const char full_type[], const char type[], const std::type_info* type_id, void* (*getter)(const void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
 		{
 			Name = name;
+			FullType = full_type;
 			Type = type;
 			TypeInfo = type_id;
 			Getter = getter;
 			Setter = setter;
 			MetaData = metaData;
+
+			// array
 			IsArray = false;
+			IsFixedArray = false;
+			//GetArraySize = nullptr;
+			//GetArrayElement = nullptr;
 		}
 
 		template<typename T>
@@ -150,12 +162,13 @@ namespace Cy
 		template<typename ValueType>
 		void* GetPropertyValuePtrFromName(String property_name, const void* obj) const
 		{
-			const auto* prop = GetPropertyFromName(property_name);
+			Array<String> spl = String::Split(property_name, '.');
+			const auto* prop = GetPropertyFromName(spl[0]);
 			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
 			{
 				return nullptr;
 			}
-			return prop->Getter(obj);
+			return prop->IsArray ? GetArrayElementValuePtrFromName(spl[0], prop->Type, obj, std::stoi(spl[1])) : prop->Getter(obj);
 		}
 
 		template<typename ValueType>
@@ -167,6 +180,33 @@ namespace Cy
 		ValueType* GetPropertyValueFromName(String property_name, String property_type, void* obj) const
 		{
 			return reinterpret_cast<ValueType*>(GetPropertyValuePtrFromName(property_name, property_type, obj));
+		}
+
+		void* GetArrayElementValuePtrFromName(String property_name, String property_type, const void* obj, size_t index) const
+		{
+			const ClassProperty* prop = GetPropertyFromName(property_name);
+			if (prop == nullptr || !prop->IsArray || String(prop->Type) != property_type)
+			{
+				return nullptr;
+			}
+			ArrayBase* arr = reinterpret_cast<ArrayBase*>(prop->Getter(obj));
+			if (index < 0 || index >= arr->Count())
+			{
+				return nullptr;
+			}
+			char* c = reinterpret_cast<char*>(arr->GetArrStartPtr());
+			return c + (index * arr->GetElementSize());
+		}
+
+		size_t GetArraySizeFromName(String property_name, String property_type, void* obj) const
+		{
+			const ClassProperty* prop = GetPropertyFromName(property_name);
+			if (prop == nullptr || !prop->IsArray || String(prop->Type) != property_type)
+			{
+				return 0;
+			}
+			ArrayBase* arr = reinterpret_cast<ArrayBase*>(prop->Getter(obj));
+			return arr->Count();
 		}
 	};
 }

@@ -114,8 +114,16 @@ private:
 	PointerType m_Ptr;
 };
 
+class ArrayBase
+{
+public:
+	virtual size_t Count() const { return 0; }
+	virtual size_t GetElementSize() const { return 0; }
+	virtual void* GetArrStartPtr() const { return nullptr; }
+};
+
 template<typename T, size_t size>
-class FixedArray
+class FixedArray : ArrayBase
 {
 public:
 	using ValueType = T;
@@ -123,7 +131,9 @@ public:
 	using ConstIterator = ArrayItrConst<FixedArray<T, size>>;
 
 public:
-	constexpr size_t Count() const { return size; }
+	virtual size_t Count() const override { return size; }
+	virtual size_t GetElementSize() const override { return sizeof(T); }
+	virtual void* GetArrStartPtr() const override { return m_Data; }
 
 	T& operator[](size_t index) { return m_Data[index]; }
 	const T& operator[](size_t index) const { return m_Data[index]; }
@@ -154,7 +164,7 @@ private:
 };
 
 template<typename T>
-class Array
+class Array : ArrayBase
 {
 public:
 	using ValueType = T;
@@ -216,7 +226,9 @@ public:
 		m_Size = 0;
 	}
 
-	size_t Count() const { return m_Size; }
+	virtual size_t Count() const override { return m_Size; }
+	virtual size_t GetElementSize() const override { return sizeof(T); }
+	virtual void* GetArrStartPtr() const override { return m_Data; }
 
 	T& operator[](size_t index) { return m_Data[index]; }
 	const T& operator[](size_t index) const { return m_Data[index]; }

@@ -11,9 +11,21 @@ namespace Cy
 	{
 	public:
 		String();
-		String(const char* chr) { _StringInternal = std::string(chr); }
-		String(const String& other) { _StringInternal = other._StringInternal; }
-		String(const std::string& other) { _StringInternal = other; }
+		String(const char* chr) 
+		{ 
+			_StringInternal = std::string(chr); 
+			printf("from char");
+		}
+		String(const String& other) 
+		{ 
+			*this = other;
+			printf("from str");
+		}
+		String(const std::string& other) 
+		{ 
+			_StringInternal = std::string(other); 
+			printf("from std");
+		}
 
 		// Overrides from std::string
 		typedef std::string::iterator StringItr;
@@ -78,6 +90,8 @@ namespace Cy
 		uint32_t Length() const { return (uint32_t)_StringInternal.length(); }
 
 		bool operator==(const String& other) const { return other._StringInternal == _StringInternal; }
+		bool operator!=(const String& other) const { return !(other == _StringInternal); }
+
 		void operator+=(const String& other) { _StringInternal += other._StringInternal; }
 		void operator+=(const char& chr) { _StringInternal += chr; }
 		String operator+(const String& other) const { return _StringInternal + other._StringInternal; }

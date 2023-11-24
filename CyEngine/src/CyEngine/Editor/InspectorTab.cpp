@@ -59,6 +59,27 @@ namespace Cy
 				if (hideInEditor)
 					continue;
 
+				// if we are an array we need to do something slightly different.
+				if (pair.second.IsArray)
+				{
+					// draw the array header, and then the individual sub-properties.
+					if (ImGui::TreeNode(*pair.first))
+					{
+						size_t s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
+						for (size_t i = 0; i < s; i++)
+						{
+							std::pair<Cy::String, Cy::ClassProperty> n = pair;
+							n.first = n.first + "." + i;
+							if (RenderProperty(obj, cl, "", n))
+							{
+								continue;
+							}
+						}
+						ImGui::TreePop();
+					}
+					continue;
+				}
+
 				if (RenderProperty(obj, cl, "", pair))
 				{
 					{
