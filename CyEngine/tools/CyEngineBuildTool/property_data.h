@@ -110,7 +110,7 @@ std::string generate_property_for_constructor(PropertyInfo info, std::string cla
         property_name.c_str(), 
         property_full_type.c_str(),
         property_type.c_str(),
-        property_full_type.c_str(), 
+        property_type.c_str(), 
         class_name.c_str(), 
         property_name.c_str(), 
         class_name.c_str(), 

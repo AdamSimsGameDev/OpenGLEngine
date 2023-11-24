@@ -69,7 +69,7 @@ namespace Cy
 						for (size_t i = 0; i < s; i++)
 						{
 							std::pair<Cy::String, Cy::ClassProperty> n = pair;
-							n.first = n.first + "." + i;
+							n.first = n.first + "." + std::to_string(i);
 							if (RenderProperty(obj, cl, "", n))
 							{
 								continue;

@@ -15,7 +15,7 @@ namespace Cy
 		CubeObject();
 
 		PROPERTY()
-		Array<int> TestArr;
+		Array<String> TestArr;
 
 	private:
 		MeshComponent* m_MeshComponent;

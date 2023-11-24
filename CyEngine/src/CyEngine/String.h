@@ -14,17 +14,14 @@ namespace Cy
 		String(const char* chr) 
 		{ 
 			_StringInternal = std::string(chr); 
-			printf("from char");
 		}
 		String(const String& other) 
 		{ 
 			*this = other;
-			printf("from str");
 		}
 		String(const std::string& other) 
 		{ 
 			_StringInternal = std::string(other); 
-			printf("from std");
 		}
 
 		// Overrides from std::string

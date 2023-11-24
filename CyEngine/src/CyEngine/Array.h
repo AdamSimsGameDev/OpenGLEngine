@@ -174,32 +174,43 @@ public:
 public:
 	Array()
 	{
-		Realloc(2);
+		Reserve(2);
 	}
-	Array(const Array& other)
+
+	T& operator[](int index)
 	{
-		Realloc(other.m_Capacity);
-		m_Size = other.m_Size;
-		*m_Data = *other.m_Data;
+		return m_Data[index];
 	}
-	~Array()
+	const T& operator[](int index) const
 	{
-		Clear();
+		return m_Data[index];
+	}
+
+	void Reserve(size_t capacity)
+	{
+		if (capacity < m_Size)
+			return;
+
+		T* n = new T[capacity];
+		for (int i = 0; i < m_Size; i++)
+			n[i] = std::move(m_Data[i]);
+
+		m_Capacity = capacity;
+		std::swap(m_Data, n);
+		delete[] n;
 	}
 
 	void Add(const T& value)
 	{
-		if (m_Size >= m_Capacity)
-			Realloc(m_Capacity + m_Capacity);
-		new(&m_Data[m_Size]) T(std::move(value));
-		m_Size++;
+		if (m_Size == m_Capacity)
+			Reserve(m_Capacity * 2);
+		m_Data[m_Size++] = value;
 	}
 	void Add(T&& value)
 	{
-		if (m_Size >= m_Capacity)
-			Realloc(m_Capacity + m_Capacity);
-		new(&m_Data[m_Size]) T(std::move(value));
-		m_Size++;
+		if (m_Size == m_Capacity)
+			Reserve(m_Capacity * 2);
+		m_Data[m_Size++] = value;
 	}
 
 	template<typename... Args>
@@ -230,9 +241,6 @@ public:
 	virtual size_t GetElementSize() const override { return sizeof(T); }
 	virtual void* GetArrStartPtr() const override { return m_Data; }
 
-	T& operator[](size_t index) { return m_Data[index]; }
-	const T& operator[](size_t index) const { return m_Data[index]; }
-
 	T* Data() { return m_Data; }
 	const T* Data() const { return m_Data; }
 
@@ -252,27 +260,6 @@ public:
 	ConstIterator end() const
 	{
 		return ConstIterator(m_Data + m_Size);
-	}
-
-private:
-	void Realloc(size_t newCapacity)
-	{
-		T* n = (T*)::operator new(newCapacity * sizeof(T));
-
-		size_t size = m_Size;
-		if (newCapacity < size)
-			size = newCapacity;
-
-		for (size_t i = 0; i < size; ++i)
-			new (&n[i]) T(std::move(m_Data[i]));
-
-		for (size_t i = 0; i < m_Size; ++i)
-			m_Data[i].~T();
-
-		::operator delete(m_Data, m_Capacity * sizeof(T));
-		m_Size = size;
-		m_Data = n;
-		m_Capacity = newCapacity;
 	}
 
 private:

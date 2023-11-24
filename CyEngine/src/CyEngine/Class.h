@@ -153,7 +153,7 @@ namespace Cy
 		void* GetPropertyValuePtrFromName(String property_name, String property_type, void* obj) const
 		{
 			const ClassProperty* prop = GetPropertyFromName(property_name);
-			if (prop == nullptr || prop->Type != *property_type)
+			if (prop == nullptr || String(prop->Type) != property_type)
 			{
 				return nullptr;
 			}
