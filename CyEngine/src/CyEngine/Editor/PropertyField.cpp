@@ -2,17 +2,55 @@
 #include "PropertyField.h"
 #include "CyEngine/Objects/Object.h"
 #include <imgui.h>
+#include <imgui_internal.h>
 
 namespace Cy
 {
 	std::unordered_map<String, PropertyFieldBase*> PropertyFieldBase::PropertyFields;
+
+	void ItemLabel(String title)
+	{
+		ImGuiWindow* window = ImGui::GetCurrentWindow();
+		const ImVec2 lineStart = ImGui::GetCursorScreenPos();
+		const ImGuiStyle& style = ImGui::GetStyle();
+		float fullWidth = ImGui::GetContentRegionAvail().x;
+		float itemWidth = ImGui::CalcItemWidth() + style.ItemSpacing.x;
+		ImVec2 textSize = ImGui::CalcTextSize(*title, &title[title.Length() - 1]);
+		ImRect textRect;
+		textRect.Min = ImGui::GetCursorScreenPos();
+		textRect.Max = textRect.Min;
+		textRect.Max.x += fullWidth - itemWidth;
+		textRect.Max.y += textSize.y;
+
+		ImGui::SetCursorScreenPos(textRect.Min);
+
+		ImGui::AlignTextToFramePadding();
+		// Adjust text rect manually because we render it directly into a drawlist instead of using public functions.
+		textRect.Min.y += window->DC.CurrLineTextBaseOffset;
+		textRect.Max.y += window->DC.CurrLineTextBaseOffset;
+
+		ImGui::ItemSize(textRect);
+		if (ImGui::ItemAdd(textRect, window->GetID(*title, *title + title.Length())))
+		{
+			ImGui::RenderTextEllipsis(ImGui::GetWindowDrawList(), textRect.Min, textRect.Max, textRect.Max.x,
+				textRect.Max.x, *title, *title + title.Length(), &textSize);
+
+			if (textRect.GetWidth() < textSize.x && ImGui::IsItemHovered())
+				ImGui::SetTooltip("%.*s", (int)title.Length(), *title);
+		}
+
+		ImGui::SetCursorScreenPos(ImVec2{ textRect.Max.x - 0, textRect.Max.y - textSize.y + window->DC.CurrLineTextBaseOffset });
+		ImGui::SameLine();
+	}
+
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldInt);
 	bool PropertyFieldInt::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
 	{
 		if (int* i = cl->GetPropertyValueFromName<int>(prop.first, obj))
 		{
-			ImGui::DragInt(*prop.first, i);
+			ItemLabel(prop.first);
+			ImGui::DragInt("", i);
 			return true;
 		}
 		return false;
@@ -23,7 +61,8 @@ namespace Cy
 	{
 		if (float* i = cl->GetPropertyValueFromName<float>(prop.first, obj))
 		{
-			ImGui::DragFloat(*prop.first, i);
+			ItemLabel(prop.first);
+			ImGui::DragFloat("", i);
 			return true;
 		}
 		return false;
@@ -34,7 +73,8 @@ namespace Cy
 	{
 		if (bool* i = cl->GetPropertyValueFromName<bool>(prop.first, obj))
 		{
-			ImGui::Checkbox(*prop.first, i);
+			ItemLabel(prop.first);
+			ImGui::Checkbox("", i);
 			return true;
 		}
 		return false;
@@ -45,7 +85,8 @@ namespace Cy
 	{
 		if (String* i = cl->GetPropertyValueFromName<String>(prop.first, obj))
 		{
-			ImGui::InputText(*prop.first, *(*i), 256);
+			ItemLabel(prop.first);
+			ImGui::InputText("", *(*i), 256);
 			return true;
 		}
 		return false;
@@ -56,8 +97,9 @@ namespace Cy
 	{
 		if (Vector2* i = cl->GetPropertyValueFromName<Vector2>(prop.first, obj))
 		{
+			ItemLabel(prop.first);
 			float pos[2]{ i->x, i->y };
-			ImGui::DragFloat2(*prop.first, pos);
+			ImGui::DragFloat2("", pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			return true;
@@ -70,8 +112,9 @@ namespace Cy
 	{
 		if (Vector3* i = cl->GetPropertyValueFromName<Vector3>(prop.first, obj))
 		{
+			ItemLabel(prop.first);
 			float pos[3]{ i->x, i->y, i->z };
-			ImGui::DragFloat3(*prop.first, pos);
+			ImGui::DragFloat3("", pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			i->z = pos[2];
@@ -85,8 +128,9 @@ namespace Cy
 	{
 		if (Vector4* i = cl->GetPropertyValueFromName<Vector4>(prop.first, obj))
 		{
+			ItemLabel(prop.first);
 			float pos[4]{ i->x, i->y, i->z, i->w };
-			ImGui::DragFloat3(*prop.first, pos);
+			ImGui::DragFloat3("", pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			i->z = pos[2];
@@ -101,9 +145,10 @@ namespace Cy
 	{
 		if (Quat* i = cl->GetPropertyValueFromName<Quat>(prop.first, obj))
 		{
+			ItemLabel(prop.first);
 			Vector3 v = Quat::ToEuler(*i);
 			float rot[3]{ v.x, v.y, v.z };
-			ImGui::DragFloat3(*prop.first, rot);
+			ImGui::DragFloat3("", rot);
 			*i = Quat::FromEuler({ rot[0], rot[1], rot[2] });
 			return true;
 		}

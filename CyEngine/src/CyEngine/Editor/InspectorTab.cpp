@@ -62,17 +62,16 @@ namespace Cy
 				// if we are an array we need to do something slightly different.
 				if (pair.second.IsArray)
 				{
+					size_t s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
 					// draw the array header, and then the individual sub-properties.
-					const bool node = ImGui::TreeNode(*pair.first);
-					ImGui::SameLine();
-					if (ImGui::Button("+"))
+					if (ImGui::TreeNode(*pair.first, *String::Format("%s [%i]", *pair.first, s)))
 					{
-						ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
-						arr->AddDefault();
-					}
-					if (node)
-					{
-						size_t s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
+						ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 7.5f);
+						if (ImGui::Button("+"))
+						{
+							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
+							arr->AddDefault();
+						}
 						for (size_t i = 0; i < s; i++)
 						{
 							std::pair<Cy::String, Cy::ClassProperty> n = pair;
@@ -116,16 +115,16 @@ namespace Cy
 				}
 			}
 
-			if (ImGui::Button("Copy to Clipboard"))
-			{
-				String json = JSONUtility::ConvertToJson(obj, cl);
-				CY_CORE_LOG("JSON generated:\n{0}", *json);
-				SetClipboardText(json);
-			}
-			if (ImGui::Button("Paste from Clipboard"))
-			{
-				JSONUtility::ConvertFromJson(GetClipboardText(), obj, cl);
-			}
+			//if (ImGui::Button("Copy to Clipboard"))
+			//{
+			//	String json = JSONUtility::ConvertToJson(obj, cl);
+			//	CY_CORE_LOG("JSON generated:\n{0}", *json);
+			//	SetClipboardText(json);
+			//}
+			//if (ImGui::Button("Paste from Clipboard"))
+			//{
+			//	JSONUtility::ConvertFromJson(GetClipboardText(), obj, cl);
+			//}
 
 			ImGui::TreePop();
 		}
