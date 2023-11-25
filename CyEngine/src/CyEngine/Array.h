@@ -120,47 +120,9 @@ public:
 	virtual size_t Count() const { return 0; }
 	virtual size_t GetElementSize() const { return 0; }
 	virtual void* GetArrStartPtr() const { return nullptr; }
-};
-
-template<typename T, size_t size>
-class FixedArray : ArrayBase
-{
-public:
-	using ValueType = T;
-	using Iterator = ArrayItr<FixedArray<T, size>>;
-	using ConstIterator = ArrayItrConst<FixedArray<T, size>>;
-
-public:
-	virtual size_t Count() const override { return size; }
-	virtual size_t GetElementSize() const override { return sizeof(T); }
-	virtual void* GetArrStartPtr() const override { return m_Data; }
-
-	T& operator[](size_t index) { return m_Data[index]; }
-	const T& operator[](size_t index) const { return m_Data[index]; }
-
-	T* Data() { return m_Data; }
-	const T* Data() const { return m_Data; }
-
-	Iterator begin()
-	{
-		return Iterator(m_Data);
-	}
-	Iterator end()
-	{
-		return Iterator(m_Data + size);
-	}
-
-	ConstIterator begin() const
-	{
-		return ConstIterator(m_Data);
-	}
-	ConstIterator end() const
-	{
-		return ConstIterator(m_Data + size);
-	}
-
-private:
-	T m_Data[size];
+	virtual void Reserve(size_t capacity) { }
+	virtual void SetSize(size_t size) { }
+	virtual void AddDefault() { }
 };
 
 template<typename T>
@@ -186,7 +148,7 @@ public:
 		return m_Data[index];
 	}
 
-	void Reserve(size_t capacity)
+	virtual void Reserve(size_t capacity) override
 	{
 		if (capacity < m_Size)
 			return;
@@ -198,6 +160,10 @@ public:
 		m_Capacity = capacity;
 		std::swap(m_Data, n);
 		delete[] n;
+	}
+	virtual void SetSize(size_t size) override
+	{
+		m_Size = size;
 	}
 
 	void Add(const T& value)
@@ -260,6 +226,12 @@ public:
 	ConstIterator end() const
 	{
 		return ConstIterator(m_Data + m_Size);
+	}
+
+protected:
+	virtual void AddDefault() override final
+	{
+		Add(T());
 	}
 
 private:

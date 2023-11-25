@@ -152,12 +152,13 @@ namespace Cy
 		}
 		void* GetPropertyValuePtrFromName(String property_name, String property_type, void* obj) const
 		{
-			const ClassProperty* prop = GetPropertyFromName(property_name);
+			Array<String> spl = String::Split(property_name, '.');
+			const auto* prop = GetPropertyFromName(spl[0]);
 			if (prop == nullptr || String(prop->Type) != property_type)
 			{
 				return nullptr;
 			}
-			return prop->Getter(obj);
+			return spl.Count() > 1 ? GetArrayElementValuePtrFromName(spl[0], prop->Type, obj, std::stoi(spl[1])) : prop->Getter(obj);
 		}
 		template<typename ValueType>
 		void* GetPropertyValuePtrFromName(String property_name, const void* obj) const
@@ -168,7 +169,7 @@ namespace Cy
 			{
 				return nullptr;
 			}
-			return prop->IsArray ? GetArrayElementValuePtrFromName(spl[0], prop->Type, obj, std::stoi(spl[1])) : prop->Getter(obj);
+			return spl.Count() > 1 ? GetArrayElementValuePtrFromName(spl[0], prop->Type, obj, std::stoi(spl[1])) : prop->Getter(obj);
 		}
 
 		template<typename ValueType>

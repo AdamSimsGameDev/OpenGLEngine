@@ -31,8 +31,19 @@ namespace Cy
 		StringItr Erase(const StringItrConst _First, const StringItrConst _Last) noexcept { return _StringInternal.erase(_First, _Last); }
 		bool Contains(const String& other) const { return _StringInternal.find(*other) != std::string::npos; }
 
+		char& operator[](int index)
+		{
+			return _StringInternal[index];
+		}
+		const char& operator[](int index) const
+		{
+			return _StringInternal[index];
+		}
+
 		// Statics
 		static Array<String> Split(const String& str, const char& separator);
+		static Array<String> SplitUnquoted(const String& str, const char& separator);
+
 		static inline void TrimLeft(String& s) 
 		{
 			s.Erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {

@@ -63,7 +63,14 @@ namespace Cy
 				if (pair.second.IsArray)
 				{
 					// draw the array header, and then the individual sub-properties.
-					if (ImGui::TreeNode(*pair.first))
+					const bool node = ImGui::TreeNode(*pair.first);
+					ImGui::SameLine();
+					if (ImGui::Button("+"))
+					{
+						ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
+						arr->AddDefault();
+					}
+					if (node)
 					{
 						size_t s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
 						for (size_t i = 0; i < s; i++)
