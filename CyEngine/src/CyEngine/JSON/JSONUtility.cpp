@@ -24,10 +24,10 @@ namespace Cy
 			if (count != 0)
 				buffer += ",\n";
 			buffer += add_indent(indent + 1);
-			buffer += String::Format("\"%s\"", *prop.first);
+			buffer += String::Format("\"%s\":", *prop.first);
 			if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.second.Type))
 			{
-				serializable->Serialize(prop.second.Getter(obj), String(buffer));
+				serializable->Serialize(prop.second.Getter(obj), buffer);
 			}
 			else if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
 			{
