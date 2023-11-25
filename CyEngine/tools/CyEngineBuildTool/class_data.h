@@ -17,7 +17,7 @@ static std::string class_format =
         }\n\n%s\n\
     };\n";
 
-static std::string constructor_format = "%s::%s()\n{\nName = \"%s\";\n%s\n}\n";
+static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n%s\n}\n";
 
 class ClassInfo
 {
@@ -48,7 +48,7 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
     std::string properties_func_string;
     for (const auto& prop : class_info->properties)
     {
-        properties_func_string += generate_property_functions_h(prop.name, prop.type);
+        properties_func_string += generate_property_functions_h(prop.name, prop.full_type);
     }
 
     h += string_format(class_format, 
@@ -75,6 +75,6 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
 
     for (const auto& prop : class_info->properties)
     {
-        cpp += generate_property_functions_cpp(prop.name, prop.type, class_info->name) + "\n";
+        cpp += generate_property_functions_cpp(prop.name, prop.full_type, class_info->name) + "\n";
     }
 }

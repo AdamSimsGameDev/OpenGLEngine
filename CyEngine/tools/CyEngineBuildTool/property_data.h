@@ -5,18 +5,32 @@ class PropertyInfo
 {
 public:
     std::string name;
+    std::string full_type;
     std::string type;
+    bool is_array;
+    bool is_fixed_array;
+    bool is_pointer;
     std::unordered_map<std::string, std::string> meta_data;
 
-    PropertyInfo(std::string n, std::string t, const std::unordered_map<std::string, std::string>& m)
+    PropertyInfo(std::string n, std::string ft, std::string t, const std::unordered_map<std::string, std::string>& m)
     {
         name = n;
+        full_type = ft;
         type = t;
         meta_data = m;
+        is_array = false;
+        is_fixed_array = false;
+        is_pointer = false;
     }
 };
 
-static std::string property_constructor_format = "Properties.emplace(\"%s\", ClassProperty(\"%s\", \"%s\", &typeid(%s), &%s::execGet%s, &%s::execSet%s, { %s }));\n";
+static std::string property_constructor_format = 
+    "\t{\n\
+     \tClassProperty cp = ClassProperty(\"%s\", \"%s\", \"%s\", &typeid(%s), &%s::execGet%s, &%s::execSet%s, { %s });\n\
+     \tcp.IsArray = %s;\n\
+     \tcp.IsFixedArray = %s;\n\
+     \tProperties.emplace(\"%s\", cp);\n\
+    }\n";
 static std::string property_function_h_format = "static void* execGet%s(const void* obj);\nstatic void execSet%s(void* obj, void* val);\n";
 static std::string property_function_cpp_format = "void* %sClass::execGet%s(const void* obj) { return reinterpret_cast<void*>(&reinterpret_cast<%s*>(const_cast<void*>(obj))->%s); }\nvoid %sClass::execSet%s(void* obj, void* val) { reinterpret_cast<%s*>(obj)->%s = *reinterpret_cast<%s*>(val); }\n";;
 static std::string meta_data_format = "ClassPropertyMetaData(%s, %s),";
@@ -25,6 +39,7 @@ static std::string meta_data_format_single = "ClassPropertyMetaData(%s, true),";
 std::string generate_property_for_constructor(PropertyInfo info, std::string class_name)
 {
     const std::string& property_name = info.name;
+    const std::string& property_full_type = info.full_type;
     const std::string& property_type = info.type;
 
     std::string property_meta_data;
@@ -90,7 +105,21 @@ std::string generate_property_for_constructor(PropertyInfo info, std::string cla
         }
     }
 
-    return string_format(property_constructor_format, property_name.c_str(), property_name.c_str(), property_type.c_str(), property_type.c_str(), class_name.c_str(), property_name.c_str(), class_name.c_str(), property_name.c_str(), property_meta_data.c_str());
+    return string_format(
+        property_constructor_format, 
+        property_name.c_str(), 
+        property_full_type.c_str(),
+        property_type.c_str(),
+        property_type.c_str(), 
+        class_name.c_str(), 
+        property_name.c_str(), 
+        class_name.c_str(), 
+        property_name.c_str(), 
+        property_meta_data.c_str(), 
+        info.is_array ? "true" : "false", 
+        info.is_fixed_array ? "true" : "false", 
+        property_name.c_str()
+    );
 }
 
 std::string generate_property_functions_h(std::string property_name, std::string property_type)

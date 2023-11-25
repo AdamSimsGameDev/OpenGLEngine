@@ -1,4 +1,6 @@
 #pragma once
+
+#include "CoreMinimal.h"
 #include <string>
 #include <vector>
 #include <functional>
@@ -9,9 +11,18 @@ namespace Cy
 	{
 	public:
 		String();
-		String(const char* chr) { _StringInternal = std::string(chr); }
-		String(const String& other) { _StringInternal = other._StringInternal; }
-		String(const std::string& other) { _StringInternal = other; }
+		String(const char* chr) 
+		{ 
+			_StringInternal = std::string(chr); 
+		}
+		String(const String& other) 
+		{ 
+			*this = other;
+		}
+		String(const std::string& other) 
+		{ 
+			_StringInternal = std::string(other); 
+		}
 
 		// Overrides from std::string
 		typedef std::string::iterator StringItr;
@@ -20,8 +31,19 @@ namespace Cy
 		StringItr Erase(const StringItrConst _First, const StringItrConst _Last) noexcept { return _StringInternal.erase(_First, _Last); }
 		bool Contains(const String& other) const { return _StringInternal.find(*other) != std::string::npos; }
 
+		char& operator[](int index)
+		{
+			return _StringInternal[index];
+		}
+		const char& operator[](int index) const
+		{
+			return _StringInternal[index];
+		}
+
 		// Statics
-		static std::vector<String> Split(const String& str, const char& separator);
+		static Array<String> Split(const String& str, const char& separator);
+		static Array<String> SplitUnquoted(const String& str, const char& separator);
+
 		static inline void TrimLeft(String& s) 
 		{
 			s.Erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
@@ -76,6 +98,8 @@ namespace Cy
 		uint32_t Length() const { return (uint32_t)_StringInternal.length(); }
 
 		bool operator==(const String& other) const { return other._StringInternal == _StringInternal; }
+		bool operator!=(const String& other) const { return !(other == _StringInternal); }
+
 		void operator+=(const String& other) { _StringInternal += other._StringInternal; }
 		void operator+=(const char& chr) { _StringInternal += chr; }
 		String operator+(const String& other) const { return _StringInternal + other._StringInternal; }

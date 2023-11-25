@@ -24,16 +24,62 @@ namespace Cy
 			if (count != 0)
 				buffer += ",\n";
 			buffer += add_indent(indent + 1);
-			buffer += String::Format("\"%s\"", *prop.first);
+			buffer += String::Format("\"%s\":", *prop.first);
 			if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.second.Type))
 			{
-				serializable->Serialize(prop.second.Getter(obj), String(buffer));
+				if (prop.second.IsArray)
+				{
+					buffer += "\n";
+					buffer += add_indent(indent + 1);
+					buffer += "[\n";
+					size_t s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
+					for (size_t i = 0; i < s; i++)
+					{
+						buffer += add_indent(indent + 2);
+						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), prop.second.Type, obj);
+						serializable->Serialize(n, buffer);
+						if (i != s - 1)
+						{
+							buffer += ",\n";
+						}
+					}
+					buffer += "\n";
+					buffer += add_indent(indent + 1);
+					buffer += "]";
+				}
+				else
+				{
+					serializable->Serialize(prop.second.Getter(obj), buffer);
+				}
 			}
 			else if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
 			{
-				buffer += "\n";
-				void* n = cl->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj);
-				ConvertToJsonInternal(n, ncl, buffer, indent + 1);
+				if (prop.second.IsArray)
+				{
+					buffer += "\n";
+					buffer += add_indent(indent + 1);
+					buffer += "[\n";
+					size_t s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
+					for (size_t i = 0; i < s; i++)
+					{
+						buffer += add_indent(indent + 2);
+						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), prop.second.Type, obj);
+						ConvertToJsonInternal(n, ncl, buffer, indent + 1);
+						if (i != s - 1)
+						{
+							buffer += ",\n";
+						}
+					}
+					buffer += "\n";
+					buffer += add_indent(indent + 1);
+					buffer += "]";
+				}
+				else
+				{
+					buffer += "\n";
+					void* n = cl->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj);
+					ConvertToJsonInternal(n, ncl, buffer, indent + 1);
+				}
 			}
 			count++;
 		}
@@ -82,11 +128,11 @@ namespace Cy
 				{
 					is_quoted = !is_quoted;
 				}
-				else if (c == '{' || c == '(')
+				else if (c == '{' || c == '(' || c == '[')
 				{
 					value_indent++;
 				}
-				else if (c == '}' || c == ')')
+				else if (c == '}' || c == ')' || c == ']')
 				{
 					value_indent--;
 					if (value_indent == -1)
@@ -98,7 +144,7 @@ namespace Cy
 						continue;
 					}
 				}
-				if (c != '\n' && c != '\t' && (is_quoted || c != ' '))
+				if (c != '\n' && c != '\t' && c != '\r' && (is_quoted || c != ' '))
 				{
 					value += c;
 				}
@@ -112,15 +158,46 @@ namespace Cy
 			{
 				continue;
 			}
-			if (const SerializableBase* serializable = Serialization::FindSerializableProperty(classProp->Type))
+			if (classProp->IsArray) // array
 			{
-				void* d = classProp->Getter(obj);
-				serializable->Deserialize(prop.second, d);
+				// break out the individual properties of the array.
+				Array<String> spl = String::SplitUnquoted(prop.second.Substring(1, prop.second.Length() - 2), ',');
+				size_t s = spl.Count();
+				if (const SerializableBase* serializable = Serialization::FindSerializableProperty(classProp->Type))
+				{
+					if (!classProp->IsFixedArray)
+					{
+						ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(prop.first, classProp->Type, obj));
+						arr->Reserve(s);
+						arr->SetSize(s);
+					}
+					for (size_t i = 0; i < s; i++)
+					{
+						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), classProp->Type, obj);
+						serializable->Deserialize(spl[i], n);
+					}
+				}
+				else if (const Class* ncl = Class::GetClassFromName(classProp->Type))
+				{
+					for (size_t i = 0; i < s; i++)
+					{
+						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), classProp->Type, obj);
+						ConvertFromJsonInternal(spl[i], ncl, n);
+					}
+				}
 			}
-			else if (const Class* ncl = Class::GetClassFromName(classProp->Type))
+			else
 			{
-				void* n = cl->GetPropertyValuePtrFromName(prop.first, classProp->Type, obj);
-				ConvertFromJsonInternal(prop.second, ncl, n);
+				if (const SerializableBase* serializable = Serialization::FindSerializableProperty(classProp->Type))
+				{
+					void* d = classProp->Getter(obj);
+					serializable->Deserialize(prop.second, d);
+				}
+				else if (const Class* ncl = Class::GetClassFromName(classProp->Type))
+				{
+					void* n = cl->GetPropertyValuePtrFromName(prop.first, classProp->Type, obj);
+					ConvertFromJsonInternal(prop.second, ncl, n);
+				}
 			}
 		}
 	}

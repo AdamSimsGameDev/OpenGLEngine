@@ -1,6 +1,5 @@
 #include "cypch.h"
 #include "Scene.h"
-
 #include "Components/MeshComponent.h"
 
 namespace Cy
@@ -22,14 +21,14 @@ namespace Cy
 		}
 	}
 
-	std::vector<Component*> Scene::GetAllComponentsOfType(String typeName) const
+	Array<Component*> Scene::GetAllComponentsOfType(String typeName) const
 	{
 		const auto it = TrackedComponents.find(typeName);
 		if (it != TrackedComponents.end())
 		{
 			return it->second;
 		}
-		return std::vector<Component*>();
+		return Array<Component*>();
 	}
 
 	void Scene::RegisterComponent(Component* component)
@@ -43,6 +42,6 @@ namespace Cy
 		const String _id = component->GetClass()->Name;
 		if (TrackedComponents.find(_id) == TrackedComponents.end())
 			TrackedComponents[_id] = {};
-		TrackedComponents[_id].push_back(component);
+		TrackedComponents[_id].Add(component);
 	}
 }
