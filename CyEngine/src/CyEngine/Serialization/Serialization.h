@@ -65,7 +65,7 @@ namespace Cy
 		virtual String GetType() const { return "int"; }
 		virtual void Serialize(const int val, String& buffer) const override
 		{
-			buffer += std::to_string(val);
+			buffer += String::ToString(val);
 		}
 		virtual void Deserialize(const String& buffer, int& out) const override
 		{
@@ -79,7 +79,7 @@ namespace Cy
 		virtual String GetType() const { return "float"; }
 		virtual void Serialize(const float val, String& buffer) const override
 		{
-			buffer += std::to_string(val);
+			buffer += String::ToString(val);
 		}		
 		virtual void Deserialize(const String& buffer, float& out) const override
 		{

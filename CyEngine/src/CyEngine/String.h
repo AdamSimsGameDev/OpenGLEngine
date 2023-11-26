@@ -7,44 +7,161 @@
 
 namespace Cy
 {
+	class StringItr
+	{
+	public:
+		StringItr(char* ptr)
+			: m_Ptr(ptr) {}
+
+		StringItr& operator++()
+		{
+			m_Ptr++;
+			return *this;
+		}
+		StringItr& operator++(int)
+		{
+			StringItr itr = *this;
+			++(*this);
+			return itr;
+		}
+
+		StringItr& operator--()
+		{
+			m_Ptr++;
+			return *this;
+		}
+		StringItr& operator--(int)
+		{
+			StringItr itr = *this;
+			--(*this);
+			return itr;
+		}
+
+		char& operator[](size_t index)
+		{
+			return m_Ptr[index];
+		}
+
+		char* operator->()
+		{
+			return m_Ptr;
+		}
+		char& operator*()
+		{
+			return *m_Ptr;
+		}
+
+		bool operator==(const StringItr& other) const { return m_Ptr == other.m_Ptr; }
+		bool operator!=(const StringItr& other) const { return !(*this == other); }
+
+	private:
+		char* m_Ptr;
+	};
+
+	class StringItrConst
+	{
+	public:
+		StringItrConst(const char* ptr)
+			: m_Ptr(ptr) {}
+
+		StringItrConst& operator++()
+		{
+			m_Ptr++;
+			return *this;
+		}
+		StringItrConst& operator++(int)
+		{
+			StringItrConst itr = *this;
+			++(*this);
+			return itr;
+		}
+
+		StringItrConst& operator--()
+		{
+			m_Ptr++;
+			return *this;
+		}
+		StringItrConst& operator--(int)
+		{
+			StringItrConst itr = *this;
+			--(*this);
+			return itr;
+		}
+
+		const char& operator[](size_t index)
+		{
+			return m_Ptr[index];
+		}
+
+		const char* operator->()
+		{
+			return m_Ptr;
+		}
+		const char& operator*()
+		{
+			return *m_Ptr;
+		}
+
+		bool operator==(const StringItrConst& other) const { return m_Ptr == other.m_Ptr; }
+		bool operator!=(const StringItrConst& other) const { return !(*this == other); }
+
+	private:
+		const char* m_Ptr;
+	};
+
 	struct String
 	{
 	public:
 		String();
-		String(const char* chr) 
-		{ 
-			_StringInternal = std::string(chr); 
-		}
-		String(const String& other) 
-		{ 
-			*this = other;
-		}
-		String(const std::string& other) 
-		{ 
-			_StringInternal = std::string(other); 
-		}
+		String(const char* val);
+		String(const std::string& val);
+		String(const String& other);
+		String(String&& other) noexcept;
+		~String();
 
-		// Overrides from std::string
-		typedef std::string::iterator StringItr;
-		typedef std::string::const_iterator StringItrConst;
-		typedef std::string::const_reverse_iterator StringRItrConst;
-		StringItr Erase(const StringItrConst _First, const StringItrConst _Last) noexcept { return _StringInternal.erase(_First, _Last); }
-		bool Contains(const String& other) const { return _StringInternal.find(*other) != std::string::npos; }
+		size_t Length() const { return strlen(str); }
 
-		char& operator[](int index)
-		{
-			return _StringInternal[index];
-		}
-		const char& operator[](int index) const
-		{
-			return _StringInternal[index];
-		}
+		// Operators
+		char& operator[](size_t index) { return str[index]; }
+		const char& operator[](size_t index) const { return str[index]; }
+		char* operator*() { return str; }
+		const char* operator*() const { return str; }
+		operator std::string() const { return str; }
+
+		// Add Operations
+		String operator+(const String& rhs) const;
+		String operator+(const char* rhs) const;
+		String operator+(const char& rhs) const;
+		String& operator+=(const String& other);
+		String& operator+=(const char* other);
+		String& operator+=(const char& other);
+
+		// Comparisons
+		bool operator==(const char* other) const;
+		bool operator!=(const char* other) const { return !(*this == other); }
+		bool operator==(const String& other) const;
+		bool operator!=(const String& other) const { return !(*this == other); }
+
+		// Copy assignment
+		String& operator=(const String& other);
+
+		// Non-const functions
+		String& Erase(size_t position, size_t length) noexcept;
+		void Empty() { Erase(0, strlen(str)); }
+
+		// Const functions
+		String Substring(size_t position, size_t length) const;
+		bool Contains(const String& other) const { return strstr(str, other.str) != nullptr; }
+		bool IsEmpty() const { return strlen(str) == 0; }
 
 		// Statics
 		static Array<String> Split(const String& str, const char& separator);
 		static Array<String> SplitUnquoted(const String& str, const char& separator);
+		static String ToString(int value);
+		static String ToString(float value);
+		static String ToString(bool value);
 
-		static inline void TrimLeft(String& s) 
+/*		static inline void TrimLeft(String& s) 
 		{
 			s.Erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
 				return !std::isspace(ch);
@@ -54,20 +171,20 @@ namespace Cy
 			s.Erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
 				return !std::isspace(ch);
 				}).base(), s.end());
-		}
+		}*/
 		static inline void Trim(String& s)
 		{
-			TrimRight(s);
-			TrimLeft(s);
+			// TrimRight(s);
+			// TrimLeft(s);
 		}
 		static inline String TrimLeft_Copy(String s)
 		{
-			TrimLeft(s);
+			// TrimLeft(s);
 			return s;
 		}
 		static inline String TrimRight_Copy(String s)
 		{
-			TrimRight(s);
+			// TrimRight(s);
 			return s;
 		}
 		static inline String Trim_Copy(String s)
@@ -81,46 +198,36 @@ namespace Cy
 		{
 			int size_s = std::snprintf(nullptr, 0, *format, args ...) + 1; // Extra space for '\0'
 			if (size_s <= 0) { throw std::runtime_error("Error during formatting."); }
-			auto size = static_cast<size_t>(size_s);
+			auto size = static_cast<int>(size_s);
 			std::unique_ptr<char[]> buf(new char[size]);
 			std::snprintf(buf.get(), size, *format, args ...);
-			return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
+			return std::string(buf.get(), buf.get() + size - 1).c_str(); // We don't want the '\0' inside
 		}
 
-		inline String Substring(int position, int length) const
+		StringItr begin()
 		{
-			return _StringInternal.substr(position, length);
+			return StringItr(str);
+		}
+		StringItr end()
+		{
+			return StringItr(str + strlen(str));
 		}
 
-		// Members
-		void Empty() { _StringInternal = ""; }
-		bool IsEmpty() const { return _StringInternal.empty(); }
-		uint32_t Length() const { return (uint32_t)_StringInternal.length(); }
-
-		bool operator==(const String& other) const { return other._StringInternal == _StringInternal; }
-		bool operator!=(const String& other) const { return !(other == _StringInternal); }
-
-		void operator+=(const String& other) { _StringInternal += other._StringInternal; }
-		void operator+=(const char& chr) { _StringInternal += chr; }
-		String operator+(const String& other) const { return _StringInternal + other._StringInternal; }
-		String operator+(const char& chr) { return _StringInternal += chr; }
-
-		String operator=(const char* chr) { _StringInternal = std::string(chr); return *this; }
-
-		operator std::string() const { return _StringInternal; }
-
-		char* operator *() { return &_StringInternal[0]; }
-		const char* operator *() const { return &_StringInternal[0]; }
-
-		std::string GetStringInternal() { return _StringInternal; }
-		std::string GetStringInternal() const { return _StringInternal; }
-
-		_NODISCARD StringItrConst begin() const { return _StringInternal.begin(); }
-		_NODISCARD StringItrConst end() const { return _StringInternal.end(); }
-		_NODISCARD StringRItrConst rbegin() const { return _StringInternal.rbegin(); }
-		_NODISCARD StringRItrConst rend() const { return _StringInternal.rend(); }
+		StringItrConst begin() const
+		{
+			return StringItrConst(str);
+		}
+		StringItrConst end() const
+		{
+			return StringItrConst(str + strlen(str));
+		}
 	private:
-		std::string _StringInternal;
+		char* str;
+
+	private:
+		void resize(size_t capacity);
+		void fill(size_t length, size_t pos, char c);
+		void clear(size_t pos);
 	};
 }
 
