@@ -31,6 +31,19 @@ namespace Cy
 		return Array<Component*>();
 	}
 
+	const Array<SceneObject*>& Scene::GetSceneObjects() const
+	{
+		Array<SceneObject*> objs;
+		for (const auto& obj : m_SceneObjects)
+		{
+			if (obj.IsValid())
+			{
+				objs.Add(obj.Get());
+			}
+		}
+		return objs;
+	}
+
 	void Scene::RegisterComponent(Component* component)
 	{
 		s_Scene->RegisterComponent_Internal(component);

@@ -56,7 +56,7 @@ namespace Cy
 			return objects;
 		}
 
-		const Array<SharedPtr<SceneObject>>& GetSceneObjects() const { return m_SceneObjects; }
+		const Array<SceneObject*>& GetSceneObjects() const;
 
 		static void RegisterComponent(Component* component);
 

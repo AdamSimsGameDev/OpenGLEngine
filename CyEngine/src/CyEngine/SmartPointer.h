@@ -98,11 +98,7 @@ public:
 	operator T*() const { return ptr; }
 	T* operator->() const { return ptr; }
 
-	const T* Get() const
-	{
-		return ptr;
-	}
-	T* Get()
+	T* Get() const
 	{
 		return ptr;
 	}
@@ -153,11 +149,7 @@ public:
 	operator T*() const { return ptr; }
 	T* operator->() const { return ptr; }
 
-	const T* Get() const
-	{
-		return ptr;
-	}
-	T* Get()
+	T* Get() const
 	{
 		return ptr;
 	}
