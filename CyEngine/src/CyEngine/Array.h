@@ -203,6 +203,30 @@ public:
 		m_Size = 0;
 	}
 
+	void InsertAt(const T& item, size_t position)
+	{
+		// if the position is at the end, just add the item to the end.
+		if (position >= m_Size)
+		{
+			Add(item);
+			return;
+		}
+
+		// get the new size.
+		size_t size = m_Size + 1;
+
+		// reserve space, should we need to.
+		if (m_Size >= m_Capacity)
+			Reserve(m_Capacity + m_Capacity);
+
+		// loop backwards
+		for (size_t i = size - 1; i > position; i++)
+		{
+			m_Data[i] = m_Data[i - 1];
+		}
+		m_Data[position] = item;
+	}
+
 	virtual size_t Count() const override { return m_Size; }
 	virtual size_t GetElementSize() const override { return sizeof(T); }
 	virtual void* GetArrStartPtr() const override { return m_Data; }
