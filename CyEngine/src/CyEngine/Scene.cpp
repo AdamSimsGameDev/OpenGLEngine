@@ -42,6 +42,6 @@ namespace Cy
 		const String _id = component->GetClass()->Name;
 		if (TrackedComponents.find(_id) == TrackedComponents.end())
 			TrackedComponents[_id] = {};
-		TrackedComponents[_id].Add(component);
+		TrackedComponents[_id].Emplace(component);
 	}
 }

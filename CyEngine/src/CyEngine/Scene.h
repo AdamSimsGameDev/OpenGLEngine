@@ -35,7 +35,7 @@ namespace Cy
 			t->GetTransform().SetPosition(position);
 			t->GetTransform().SetRotation(rotation);
 			t->GetTransform().SetScale(scale);
-			m_SceneObjects.Add(t);
+			m_SceneObjects.Emplace(t);
 			t->Start();
 			return t;
 		}
@@ -56,7 +56,7 @@ namespace Cy
 			return objects;
 		}
 
-		const Array<SceneObject*>& GetSceneObjects() const { return m_SceneObjects; }
+		const Array<SharedPtr<SceneObject>>& GetSceneObjects() const { return m_SceneObjects; }
 
 		static void RegisterComponent(Component* component);
 
@@ -65,7 +65,7 @@ namespace Cy
 	protected:
 		// Storage of all existing SceneObjects
 		PROPERTY(Hidden)
-		Array<SceneObject*> m_SceneObjects;
+		Array<SharedPtr<SceneObject>> m_SceneObjects;
 
 		std::unordered_map<String, Array<Component*>> TrackedComponents;
 

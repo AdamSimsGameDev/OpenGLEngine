@@ -53,6 +53,7 @@ static To* CastChecked(From* from)
 	static class Class* GetStaticClass() { return type##Class::Get(); }\
 	virtual class Class* GetClass() const { return type##::GetStaticClass(); }
 
+#include "CyEngine/SmartPointer.h"
 #include "CyEngine/Array.h"
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
