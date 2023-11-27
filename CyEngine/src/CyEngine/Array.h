@@ -212,19 +212,30 @@ public:
 			return;
 		}
 
-		// get the new size.
-		size_t size = m_Size + 1;
-
 		// reserve space, should we need to.
 		if (m_Size >= m_Capacity)
 			Reserve(m_Capacity + m_Capacity);
 
+		// set the size
+		m_Size = m_Size + 1;
+
 		// loop backwards
-		for (size_t i = size - 1; i > position; i++)
+		for (size_t i = m_Size - 1; i > position; i--)
 		{
 			m_Data[i] = m_Data[i - 1];
 		}
 		m_Data[position] = item;
+	}
+
+	void RemoveAt(size_t position)
+	{
+		if (position < 0 || position >= m_Size)
+			return;
+		for (size_t i = position; i < m_Size; i++)
+		{
+			m_Data[i] = m_Data[i + 1];
+		}
+		m_Size--;
 	}
 
 	virtual size_t Count() const override { return m_Size; }
