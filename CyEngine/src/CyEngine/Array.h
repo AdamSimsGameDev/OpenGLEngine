@@ -139,11 +139,11 @@ public:
 		Reserve(2);
 	}
 
-	T& operator[](int index)
+	T& operator[](size_t index)
 	{
 		return m_Data[index];
 	}
-	const T& operator[](int index) const
+	const T& operator[](size_t index) const
 	{
 		return m_Data[index];
 	}

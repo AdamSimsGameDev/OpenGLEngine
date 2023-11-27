@@ -161,30 +161,42 @@ namespace Cy
 		static String ToString(float value);
 		static String ToString(bool value);
 
-/*		static inline void TrimLeft(String& s) 
+		static inline void TrimLeft(String& s) 
 		{
-			s.Erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-				return !std::isspace(ch);
-				}));
+			if (s.Length() == 0 || s[0] != ' ')
+				return;
+			size_t p = 0;
+			while (p + 1 < s.Length())
+			{
+				if (s[p] != ' ')
+					break;
+				p++;
+			}
+			s.Erase(0, p);
 		}
-		static inline void TrimRight(String& s) {
-			s.Erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-				return !std::isspace(ch);
-				}).base(), s.end());
-		}*/
+		static inline void TrimRight(String& s) 
+		{
+			size_t p = s.Length();
+			while (p >= 0)
+			{
+				if (s[--p] != ' ')
+					break;
+			}
+			s.Erase(p, s.Length() - p);
+		}
 		static inline void Trim(String& s)
 		{
-			// TrimRight(s);
-			// TrimLeft(s);
+			TrimRight(s);
+			TrimLeft(s);
 		}
 		static inline String TrimLeft_Copy(String s)
 		{
-			// TrimLeft(s);
+			TrimLeft(s);
 			return s;
 		}
 		static inline String TrimRight_Copy(String s)
 		{
-			// TrimRight(s);
+			TrimRight(s);
 			return s;
 		}
 		static inline String Trim_Copy(String s)
