@@ -183,7 +183,7 @@ public:
 	T& Emplace(Args&&... args)
 	{
 		if (m_Size >= m_Capacity)
-			Realloc(m_Capacity + m_Capacity);
+			Reserve(m_Capacity + m_Capacity);
 		new (&m_Data[m_Size]) T(std::forward<Args>(args)...);
 		return m_Data[m_Size++];
 	}

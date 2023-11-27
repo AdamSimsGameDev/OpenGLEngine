@@ -181,18 +181,19 @@ int main()
                     std::vector<std::string> template_split = split(type, '<');
                     if (template_split.size() > 1)
                     {
+                        const std::string& body = template_split[template_split.size() - 1].substr(0, template_split[template_split.size() - 1].length() - template_split.size() + 1);
                         // we are templated, but are we an array/fixed array.
                         if (template_split[0] == "FixedArray")
                         {
                             is_array = true;
                             is_fixed_array = true;
-                            type = template_split[1].substr(0, template_split[1].length() - 1);
+                            type = body;
                         }
                         else if (template_split[0] == "Array")
                         {
                             is_array = true;
                             is_fixed_array = false;
-                            type = template_split[1].substr(0, template_split[1].length() - 1);
+                            type = body;
                         }
                     }
 

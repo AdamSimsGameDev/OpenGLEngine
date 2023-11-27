@@ -9,4 +9,5 @@ namespace Cy
 	struct Quat;
 }
 
+#include "CyEngine/SmartPointer.h"
 #include "CyEngine/Array.h"
