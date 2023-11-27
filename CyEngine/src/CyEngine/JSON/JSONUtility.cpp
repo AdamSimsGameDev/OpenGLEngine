@@ -36,7 +36,7 @@ namespace Cy
 					for (size_t i = 0; i < s; i++)
 					{
 						buffer += add_indent(indent + 2);
-						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), prop.second.Type, obj);
+						void* n = cl->GetPropertyValuePtrFromName(prop.first + '.' + std::to_string(i), prop.second.Type, obj);
 						serializable->Serialize(n, buffer);
 						if (i != s - 1)
 						{

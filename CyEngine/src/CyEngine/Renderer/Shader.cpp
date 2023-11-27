@@ -37,7 +37,7 @@ namespace Cy
 		{
 			ss << line << '\n';
 		}
-		outSource = ss.str();
+		outSource = ss.str().c_str();
 	}
 
 }
