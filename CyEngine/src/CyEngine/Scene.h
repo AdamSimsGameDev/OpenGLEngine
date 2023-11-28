@@ -56,7 +56,7 @@ namespace Cy
 			return objects;
 		}
 
-		const Array<SceneObject*>& GetSceneObjects() const;
+		Array<SceneObject*> GetSceneObjects() const;
 
 		static void RegisterComponent(Component* component);
 

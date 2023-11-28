@@ -86,6 +86,7 @@ namespace Cy
 		buffer[l] = '\0';
 		String t{ buffer };
 		delete[] buffer;
+		buffer = nullptr;
 		return t;
 	}
 
@@ -98,6 +99,7 @@ namespace Cy
 		buffer[l] = '\0';
 		String t{ buffer };
 		delete[] buffer;
+		buffer = nullptr;
 		return t;
 	}
 
@@ -110,6 +112,7 @@ namespace Cy
 		buffer[l] = '\0';
 		String t{ buffer };
 		delete[] buffer;
+		buffer = nullptr;
 		return t;
 	}
 
@@ -167,9 +170,16 @@ namespace Cy
 		{
 			return *this;
 		}
-		delete[] str;
 		str = new char[strlen(other.str) + 1];
 		strcpy(str, other.str);
+		str[strlen(other.str)] = '\0';
+		return *this;
+	}
+
+	String& String::operator=(String&& other) noexcept
+	{
+		str = other.str;
+		other.str = nullptr;
 		return *this;
 	}
 

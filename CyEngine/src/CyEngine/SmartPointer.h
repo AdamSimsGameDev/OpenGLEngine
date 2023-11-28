@@ -84,7 +84,7 @@ public:
 		rc->DecrementShared();
 		if (!rc->IsValid())
 		{
-			delete[] ptr;
+			ptr->~T();
 			ptr = nullptr;
 
 			if (rc->ShouldInvalidate())

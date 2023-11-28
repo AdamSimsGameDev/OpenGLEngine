@@ -31,7 +31,7 @@ namespace Cy
 		return Array<Component*>();
 	}
 
-	const Array<SceneObject*>& Scene::GetSceneObjects() const
+	Array<SceneObject*> Scene::GetSceneObjects() const
 	{
 		Array<SceneObject*> objs;
 		for (const auto& obj : m_SceneObjects)

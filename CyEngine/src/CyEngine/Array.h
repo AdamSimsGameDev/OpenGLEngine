@@ -123,6 +123,7 @@ public:
 	virtual void Reserve(size_t capacity) { }
 	virtual void SetSize(size_t size) { }
 	virtual void AddDefault() { }
+	virtual void RemoveAt(size_t position) { }
 };
 
 template<typename T>
@@ -137,6 +138,66 @@ public:
 	Array()
 	{
 		Reserve(2);
+	}
+	Array(const Array& arr)
+	{
+		Reserve(arr.m_Capacity);
+		m_Size = arr.m_Size;
+		for (size_t i = 0; i < m_Size; i++)
+		{
+			if (std::is_pointer<T>())
+			{
+				m_Data[i] = arr.m_Data[i];
+			}
+			else 
+			{
+				m_Data[i] = T(arr.m_Data[i]);
+			}
+		}
+	}
+	Array(Array&& arr) noexcept
+	{
+		m_Size = arr.m_Size;
+		m_Capacity = arr.m_Capacity;
+		std::swap(m_Data, arr.m_Data);
+		::operator delete(arr.m_Data, m_Capacity * sizeof(T));
+		arr.m_Size = 0;
+	}
+	~Array()
+	{
+		for (size_t i = 0; i < m_Size; i++)
+		{
+			if (!std::is_pointer<T>())
+			{
+				m_Data[i].~T();
+			}
+		}
+		m_Size = 0;
+		m_Data = nullptr;
+	}
+
+	Array& operator=(const Array& arr)
+	{
+		for (size_t i = 0; i < m_Size; i++)
+		{
+			if (std::is_pointer<T>())
+			{
+				m_Data[i] = arr.m_Data[i];
+			}
+			else
+			{
+				m_Data[i] = T(arr.m_Data[i]);
+			}
+		}
+		return *this;
+	}
+	Array& operator=(Array&& arr) noexcept
+	{
+		m_Size = arr.m_Size;
+		m_Capacity = arr.m_Capacity;
+		std::swap(m_Data, arr.m_Data);
+		::operator delete(arr.m_Data, m_Capacity * sizeof(T));
+		return *this;
 	}
 
 	T& operator[](size_t index)
@@ -153,13 +214,15 @@ public:
 		if (capacity < m_Size)
 			return;
 
-		T* n = new T[capacity];
-		for (int i = 0; i < m_Size; i++)
+		T* n = (T*)::operator new(capacity * sizeof(T));
+		for (size_t i = 0; i < m_Size; i++)
 			n[i] = std::move(m_Data[i]);
+		for (size_t i = 0; i < m_Size; i++)
+			m_Data[i].~T();
 
-		m_Capacity = capacity;
 		std::swap(m_Data, n);
-		delete[] n;
+		::operator delete(n, m_Capacity * sizeof(T));
+		m_Capacity = capacity;
 	}
 	virtual void SetSize(size_t size) override
 	{
@@ -176,7 +239,7 @@ public:
 	{
 		if (m_Size == m_Capacity)
 			Reserve(m_Capacity * 2);
-		m_Data[m_Size++] = value;
+		m_Data[m_Size++] = T(value);
 	}
 
 	template<typename... Args>
@@ -190,10 +253,7 @@ public:
 
 	void RemoveLast()
 	{
-		if (m_Size == 0)
-			return;
-		m_Size--;
-		m_Data[m_Size].~T();
+		RemoveAt(m_Size - 1);
 	}
 
 	void Clear()
@@ -227,11 +287,11 @@ public:
 		m_Data[position] = item;
 	}
 
-	void RemoveAt(size_t position)
+	virtual void RemoveAt(size_t position) override final
 	{
 		if (position < 0 || position >= m_Size)
 			return;
-		for (size_t i = position; i < m_Size; i++)
+		for (size_t i = position; i < m_Size - 1; i++)
 		{
 			m_Data[i] = m_Data[i + 1];
 		}

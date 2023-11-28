@@ -144,6 +144,7 @@ namespace Cy
 
 		// Copy assignment
 		String& operator=(const String& other);
+		String& operator=(String&& other) noexcept;
 
 		// Non-const functions
 		String& Erase(size_t position, size_t length) noexcept;
@@ -234,7 +235,7 @@ namespace Cy
 			return StringItrConst(str + strlen(str));
 		}
 	private:
-		char* str;
+		char* str = nullptr;
 
 	private:
 		void resize(size_t capacity);
