@@ -86,7 +86,8 @@ namespace Cy
 		if (String* i = cl->GetPropertyValueFromName<String>(prop.first, obj))
 		{
 			ItemLabel(prop.first);
-			ImGui::InputText(*prop.first, *(*i), 256);
+			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 16 - ImGui::GetStyle().ItemSpacing.x);
+			ImGui::InputText(*String::Format("##%s", *prop.first), *(*i), 256);
 			return true;
 		}
 		return false;

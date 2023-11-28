@@ -67,19 +67,30 @@ namespace Cy
 					if (ImGui::TreeNode(*pair.first, *String::Format("%s [%i]", *pair.first, s)))
 					{
 						ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 7.5f);
-						if (ImGui::Button("+"))
+						if (ImGui::Button("+", ImVec2(16.0f, ImGui::GetFrameHeight())))
 						{
 							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
 							arr->AddDefault();
 						}
+						Array<size_t> toRemove;
 						for (size_t i = 0; i < s; i++)
 						{
 							std::pair<Cy::String, Cy::ClassProperty> n = pair;
 							n.first = n.first + "." + Cy::String::ToString((int)i);
 							if (RenderProperty(obj, cl, "", n))
 							{
+								ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 7.5f);
+								if (ImGui::Button(*String::Format("-##%i", i), ImVec2(16.0f, ImGui::GetFrameHeight())))
+								{
+									toRemove.Add(i);
+								}
 								continue;
 							}
+						}
+						for (size_t t : toRemove)
+						{
+							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
+							arr->RemoveAt(t);
 						}
 						ImGui::TreePop();
 					}
