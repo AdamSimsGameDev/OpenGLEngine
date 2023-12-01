@@ -10,6 +10,7 @@ namespace Cy
 		CY_CORE_LOG("Creating MeshComponent");
 		m_MeshComponent = CreateAndAddComponent<MeshComponent>();
 		
+		Name = "Cube Object";
 		TestArr.Add("test");
 
 		std::vector<float> vertices = 

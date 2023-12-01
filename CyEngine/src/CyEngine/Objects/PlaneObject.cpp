@@ -10,6 +10,8 @@ namespace Cy
 		CY_CORE_LOG("Creating MeshComponent");
 		m_MeshComponent = CreateAndAddComponent<MeshComponent>();
 
+		Name = "Plane Object";
+
 		std::vector<float> vertices =
 		{
 			// TOP

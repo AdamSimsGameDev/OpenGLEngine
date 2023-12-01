@@ -30,6 +30,7 @@ namespace Cy
 	public:
 		CameraObject() : SceneObject(), m_ProjectionMatrix(1.0f), m_ViewMatrix(1.0f), m_ProjectionViewMatrix(1.0f)
 		{
+			Name = "Camera";
 		}
 		virtual ~CameraObject() { }
 
