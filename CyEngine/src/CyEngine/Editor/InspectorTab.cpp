@@ -51,7 +51,7 @@ namespace Cy
 
 	void InspectorTab::RenderObjectClass(void* obj, const Class* cl)
 	{
-		if (ImGui::TreeNode(*cl->Name))
+		//if (ImGui::TreeNode(*cl->Name))
 		{
 			for (const auto& pair : cl->Properties)
 			{
@@ -137,7 +137,7 @@ namespace Cy
 			//	JSONUtility::ConvertFromJson(GetClipboardText(), obj, cl);
 			//}
 
-			ImGui::TreePop();
+			// ImGui::TreePop();
 		}
 	}
 
@@ -146,12 +146,9 @@ namespace Cy
 		ImGui::Begin("Inspector", &m_TabOpen);
 
 		Scene* scene = Scene::Get();
-		if (scene)
+		if (scene && scene->CurrentSelectedObject)
 		{
-			for (SceneObject* obj : scene->GetSceneObjects())
-			{
-				RenderObject(obj, obj->GetClass());
-			}
+			RenderObject(scene->CurrentSelectedObject, scene->CurrentSelectedObject->GetClass());
 		}
 
 		ImGui::End();

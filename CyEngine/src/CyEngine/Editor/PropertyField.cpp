@@ -85,9 +85,16 @@ namespace Cy
 	{
 		if (String* i = cl->GetPropertyValueFromName<String>(prop.first, obj))
 		{
+			char* i_copy = new char[i->Length() + 1];
+			strcpy(i_copy, **i);
+			i_copy[i->Length()] = '\0';
 			ItemLabel(prop.first);
 			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 16 - ImGui::GetStyle().ItemSpacing.x);
-			ImGui::InputText(*String::Format("##%s", *prop.first), *(*i), 256);
+			ImGui::InputText(*String::Format("##%s", *prop.first), i_copy, 256);
+			if (*i != i_copy)
+			{
+				*i = String(i_copy);
+			}
 			return true;
 		}
 		return false;

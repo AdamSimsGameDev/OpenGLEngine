@@ -200,6 +200,9 @@ public:
 		return *this;
 	}
 
+	T* operator*() { return m_Data; }
+	const T* operator*() const { return m_Data; }
+
 	T& operator[](size_t index)
 	{
 		return m_Data[index];

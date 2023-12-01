@@ -82,7 +82,7 @@ public:
 	~SharedPtr()
 	{
 		rc->DecrementShared();
-		if (!rc->IsValid())
+		if (!rc->IsValid() && ptr)
 		{
 			ptr->~T();
 			ptr = nullptr;

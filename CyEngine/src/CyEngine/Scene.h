@@ -60,6 +60,9 @@ namespace Cy
 
 		static void RegisterComponent(Component* component);
 
+		// the current selected object.
+		SceneObject* CurrentSelectedObject = nullptr;
+
 		static Scene* Get() { return s_Scene; }
 
 	protected:
