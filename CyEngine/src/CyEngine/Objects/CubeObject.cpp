@@ -11,7 +11,6 @@ namespace Cy
 		m_MeshComponent = CreateAndAddComponent<MeshComponent>();
 		
 		Name = "Cube Object";
-		TestArr.Add("test");
 
 		std::vector<float> vertices = 
 		{
