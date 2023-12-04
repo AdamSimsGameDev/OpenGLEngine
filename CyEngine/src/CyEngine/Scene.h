@@ -37,9 +37,12 @@ namespace Cy
 			t->GetTransform().SetRotation(rotation);
 			t->GetTransform().SetScale(scale);
 			m_SceneObjects.Emplace(t);
+			t->OwningScene = ObjectManager::GetSharedPtrTyped<Scene>(this).MakeWeak();
 			t->Start();
 			return t;
 		}
+
+		void DestroyObject(SceneObject* obj);
 
 		template<typename ComponentType>
 		Array<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
@@ -60,20 +63,22 @@ namespace Cy
 		Array<SceneObject*> GetSceneObjects() const;
 
 		static void RegisterComponent(Component* component);
+		static void UnregisterComponent(Component* component);
 
 		// the current selected object.
-		SceneObject* CurrentSelectedObject = nullptr;
+		WeakPtr<SceneObject> CurrentSelectedObject = nullptr;
 
 		static Scene* Get() { return s_Scene; }
 
 	protected:
 		// Storage of all existing SceneObjects
 		PROPERTY(Hidden)
-		Array<SharedPtr<SceneObject>> m_SceneObjects;
+		Array<SceneObject*> m_SceneObjects;
 
 		std::unordered_map<String, Array<Component*>> TrackedComponents;
 
 		virtual void RegisterComponent_Internal(Component* component);
+		virtual void UnregisterComponent_Internal(Component* component);
 
 	private:
 		static Scene* s_Scene;

@@ -120,7 +120,7 @@ namespace Cy
 			SceneObject* so = cl->Name == "SceneObject" ? Cast<SceneObject>(obj) : nullptr;
 			if (so)
 			{
-				for (const auto& comp : so->m_Components)
+				for (const auto& comp : so->GetComponents())
 				{
 					RenderObject(comp, comp->GetClass());
 				}

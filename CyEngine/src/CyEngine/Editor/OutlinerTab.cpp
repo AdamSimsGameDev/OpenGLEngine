@@ -32,7 +32,7 @@ namespace Cy
 			ImGui::SetNextItemWidth(-1);
 			if (ImGui::ListBox("##Outliner", &current_item, *arr, arr.Count(), available_count))
 			{
-				scene->CurrentSelectedObject = scene->GetSceneObjects()[current_item];
+				scene->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(scene->GetSceneObjects()[current_item]).MakeWeak();
 			}
 		}
 

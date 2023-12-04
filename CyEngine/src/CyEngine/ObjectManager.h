@@ -19,11 +19,17 @@ namespace Cy
 		static T* CreateObject() 
 		{
 			T* t = new T();
-			Get()->RegisterObject(t);
 			return t;
 		}
 
-	private:
+		static void DestroyObject(Object* obj);
+		template<typename T>
+		static SharedPtr<T> GetSharedPtrTyped(T* obj)
+		{
+			return *reinterpret_cast<SharedPtr<T>*>(&GetSharedPtr(obj));
+		}
+		static SharedPtr<Object> GetSharedPtr(Object* obj);
+
 		void RegisterObject(Object* obj);
 
 	private:

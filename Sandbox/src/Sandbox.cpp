@@ -22,6 +22,7 @@ public:
 	virtual void OnAttach() override
 	{
 		m_Scene = new Scene();
+		m_Scene->Start();
 		m_Camera = m_Scene->CreateSceneObject<CameraObject>(Vector3(0, 0.5f, 4), Quat::Identity);
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 		m_Scene->CreateSceneObject<CubeObject>(Vector3::Zero, Quat::Identity, Vector3::One);

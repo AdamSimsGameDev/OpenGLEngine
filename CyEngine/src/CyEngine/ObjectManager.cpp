@@ -15,9 +15,22 @@ namespace Cy
         return Instance;
     }
 
+    void ObjectManager::DestroyObject(Object* obj)
+    {
+        obj->End();
+        Get()->ObjectMap.erase(obj->ObjectGUID);
+    }
+
+    SharedPtr<Object> ObjectManager::GetSharedPtr(Object* obj)
+    {
+        return Get()->ObjectMap[obj->ObjectGUID];
+    }
+
     void ObjectManager::RegisterObject(Object* obj)
     {
-        ObjectMap.emplace(GUID::Make(), SharedPtr(obj));
+        GUID guid = GUID::Make();
+        ObjectMap.emplace(guid, SharedPtr(obj));
+        obj->ObjectGUID = guid;
     }
 }
 
