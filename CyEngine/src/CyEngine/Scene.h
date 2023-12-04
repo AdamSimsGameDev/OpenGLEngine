@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Objects/SceneObject.h"
+#include "ObjectManager.h"
 #include "generated/Scene.gen.h"
 
 namespace Cy
@@ -31,7 +32,7 @@ namespace Cy
 		template<typename T>
 		T* CreateSceneObject(Vector3 position, Quat rotation, Vector3 scale)
 		{
-			T* t = new T();
+			T* t = ObjectManager::CreateObject<T>();
 			t->GetTransform().SetPosition(position);
 			t->GetTransform().SetRotation(rotation);
 			t->GetTransform().SetScale(scale);
