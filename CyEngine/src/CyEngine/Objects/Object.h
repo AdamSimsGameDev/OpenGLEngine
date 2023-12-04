@@ -8,13 +8,17 @@ namespace Cy
 	CLASS()
 	class Object
 	{
+		friend class ObjectManager;
+
 		GENERATED_CLASS(Object);
 
 	public:
-		Object() : m_Parent(nullptr) { }
+		Object();
 
 		virtual void Start();
 		virtual void End();
+
+		virtual void Destroy();
 
 		virtual void SetParent(Object* parent);
 		
@@ -25,5 +29,6 @@ namespace Cy
 
 	private:
 		Object* m_Parent;
+		GUID ObjectGUID;
 	};
 }

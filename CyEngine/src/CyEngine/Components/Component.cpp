@@ -8,4 +8,9 @@ namespace Cy
 	{
 		Scene::RegisterComponent(this);
 	}
+
+	void Component::End()
+	{
+		Scene::UnregisterComponent(this);
+	}
 }

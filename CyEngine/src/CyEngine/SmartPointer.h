@@ -41,8 +41,8 @@ public:
 	}
 
 private:
-	size_t m_SharedCount;
-	size_t m_WeakCount;
+	int m_SharedCount;
+	int m_WeakCount;
 };
 
 template<typename T>
@@ -108,6 +108,11 @@ public:
 		return rc->IsValid(); 
 	}
 
+	WeakPtr<T> MakeWeak() const
+	{
+		return WeakPtr<T>(*this);
+	}
+
 private:
 	T* ptr;
 	ReferenceCount* rc;
@@ -148,6 +153,8 @@ public:
 
 	operator T*() const { return ptr; }
 	T* operator->() const { return ptr; }
+
+	operator bool() const { return IsValid(); }
 
 	T* Get() const
 	{

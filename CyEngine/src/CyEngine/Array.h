@@ -117,13 +117,13 @@ private:
 class ArrayBase
 {
 public:
-	virtual size_t Count() const { return 0; }
-	virtual size_t GetElementSize() const { return 0; }
+	virtual int Count() const { return 0; }
+	virtual int GetElementSize() const { return 0; }
 	virtual void* GetArrStartPtr() const { return nullptr; }
-	virtual void Reserve(size_t capacity) { }
-	virtual void SetSize(size_t size) { }
+	virtual void Reserve(int capacity) { }
+	virtual void SetSize(int size) { }
 	virtual void AddDefault() { }
-	virtual void RemoveAt(size_t position) { }
+	virtual void RemoveAt(int position) { }
 };
 
 template<typename T>
@@ -143,7 +143,7 @@ public:
 	{
 		Reserve(arr.m_Capacity);
 		m_Size = arr.m_Size;
-		for (size_t i = 0; i < m_Size; i++)
+		for (int i = 0; i < m_Size; i++)
 		{
 			if (std::is_pointer<T>())
 			{
@@ -165,7 +165,7 @@ public:
 	}
 	~Array()
 	{
-		for (size_t i = 0; i < m_Size; i++)
+		for (int i = 0; i < m_Size; i++)
 		{
 			if (!std::is_pointer<T>())
 			{
@@ -178,7 +178,7 @@ public:
 
 	Array& operator=(const Array& arr)
 	{
-		for (size_t i = 0; i < m_Size; i++)
+		for (int i = 0; i < m_Size; i++)
 		{
 			if (std::is_pointer<T>())
 			{
@@ -203,31 +203,31 @@ public:
 	T* operator*() { return m_Data; }
 	const T* operator*() const { return m_Data; }
 
-	T& operator[](size_t index)
+	T& operator[](int index)
 	{
 		return m_Data[index];
 	}
-	const T& operator[](size_t index) const
+	const T& operator[](int index) const
 	{
 		return m_Data[index];
 	}
 
-	virtual void Reserve(size_t capacity) override
+	virtual void Reserve(int capacity) override
 	{
 		if (capacity < m_Size)
 			return;
 
 		T* n = (T*)::operator new(capacity * sizeof(T));
-		for (size_t i = 0; i < m_Size; i++)
+		for (int i = 0; i < m_Size; i++)
 			n[i] = std::move(m_Data[i]);
-		for (size_t i = 0; i < m_Size; i++)
+		for (int i = 0; i < m_Size; i++)
 			m_Data[i].~T();
 
 		std::swap(m_Data, n);
 		::operator delete(n, m_Capacity * sizeof(T));
 		m_Capacity = capacity;
 	}
-	virtual void SetSize(size_t size) override
+	virtual void SetSize(int size) override
 	{
 		m_Size = size;
 	}
@@ -261,12 +261,33 @@ public:
 
 	void Clear()
 	{
-		for (size_t i = 0; i < m_Size; i++)
+		for (int i = 0; i < m_Size; i++)
 			m_Data[i].~T();
 		m_Size = 0;
 	}
 
-	void InsertAt(const T& item, size_t position)
+	int IndexOf(const T& item) const 
+	{
+		for (int i = 0; i < m_Size; i++)
+		{
+			if (item == m_Data[i])
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	bool Remove(const T& item)
+	{
+		int index = IndexOf(item);
+		if (index == -1)
+			return false;
+		RemoveAt(index);
+		return true;
+	}
+
+	void InsertAt(const T& item, int position)
 	{
 		// if the position is at the end, just add the item to the end.
 		if (position >= m_Size)
@@ -283,26 +304,26 @@ public:
 		m_Size = m_Size + 1;
 
 		// loop backwards
-		for (size_t i = m_Size - 1; i > position; i--)
+		for (int i = m_Size - 1; i > position; i--)
 		{
 			m_Data[i] = m_Data[i - 1];
 		}
 		m_Data[position] = item;
 	}
 
-	virtual void RemoveAt(size_t position) override final
+	virtual void RemoveAt(int position) override final
 	{
 		if (position < 0 || position >= m_Size)
 			return;
-		for (size_t i = position; i < m_Size - 1; i++)
+		for (int i = position; i < m_Size - 1; i++)
 		{
 			m_Data[i] = m_Data[i + 1];
 		}
 		m_Size--;
 	}
 
-	virtual size_t Count() const override { return m_Size; }
-	virtual size_t GetElementSize() const override { return sizeof(T); }
+	virtual int Count() const override { return m_Size; }
+	virtual int GetElementSize() const override { return sizeof(T); }
 	virtual void* GetArrStartPtr() const override { return m_Data; }
 
 	T* Data() { return m_Data; }
@@ -335,6 +356,6 @@ protected:
 private:
 	T* m_Data = nullptr;
 
-	size_t m_Size = 0;
-	size_t m_Capacity = 0;
+	int m_Size = 0;
+	int m_Capacity = 0;
 };

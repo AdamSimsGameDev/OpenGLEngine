@@ -12,5 +12,6 @@ namespace Cy
 
 	public:
 		virtual void Start() override;
+		virtual void End() override;
 	};
 }

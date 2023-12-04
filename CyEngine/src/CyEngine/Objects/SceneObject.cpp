@@ -1,9 +1,19 @@
 #include "cypch.h"
 #include "SceneObject.h"
 #include "CyEngine/Components/Component.h"
+#include "CyEngine/Scene.h"
 
 namespace Cy
 {
+    void SceneObject::Destroy()
+    {
+        for (auto& component : m_Components)
+        {
+            component->Destroy();
+        }
+        GetScene()->DestroyObject(this);
+    }
+
     void SceneObject::Tick(float deltaTime)
     {
 

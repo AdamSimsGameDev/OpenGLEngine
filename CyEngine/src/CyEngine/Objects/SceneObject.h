@@ -7,14 +7,19 @@
 namespace Cy
 {
 	class Component;
+	class Scene;
 
 	CLASS()
 	class SceneObject : public Object
 	{
 		GENERATED_CLASS(SceneObject)
 
+		friend class Scene;
+
 	public:
 		SceneObject() : Object(), m_Transform() { }
+
+		virtual void Destroy() override;
 
 		virtual void Tick(float deltaTime);
 
@@ -31,12 +36,21 @@ namespace Cy
 		}
 		void AddComponent(Component* component);
 
+		const Array<Component*>& GetComponents() const { return m_Components; }
+
+		Scene* GetScene() const { return OwningScene.Get(); }
+
+	public:
 		PROPERTY(Tooltip="Testing a string with spaces (and brackets), oh and commas too")
 		String Name;
 
+	protected:
 		PROPERTY()
 		Transform m_Transform;
 		
 		Array<Component*> m_Components;
+
+		// the scene that we belong to. 
+		WeakPtr<Scene> OwningScene;
 	};
 }

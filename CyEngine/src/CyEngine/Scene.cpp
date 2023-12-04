@@ -19,6 +19,17 @@ namespace Cy
 		{
 			obj->Tick(deltaTime);
 		}
+
+		if (Input::IsKeyPressed(CY_KEY_DELETE) && CurrentSelectedObject)
+		{
+			CurrentSelectedObject->Destroy();
+		}
+	}
+
+	void Scene::DestroyObject(SceneObject* obj)
+	{
+		ObjectManager::DestroyObject(obj);
+		m_SceneObjects.Remove(obj);
 	}
 
 	Array<Component*> Scene::GetAllComponentsOfType(String typeName) const
@@ -33,20 +44,17 @@ namespace Cy
 
 	Array<SceneObject*> Scene::GetSceneObjects() const
 	{
-		Array<SceneObject*> objs;
-		for (const auto& obj : m_SceneObjects)
-		{
-			if (obj.IsValid())
-			{
-				objs.Add(obj.Get());
-			}
-		}
-		return objs;
+		return m_SceneObjects;
 	}
 
 	void Scene::RegisterComponent(Component* component)
 	{
 		s_Scene->RegisterComponent_Internal(component);
+	}
+
+	void Scene::UnregisterComponent(Component* component)
+	{
+		s_Scene->UnregisterComponent_Internal(component);
 	}
 
 	void Scene::RegisterComponent_Internal(Component* component)
@@ -56,5 +64,12 @@ namespace Cy
 		if (TrackedComponents.find(_id) == TrackedComponents.end())
 			TrackedComponents[_id] = {};
 		TrackedComponents[_id].Emplace(component);
+	}
+
+	void Scene::UnregisterComponent_Internal(Component* component)
+	{
+		CY_CORE_LOG("Unregistering component of type {0}", *component->GetClass()->Name);
+		const String _id = component->GetClass()->Name;
+		TrackedComponents[_id].Remove(component);
 	}
 }
