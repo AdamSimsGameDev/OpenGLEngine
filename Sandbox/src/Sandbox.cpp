@@ -1,5 +1,5 @@
 #include <CyEngine.h>
-#include "CyEngine/Objects/CameraObject.h"
+#include "CyEngine/Components/CameraComponent.h"
 #include "CyEngine/Objects/CubeObject.h"
 #include <CyEngine/Objects/PlaneObject.h>
 #include <CyEngine/Serialization/Serialization.h>
@@ -23,8 +23,13 @@ public:
 	{
 		m_Scene = new Scene();
 		m_Scene->Start();
-		m_Camera = m_Scene->CreateSceneObject<CameraObject>(Vector3(0, 0.5f, 4), Quat::Identity);
+
+		// Create starting camera
+		SceneObject* cam = m_Scene->CreateSceneObject<SceneObject>(Vector3(0, 0.5f, 4), Quat::Identity);
+		cam->Name = "Main Camera";
+		m_Camera = cam->CreateAndAddComponent<CameraComponent>();
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
+
 		m_Scene->CreateSceneObject<CubeObject>(Vector3::Zero, Quat::Identity, Vector3::One);
 	
 		Array<int> arr;
@@ -50,7 +55,7 @@ public:
 
 private:
 	Scene* m_Scene;
-	CameraObject* m_Camera;
+	CameraComponent* m_Camera;
 };
 
 class Sandbox : public Application

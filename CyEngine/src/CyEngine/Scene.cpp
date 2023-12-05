@@ -1,5 +1,6 @@
 #include "cypch.h"
 #include "Scene.h"
+#include "Components/CameraComponent.h"
 #include "Components/MeshComponent.h"
 
 namespace Cy
@@ -11,6 +12,7 @@ namespace Cy
 		s_Scene = this;
 
 		ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
+		ADD_TRACKED_COMPONENT_TYPE(CameraComponent);
 	}
 
 	void Scene::Tick(float deltaTime)

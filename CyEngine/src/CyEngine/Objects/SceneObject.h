@@ -41,7 +41,7 @@ namespace Cy
 		Scene* GetScene() const { return OwningScene.Get(); }
 
 	public:
-		PROPERTY(Tooltip="Testing a string with spaces (and brackets), oh and commas too")
+		PROPERTY()
 		String Name;
 
 	protected:

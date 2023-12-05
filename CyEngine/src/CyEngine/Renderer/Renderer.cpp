@@ -1,8 +1,7 @@
 #include "cypch.h"
 #include "Renderer.h"
-
+#include "CyEngine/Components/CameraComponent.h"
 #include "CyEngine/Components/MeshComponent.h"
-#include "CyEngine/Objects/CameraObject.h"
 #include "CyEngine/Renderer/Mesh.h"
 #include "CyEngine/Renderer/Shader.h"
 #include "CyEngine/Scene.h"
@@ -17,7 +16,7 @@ namespace Cy
 		RenderCommand::Clear();
 
 		// get the first camera.
-		Array<CameraObject*> cameras = scene->GetAllObjectsOfType<CameraObject>();
+		Array<CameraComponent*> cameras = scene->GetAllComponentsOfType<CameraComponent>();
 		if (cameras.Count() == 0)
 		{
 			CY_CORE_ERROR("Unable to render as no cameras exist in scene! ");

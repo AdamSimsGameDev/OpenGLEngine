@@ -1,5 +1,5 @@
 #pragma once
-#include "CyEngine/Core.h"
+#include "CoreMinimal.h"
 #include "CyEngine/Objects/Object.h"
 #include "generated/Component.gen.h"
 
@@ -13,5 +13,8 @@ namespace Cy
 	public:
 		virtual void Start() override;
 		virtual void End() override;
+		virtual void Tick(float deltaTime) { }
+
+		class SceneObject* GetOwner() const;
 	};
 }

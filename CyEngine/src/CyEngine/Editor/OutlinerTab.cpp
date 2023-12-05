@@ -24,13 +24,12 @@ namespace Cy
 				arr.Add(*so->Name);
 			}
 
-			int height_in_items;
 			float item_height = ImGui::GetTextLineHeightWithSpacing();
 			float available_height = ImGui::GetContentRegionMax().y - (ImGui::GetStyle().FramePadding.y * 2.0f);
-			int available_count = floor(available_height / item_height) - 2;
+			float available_count = floor(available_height / item_height) - 2;
 
 			ImGui::SetNextItemWidth(-1);
-			if (ImGui::ListBox("##Outliner", &current_item, *arr, arr.Count(), available_count))
+			if (ImGui::ListBox("##Outliner", &current_item, *arr, arr.Count(), (int)available_count))
 			{
 				scene->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(scene->GetSceneObjects()[current_item]).MakeWeak();
 			}

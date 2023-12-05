@@ -16,7 +16,10 @@ namespace Cy
 
     void SceneObject::Tick(float deltaTime)
     {
-
+        for (auto& component : m_Components)
+        {
+            component->Tick(deltaTime);
+        }
     }
 
     void SceneObject::AddComponent(Component* component)

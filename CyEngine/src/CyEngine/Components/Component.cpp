@@ -1,6 +1,7 @@
 #include "cypch.h"
 #include "Component.h"
 #include "CyEngine/Scene.h"
+#include "CyEngine/Objects/SceneObject.h"
 
 namespace Cy
 {
@@ -12,5 +13,10 @@ namespace Cy
 	void Component::End()
 	{
 		Scene::UnregisterComponent(this);
+	}
+
+	SceneObject* Component::GetOwner() const
+	{
+		return GetParent<SceneObject>();
 	}
 }

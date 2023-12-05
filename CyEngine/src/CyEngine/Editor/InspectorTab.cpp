@@ -16,9 +16,9 @@ namespace Cy
 		return PropertyFieldBase::RenderPropertyOfType(obj, objectClass, prop);
 	}
 
-	void InspectorTab::RenderObject(void* obj, const Class* cl)
+	void InspectorTab::RenderObject(void* obj, const Class* cl, bool showHeader)
 	{
-		RenderObjectClass(obj, cl);
+		RenderObjectClass(obj, cl, showHeader);
 	}
 
 	void SetClipboardText(String text)
@@ -49,9 +49,9 @@ namespace Cy
 		return text;
 	}
 
-	void InspectorTab::RenderObjectClass(void* obj, const Class* cl)
+	void InspectorTab::RenderObjectClass(void* obj, const Class* cl, bool showHeader)
 	{
-		//if (ImGui::TreeNode(*cl->Name))
+		if (!showHeader || ImGui::CollapsingHeader(*cl->Name, ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			for (const auto& pair : cl->Properties)
 			{
@@ -62,7 +62,7 @@ namespace Cy
 				// if we are an array we need to do something slightly different.
 				if (pair.second.IsArray)
 				{
-					size_t s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
+					int s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
 					// draw the array header, and then the individual sub-properties.
 					if (ImGui::TreeNode(*pair.first, *String::Format("%s [%i]", *pair.first, s)))
 					{
@@ -72,8 +72,8 @@ namespace Cy
 							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
 							arr->AddDefault();
 						}
-						Array<size_t> toRemove;
-						for (size_t i = 0; i < s; i++)
+						Array<int> toRemove;
+						for (int i = 0; i < s; i++)
 						{
 							std::pair<Cy::String, Cy::ClassProperty> n = pair;
 							n.first = n.first + "." + Cy::String::ToString((int)i);
@@ -87,7 +87,7 @@ namespace Cy
 								continue;
 							}
 						}
-						for (size_t t : toRemove)
+						for (int t : toRemove)
 						{
 							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
 							arr->RemoveAt(t);
@@ -113,7 +113,7 @@ namespace Cy
 				const Class* ncl = Class::GetClassFromName(pair.second.Type);
 				if (ncl)
 				{
-					RenderObjectClass(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj), ncl);
+					RenderObjectClass(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj), ncl, true);
 				}
 			}
 
@@ -122,22 +122,9 @@ namespace Cy
 			{
 				for (const auto& comp : so->GetComponents())
 				{
-					RenderObject(comp, comp->GetClass());
+					RenderObject(comp, comp->GetClass(), true);
 				}
 			}
-
-			//if (ImGui::Button("Copy to Clipboard"))
-			//{
-			//	String json = JSONUtility::ConvertToJson(obj, cl);
-			//	CY_CORE_LOG("JSON generated:\n{0}", *json);
-			//	SetClipboardText(json);
-			//}
-			//if (ImGui::Button("Paste from Clipboard"))
-			//{
-			//	JSONUtility::ConvertFromJson(GetClipboardText(), obj, cl);
-			//}
-
-			// ImGui::TreePop();
 		}
 	}
 
@@ -148,7 +135,7 @@ namespace Cy
 		Scene* scene = Scene::Get();
 		if (scene && scene->CurrentSelectedObject)
 		{
-			RenderObject(scene->CurrentSelectedObject, scene->CurrentSelectedObject->GetClass());
+			RenderObject(scene->CurrentSelectedObject, scene->CurrentSelectedObject->GetClass(), false);
 		}
 
 		ImGui::End();

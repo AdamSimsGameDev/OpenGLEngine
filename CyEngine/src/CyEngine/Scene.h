@@ -45,7 +45,7 @@ namespace Cy
 		void DestroyObject(SceneObject* obj);
 
 		template<typename ComponentType>
-		Array<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
+		Array<ComponentType*> GetAllComponentsOfType() const { return *reinterpret_cast<Array<ComponentType*>*>(&GetAllComponentsOfType(ComponentType::GetStaticClass()->Name)); }
 		Array<Component*> GetAllComponentsOfType(String typeName) const;
 
 		template<typename ObjectType>
