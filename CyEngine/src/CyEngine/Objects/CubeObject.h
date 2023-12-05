@@ -15,6 +15,7 @@ namespace Cy
 		CubeObject();
 
 	private:
+		PROPERTY()
 		MeshComponent* m_MeshComponent;
 	};
 }

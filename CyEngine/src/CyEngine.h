@@ -3,7 +3,7 @@
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
 #include "CyEngine/Serialization/Serialization.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 #include "CyEngine/Application.h"
 #include "CyEngine/Log.h"
 #include "CyEngine/EntryPoint.h"

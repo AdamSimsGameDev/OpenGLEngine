@@ -35,6 +35,6 @@ namespace Cy
 	private:
 		static ObjectManager* Instance;
 
-		std::unordered_map<GUID, SharedPtr<Object>> ObjectMap;
+		std::unordered_map<guid, SharedPtr<Object>> ObjectMap;
 	};
 }

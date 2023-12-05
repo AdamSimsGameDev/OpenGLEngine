@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Objects/SceneObject.h"
 #include "ObjectManager.h"
-#include "generated/Scene.gen.h"
+#include "generated/World.gen.h"
 
 namespace Cy
 {
@@ -14,12 +14,12 @@ namespace Cy
 	class MeshComponent;
 
 	CLASS()
-	class Scene : public Object
+	class World : public Object
 	{
-		GENERATED_CLASS(Scene);
+		GENERATED_CLASS(World);
 
 	public:
-		Scene();
+		World();
 
 		virtual void Tick(float deltaTime);
 
@@ -37,7 +37,7 @@ namespace Cy
 			t->GetTransform().SetRotation(rotation);
 			t->GetTransform().SetScale(scale);
 			m_SceneObjects.Emplace(t);
-			t->OwningScene = ObjectManager::GetSharedPtrTyped<Scene>(this).MakeWeak();
+			t->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
 			t->Start();
 			return t;
 		}
@@ -45,7 +45,7 @@ namespace Cy
 		void DestroyObject(SceneObject* obj);
 
 		template<typename ComponentType>
-		Array<ComponentType*> GetAllComponentsOfType() const { return reinterpret_cast<std::vector<ComponentType*>(GetAllComponentsOfType(ComponentType::ClassNameStatic())); }
+		Array<ComponentType*> GetAllComponentsOfType() const { return *reinterpret_cast<Array<ComponentType*>*>(&GetAllComponentsOfType(ComponentType::GetStaticClass()->Name)); }
 		Array<Component*> GetAllComponentsOfType(String typeName) const;
 
 		template<typename ObjectType>
@@ -68,7 +68,7 @@ namespace Cy
 		// the current selected object.
 		WeakPtr<SceneObject> CurrentSelectedObject = nullptr;
 
-		static Scene* Get() { return s_Scene; }
+		static World* Get() { return s_Scene; }
 
 	protected:
 		// Storage of all existing SceneObjects
@@ -81,7 +81,7 @@ namespace Cy
 		virtual void UnregisterComponent_Internal(Component* component);
 
 	private:
-		static Scene* s_Scene;
+		static World* s_Scene;
 	};
 }
 

@@ -2,14 +2,15 @@
 #include "ClassLibrary.h"
 
 #include "MeshComponent.gen.h"
+#include "CameraComponent.gen.h"
 #include "Component.gen.h"
-#include "CameraObject.gen.h"
 #include "CubeObject.gen.h"
 #include "Object.gen.h"
 #include "PlaneObject.gen.h"
 #include "SceneObject.gen.h"
-#include "Scene.gen.h"
+#include "Mesh.gen.h"
 #include "Transform.gen.h"
+#include "World.gen.h"
 
 
 namespace Cy
@@ -17,14 +18,15 @@ namespace Cy
 	std::unordered_map<String, Cy::ClassLibrary::ScriptFunction> ClassLibrary::ClassMap =
 	{
 		{ "MeshComponent", &MeshComponentClass::Get },
+{ "CameraComponent", &CameraComponentClass::Get },
 { "Component", &ComponentClass::Get },
-{ "CameraObject", &CameraObjectClass::Get },
 { "CubeObject", &CubeObjectClass::Get },
 { "Object", &ObjectClass::Get },
 { "PlaneObject", &PlaneObjectClass::Get },
 { "SceneObject", &SceneObjectClass::Get },
-{ "Scene", &SceneClass::Get },
+{ "Mesh", &MeshClass::Get },
 { "Transform", &TransformClass::Get },
+{ "World", &WorldClass::Get },
 
 	};
 }

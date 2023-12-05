@@ -8,12 +8,12 @@ namespace Cy
 {
 	class MeshComponent;
 	class Shader;
-	class Scene;
+	class World;
 
 	class Renderer
 	{
 	public:
-		static void BeginScene(Scene* scene);
+		static void BeginScene(World* scene);
 		static void EndScene();
 
 		static void Submit(MeshComponent* comp);

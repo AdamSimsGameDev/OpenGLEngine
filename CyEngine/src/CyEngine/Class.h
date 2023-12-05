@@ -199,7 +199,7 @@ namespace Cy
 			return c + (index * arr->GetElementSize());
 		}
 
-		size_t GetArraySizeFromName(String property_name, String property_type, void* obj) const
+		int GetArraySizeFromName(String property_name, String property_type, void* obj) const
 		{
 			const ClassProperty* prop = GetPropertyFromName(property_name);
 			if (prop == nullptr || !prop->IsArray || String(prop->Type) != property_type)

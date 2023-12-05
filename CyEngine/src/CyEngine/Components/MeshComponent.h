@@ -7,6 +7,11 @@ namespace Cy
     class Mesh;
     class Shader;
 
+    enum class MeshComponentType : uint8_t
+    {
+        Cube
+    };
+
     CLASS()
     class MeshComponent : public Component
     {
@@ -23,6 +28,9 @@ namespace Cy
 
         PROPERTY()
         bool bIsVisible = true;
+
+        PROPERTY()
+        MeshComponentType Type;
 
     private:
         Shader* m_Shader;

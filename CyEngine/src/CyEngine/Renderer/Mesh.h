@@ -1,6 +1,6 @@
 #pragma once
-
 #include "CyEngine/Core.h"
+#include "generated/Mesh.gen.h"
 
 namespace Cy
 {
@@ -8,11 +8,11 @@ namespace Cy
 	class IndexBuffer;
 	class VertexArray;
 
-	struct String;
-	struct Vector3;
-
+	CLASS()
 	class Mesh
 	{
+		GENERATED_CLASS(Mesh)
+
 		friend class Renderer;
 
 	public:

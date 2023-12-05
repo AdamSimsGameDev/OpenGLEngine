@@ -1,7 +1,7 @@
 #include "cypch.h"
 #include "SceneObject.h"
 #include "CyEngine/Components/Component.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 
 namespace Cy
 {
@@ -11,12 +11,30 @@ namespace Cy
         {
             component->Destroy();
         }
-        GetScene()->DestroyObject(this);
+        GetWorld()->DestroyObject(this);
     }
 
     void SceneObject::Tick(float deltaTime)
     {
+        for (auto& component : m_Components)
+        {
+            component->Tick(deltaTime);
+        }
+    }
 
+    void SceneObject::SetParent(Object* parent)
+    {
+        if (SceneObject* so = GetParent<SceneObject>())
+        {
+            so->m_Children.Remove(this);
+        }
+
+        Object::SetParent(parent);
+
+        if (SceneObject* so = GetParent<SceneObject>())
+        {
+            so->m_Children.Add(this);
+        }
     }
 
     void SceneObject::AddComponent(Component* component)

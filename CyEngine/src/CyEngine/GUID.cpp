@@ -41,9 +41,9 @@ namespace Cy
         return ss.str();
     }
 
-    GUID Cy::GUID::Make()
+    guid Cy::guid::Make()
     {
-        GUID guid;
+        guid guid;
         guid.Value = generate_guid();
         return guid;
     }

@@ -1,7 +1,7 @@
 #pragma once
-#include "SceneObject.h"
+#include "Component.h"
 #include <glm/glm.hpp>
-#include "generated/CameraObject.gen.h"
+#include "generated/CameraComponent.gen.h"
 
 namespace Cy
 {
@@ -23,16 +23,15 @@ namespace Cy
 	};
 
 	CLASS()
-	class CameraObject : public SceneObject
+	class CameraComponent : public Component
 	{
-		GENERATED_CLASS(CameraObject)
+		GENERATED_CLASS(CameraComponent)
 
 	public:
-		CameraObject() : SceneObject(), m_ProjectionMatrix(1.0f), m_ViewMatrix(1.0f), m_ProjectionViewMatrix(1.0f)
+		CameraComponent() : Component(), m_ProjectionMatrix(1.0f), m_ViewMatrix(1.0f), m_ProjectionViewMatrix(1.0f)
 		{
-			Name = "Camera";
 		}
-		virtual ~CameraObject() { }
+		virtual ~CameraComponent() { }
 
 		virtual void Tick(float deltaTime) override;
 

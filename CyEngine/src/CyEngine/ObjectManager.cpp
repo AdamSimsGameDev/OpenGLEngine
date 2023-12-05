@@ -28,7 +28,7 @@ namespace Cy
 
     void ObjectManager::RegisterObject(Object* obj)
     {
-        GUID guid = GUID::Make();
+        guid guid = guid::Make();
         ObjectMap.emplace(guid, SharedPtr(obj));
         obj->ObjectGUID = guid;
     }

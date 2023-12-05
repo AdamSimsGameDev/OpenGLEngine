@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CyEngine/Core.h"
+#include "CyEngine/GUID.h"
 #include "generated/Object.gen.h"
 
 namespace Cy
@@ -27,8 +28,10 @@ namespace Cy
 		template<typename ObjectType>
 		ObjectType* GetParentChecked() const { return CastChecked<ObjectType>(m_Parent); }
 
+		const guid& GetGUID() const;
+
 	private:
 		Object* m_Parent;
-		GUID ObjectGUID;
+		guid ObjectGUID;
 	};
 }

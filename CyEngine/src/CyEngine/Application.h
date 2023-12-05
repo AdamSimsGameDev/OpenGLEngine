@@ -12,7 +12,6 @@
 namespace Cy
 {
 	class EditorLayer;
-	class Scene;
 
 	class CY_API Application
 	{

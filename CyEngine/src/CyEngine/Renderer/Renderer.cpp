@@ -1,23 +1,22 @@
 #include "cypch.h"
 #include "Renderer.h"
-
+#include "CyEngine/Components/CameraComponent.h"
 #include "CyEngine/Components/MeshComponent.h"
-#include "CyEngine/Objects/CameraObject.h"
 #include "CyEngine/Renderer/Mesh.h"
 #include "CyEngine/Renderer/Shader.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 
 namespace Cy
 {
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
 
-	void Renderer::BeginScene(Scene* scene)
+	void Renderer::BeginScene(World* scene)
 	{
 		RenderCommand::SetClearColour({ 0.2f, 0.2f, 0.2f, 1.0f });
 		RenderCommand::Clear();
 
 		// get the first camera.
-		Array<CameraObject*> cameras = scene->GetAllObjectsOfType<CameraObject>();
+		Array<CameraComponent*> cameras = scene->GetAllComponentsOfType<CameraComponent>();
 		if (cameras.Count() == 0)
 		{
 			CY_CORE_ERROR("Unable to render as no cameras exist in scene! ");
