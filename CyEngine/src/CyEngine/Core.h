@@ -19,17 +19,12 @@
 #define BIND_EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 #define BIND_EVENT_FUNC_STATIC(x) std::bind(&x)
 
-template<typename To, typename From>
-static To* Cast(From* from)
+template <typename Target, typename Source>
+inline Target* Cast(Source* x)
 {
-	if (from)
-	{
-		if (auto cast = static_cast<To*>(from))
-		{
-			return cast;
-		}
-	}
-	return nullptr;
+	Target* tmp = dynamic_cast<Target*>(x);
+	if (tmp == nullptr) return nullptr;
+	return tmp;
 }
 
 #define GET_NAME(x) typeid(x).name()

@@ -50,7 +50,7 @@ namespace Cy
 		if (int* i = cl->GetPropertyValueFromName<int>(prop.first, obj))
 		{
 			ItemLabel(prop.first);
-			ImGui::DragInt(*prop.first, i);
+			ImGui::DragInt(*String::Format("##%s", *prop.first), i);
 			return true;
 		}
 		return false;
@@ -62,7 +62,7 @@ namespace Cy
 		if (float* i = cl->GetPropertyValueFromName<float>(prop.first, obj))
 		{
 			ItemLabel(prop.first);
-			ImGui::DragFloat(*prop.first, i);
+			ImGui::DragFloat(*String::Format("##%s", *prop.first), i);
 			return true;
 		}
 		return false;
@@ -74,7 +74,7 @@ namespace Cy
 		if (bool* i = cl->GetPropertyValueFromName<bool>(prop.first, obj))
 		{
 			ItemLabel(prop.first);
-			ImGui::Checkbox(*prop.first, i);
+			ImGui::Checkbox(*String::Format("##%s", *prop.first), i);
 			return true;
 		}
 		return false;
@@ -107,7 +107,7 @@ namespace Cy
 		{
 			ItemLabel(prop.first);
 			float pos[2]{ i->x, i->y };
-			ImGui::DragFloat2(*prop.first, pos);
+			ImGui::DragFloat2(*String::Format("##%s", *prop.first), pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			return true;
@@ -122,7 +122,7 @@ namespace Cy
 		{
 			ItemLabel(prop.first);
 			float pos[3]{ i->x, i->y, i->z };
-			ImGui::DragFloat3(*prop.first, pos);
+			ImGui::DragFloat3(*String::Format("##%s", *prop.first), pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			i->z = pos[2];
@@ -138,7 +138,7 @@ namespace Cy
 		{
 			ItemLabel(prop.first);
 			float pos[4]{ i->x, i->y, i->z, i->w };
-			ImGui::DragFloat3(*prop.first, pos);
+			ImGui::DragFloat3(*String::Format("##%s", *prop.first), pos);
 			i->x = pos[0];
 			i->y = pos[1];
 			i->z = pos[2];
@@ -156,7 +156,7 @@ namespace Cy
 			ItemLabel(prop.first);
 			Vector3 v = Quat::ToEuler(*i);
 			float rot[3]{ v.x, v.y, v.z };
-			ImGui::DragFloat3(*prop.first, rot);
+			ImGui::DragFloat3(*String::Format("##%s", *prop.first), rot);
 			*i = Quat::FromEuler({ rot[0], rot[1], rot[2] });
 			return true;
 		}

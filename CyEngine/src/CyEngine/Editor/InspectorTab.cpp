@@ -117,12 +117,15 @@ namespace Cy
 				}
 			}
 
-			SceneObject* so = cl->Name == "SceneObject" ? Cast<SceneObject>(obj) : nullptr;
-			if (so)
+			// TODO: solve this fuckin mess
+			if (cl->Name == "SceneObject" || cl->Name == "CubeObject")
 			{
-				for (const auto& comp : so->GetComponents())
+				if (SceneObject* so = reinterpret_cast<SceneObject*>(obj))
 				{
-					RenderObject(comp, comp->GetClass(), true);
+					for (const auto& comp : so->GetComponents())
+					{
+						RenderObject(comp, comp->GetClass(), true);
+					}
 				}
 			}
 		}
