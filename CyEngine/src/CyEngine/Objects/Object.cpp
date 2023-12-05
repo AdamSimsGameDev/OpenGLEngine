@@ -29,4 +29,9 @@ namespace Cy
 	{
 		m_Parent = parent;
 	}
+
+	const guid& Object::GetGUID() const
+	{
+		return ObjectGUID;
+	}
 }

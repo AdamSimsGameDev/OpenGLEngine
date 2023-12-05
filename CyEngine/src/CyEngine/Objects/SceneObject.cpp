@@ -22,6 +22,21 @@ namespace Cy
         }
     }
 
+    void SceneObject::SetParent(Object* parent)
+    {
+        if (SceneObject* so = GetParent<SceneObject>())
+        {
+            so->m_Children.Remove(this);
+        }
+
+        Object::SetParent(parent);
+
+        if (SceneObject* so = GetParent<SceneObject>())
+        {
+            so->m_Children.Add(this);
+        }
+    }
+
     void SceneObject::AddComponent(Component* component)
     {
         component->SetParent(this);

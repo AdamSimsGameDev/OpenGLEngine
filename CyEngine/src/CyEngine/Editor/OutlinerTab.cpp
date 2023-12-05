@@ -5,33 +5,81 @@
 
 namespace Cy
 {
+	void RenderTree(const Array<SceneObject*>& objects, SceneObject*& currentItem, bool isRoot = false)
+	{
+		static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DefaultOpen;
+
+		for (int i = 0; i < objects.Count(); i++)
+		{
+			if (!objects[i] || (isRoot && objects[i]->GetParent<SceneObject>()))
+			{
+				continue;
+			}
+
+			ImGuiTreeNodeFlags node_flags = base_flags;
+			const bool is_selected = currentItem == objects[i];
+			if (is_selected)
+				node_flags |= ImGuiTreeNodeFlags_Selected;
+			if (objects[i]->GetChildCount() == 0)
+				node_flags |= ImGuiTreeNodeFlags_Leaf;
+			if (i < 3)
+			{
+				bool node_open = ImGui::TreeNodeEx(*(objects[i]->GetGUID().Value), node_flags, *String::Format("%s", objects[i]->Name));
+				if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+					currentItem = objects[i];
+				if (ImGui::BeginDragDropSource())
+				{
+					ImGui::SetDragDropPayload("_OUTLINER", &objects[i], sizeof(SceneObject*));
+					ImGui::EndDragDropSource();
+				}
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_OUTLINER"))
+					{
+						SceneObject* target = *(SceneObject**)payload->Data;
+						if (target != objects[i])
+							target->SetParent(objects[i]);
+					}
+					ImGui::EndDragDropTarget();
+				}
+				if (node_open)
+				{
+					RenderTree(objects[i]->GetChildren(), currentItem);
+					ImGui::TreePop();
+				}
+			}
+		}
+	}
+
 	void OutlinerTab::OnRender()
 	{
 		ImGui::Begin("Outliner", &m_TabOpen);
 
-		// generate the items list
-		Array<const char*> arr;
 		World* scene = World::Get();
 		if (scene)
 		{
-			int current_item = -1;
-			for (SceneObject* so : scene->GetSceneObjects())
+			SceneObject* currentItem = scene->CurrentSelectedObject;
+			if (ImGui::TreeNodeEx("World##Outliner", ImGuiTreeNodeFlags_DefaultOpen))
 			{
-				if (scene->CurrentSelectedObject == so)
+				if (ImGui::BeginDragDropTarget())
 				{
-					current_item = arr.Count();
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_OUTLINER"))
+					{
+						SceneObject* target = *(SceneObject**)payload->Data;
+						target->SetParent(nullptr);
+					}
+					ImGui::EndDragDropTarget();
 				}
-				arr.Add(*so->Name);
-			}
 
-			float item_height = ImGui::GetTextLineHeightWithSpacing();
-			float available_height = ImGui::GetContentRegionMax().y - (ImGui::GetStyle().FramePadding.y * 2.0f);
-			float available_count = floor(available_height / item_height) - 2;
+				const Array<SceneObject*> objects = scene->GetSceneObjects();
+				RenderTree(objects, currentItem, true);
 
-			ImGui::SetNextItemWidth(-1);
-			if (ImGui::ListBox("##Outliner", &current_item, *arr, arr.Count(), (int)available_count))
-			{
-				scene->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(scene->GetSceneObjects()[current_item]).MakeWeak();
+				if (currentItem != scene->CurrentSelectedObject)
+				{
+					scene->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(currentItem).MakeWeak();
+				}
+
+				ImGui::TreePop();
 			}
 		}
 

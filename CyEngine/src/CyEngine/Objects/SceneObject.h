@@ -20,8 +20,8 @@ namespace Cy
 		SceneObject() : Object(), m_Transform() { }
 
 		virtual void Destroy() override;
-
 		virtual void Tick(float deltaTime);
+		virtual void SetParent(Object* parent) override;
 
 		const Transform& GetTransform() const { return m_Transform; }
 		Transform& GetTransform() { return m_Transform; }
@@ -38,6 +38,9 @@ namespace Cy
 
 		const Array<Component*>& GetComponents() const { return m_Components; }
 
+		const Array<SceneObject*> GetChildren() const { return m_Children; }
+		int GetChildCount() const { return m_Children.Count(); }
+
 		World* GetWorld() const { return OwningWorld.Get(); }
 
 	public:
@@ -49,8 +52,9 @@ namespace Cy
 		Transform m_Transform;
 
 		Array<Component*> m_Components;
+		Array<SceneObject*> m_Children;
 
-		// the scene that we belong to. 
+	private:
 		WeakPtr<World> OwningWorld;
 	};
 }
