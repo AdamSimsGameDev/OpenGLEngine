@@ -4,13 +4,13 @@
 #include "CyEngine/Components/MeshComponent.h"
 #include "CyEngine/Renderer/Mesh.h"
 #include "CyEngine/Renderer/Shader.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 
 namespace Cy
 {
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
 
-	void Renderer::BeginScene(Scene* scene)
+	void Renderer::BeginScene(World* scene)
 	{
 		RenderCommand::SetClearColour({ 0.2f, 0.2f, 0.2f, 1.0f });
 		RenderCommand::Clear();

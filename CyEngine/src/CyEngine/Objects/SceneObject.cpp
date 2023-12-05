@@ -1,7 +1,7 @@
 #include "cypch.h"
 #include "SceneObject.h"
 #include "CyEngine/Components/Component.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 
 namespace Cy
 {
@@ -11,7 +11,7 @@ namespace Cy
         {
             component->Destroy();
         }
-        GetScene()->DestroyObject(this);
+        GetWorld()->DestroyObject(this);
     }
 
     void SceneObject::Tick(float deltaTime)

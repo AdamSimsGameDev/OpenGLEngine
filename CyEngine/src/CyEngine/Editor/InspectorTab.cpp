@@ -5,7 +5,7 @@
 #include "CyEngine/Components/Component.h"
 #include "CyEngine/Editor/PropertyField.h"
 #include "CyEngine/Objects/SceneObject.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 #include "CyEngine/Serialization/Serialization.h"
 #include "CyEngine/JSON/JSONUtility.h"
 
@@ -135,7 +135,7 @@ namespace Cy
 	{
 		ImGui::Begin("Inspector", &m_TabOpen);
 
-		Scene* scene = Scene::Get();
+		World* scene = World::Get();
 		if (scene && scene->CurrentSelectedObject)
 		{
 			RenderObject(scene->CurrentSelectedObject, scene->CurrentSelectedObject->GetClass(), false);

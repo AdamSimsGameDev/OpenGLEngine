@@ -7,14 +7,14 @@
 namespace Cy
 {
 	class Component;
-	class Scene;
+	class World;
 
 	CLASS()
 	class SceneObject : public Object
 	{
 		GENERATED_CLASS(SceneObject)
 
-		friend class Scene;
+		friend class World;
 
 	public:
 		SceneObject() : Object(), m_Transform() { }
@@ -38,7 +38,7 @@ namespace Cy
 
 		const Array<Component*>& GetComponents() const { return m_Components; }
 
-		Scene* GetScene() const { return OwningScene.Get(); }
+		World* GetWorld() const { return OwningWorld.Get(); }
 
 	public:
 		PROPERTY()
@@ -51,6 +51,6 @@ namespace Cy
 		Array<Component*> m_Components;
 
 		// the scene that we belong to. 
-		WeakPtr<Scene> OwningScene;
+		WeakPtr<World> OwningWorld;
 	};
 }

@@ -9,8 +9,8 @@
 #include "PlaneObject.gen.h"
 #include "SceneObject.gen.h"
 #include "Mesh.gen.h"
-#include "Scene.gen.h"
 #include "Transform.gen.h"
+#include "World.gen.h"
 
 
 namespace Cy
@@ -25,8 +25,8 @@ namespace Cy
 { "PlaneObject", &PlaneObjectClass::Get },
 { "SceneObject", &SceneObjectClass::Get },
 { "Mesh", &MeshClass::Get },
-{ "Scene", &SceneClass::Get },
 { "Transform", &TransformClass::Get },
+{ "World", &WorldClass::Get },
 
 	};
 }

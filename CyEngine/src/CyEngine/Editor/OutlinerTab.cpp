@@ -1,7 +1,7 @@
 #include "cypch.h"
 #include <imgui.h>
 #include "OutlinerTab.h"
-#include "CyEngine/Scene.h"
+#include "CyEngine/World.h"
 
 namespace Cy
 {
@@ -11,7 +11,7 @@ namespace Cy
 
 		// generate the items list
 		Array<const char*> arr;
-		Scene* scene = Scene::Get();
+		World* scene = World::Get();
 		if (scene)
 		{
 			int current_item = -1;

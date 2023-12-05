@@ -1,13 +1,13 @@
 #include "cypch.h"
-#include "Scene.h"
+#include "World.h"
 #include "Components/CameraComponent.h"
 #include "Components/MeshComponent.h"
 
 namespace Cy
 {
-	Scene* Scene::s_Scene = nullptr;
+	World* World::s_Scene = nullptr;
 
-	Scene::Scene()
+	World::World()
 	{
 		s_Scene = this;
 
@@ -15,7 +15,7 @@ namespace Cy
 		ADD_TRACKED_COMPONENT_TYPE(CameraComponent);
 	}
 
-	void Scene::Tick(float deltaTime)
+	void World::Tick(float deltaTime)
 	{
 		for (auto obj : m_SceneObjects)
 		{
@@ -28,13 +28,13 @@ namespace Cy
 		}
 	}
 
-	void Scene::DestroyObject(SceneObject* obj)
+	void World::DestroyObject(SceneObject* obj)
 	{
 		ObjectManager::DestroyObject(obj);
 		m_SceneObjects.Remove(obj);
 	}
 
-	Array<Component*> Scene::GetAllComponentsOfType(String typeName) const
+	Array<Component*> World::GetAllComponentsOfType(String typeName) const
 	{
 		const auto it = TrackedComponents.find(typeName);
 		if (it != TrackedComponents.end())
@@ -44,22 +44,22 @@ namespace Cy
 		return Array<Component*>();
 	}
 
-	Array<SceneObject*> Scene::GetSceneObjects() const
+	Array<SceneObject*> World::GetSceneObjects() const
 	{
 		return m_SceneObjects;
 	}
 
-	void Scene::RegisterComponent(Component* component)
+	void World::RegisterComponent(Component* component)
 	{
 		s_Scene->RegisterComponent_Internal(component);
 	}
 
-	void Scene::UnregisterComponent(Component* component)
+	void World::UnregisterComponent(Component* component)
 	{
 		s_Scene->UnregisterComponent_Internal(component);
 	}
 
-	void Scene::RegisterComponent_Internal(Component* component)
+	void World::RegisterComponent_Internal(Component* component)
 	{
 		CY_CORE_LOG("Registering component of type {0}", *component->GetClass()->Name);
 		const String _id = component->GetClass()->Name;
@@ -68,7 +68,7 @@ namespace Cy
 		TrackedComponents[_id].Emplace(component);
 	}
 
-	void Scene::UnregisterComponent_Internal(Component* component)
+	void World::UnregisterComponent_Internal(Component* component)
 	{
 		CY_CORE_LOG("Unregistering component of type {0}", *component->GetClass()->Name);
 		const String _id = component->GetClass()->Name;

@@ -21,7 +21,7 @@ public:
 
 	virtual void OnAttach() override
 	{
-		m_Scene = new Scene();
+		m_Scene = new World();
 		m_Scene->Start();
 
 		// Create starting camera
@@ -39,7 +39,7 @@ public:
 
 	void CopyTest(Array<int> arr)
 	{
-		for (size_t i = 0; i < arr.Count(); i++)
+		for (int i = 0; i < arr.Count(); i++)
 			CY_LOG("{0}", arr[i]);
 	}
 
@@ -54,7 +54,7 @@ public:
 	}
 
 private:
-	Scene* m_Scene;
+	World* m_Scene;
 	CameraComponent* m_Camera;
 };
 
