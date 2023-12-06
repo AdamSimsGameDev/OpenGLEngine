@@ -19,6 +19,8 @@
 #define BIND_EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 #define BIND_EVENT_FUNC_STATIC(x) std::bind(&x)
 
+#define CY_EDITOR 1
+
 template <typename Target, typename Source>
 inline Target* Cast(Source* x)
 {

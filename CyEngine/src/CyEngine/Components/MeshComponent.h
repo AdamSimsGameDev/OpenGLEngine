@@ -13,7 +13,6 @@ namespace Cy
         Cube,
         Sphere,
         Plane,
-        Cylinder,
         Custom
     };
 
@@ -31,11 +30,24 @@ namespace Cy
         Shader* GetShader() const { return m_Shader; }
         void SetShader(Shader* shader) { m_Shader = shader; }
 
+        void SetMeshType(MeshComponentType type);
+
         PROPERTY()
         bool bIsVisible = true;
 
         PROPERTY()
         MeshComponentType Type;
+
+    protected:
+#if CY_EDITOR
+        virtual void EditorTick(float deltaTime) override;
+
+        MeshComponentType LastType;
+#endif
+
+        static Mesh CubeMesh;
+        static Mesh SphereMesh;
+        static Mesh PlaneMesh;
 
     private:
         Shader* m_Shader;

@@ -173,7 +173,7 @@ namespace Cy
 	bool PropertyFieldEnum::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
 	{
 		// get the enum value from the name.
-		if (int* i = cl->GetPropertyValueFromName<int>(prop.first, obj))
+		if (uint8_t* i = cl->GetPropertyValueFromName<uint8_t>(prop.first, obj))
 		{
 			Array<String> items;
 			int size = Class::GetEnumLength(prop.second.Type);

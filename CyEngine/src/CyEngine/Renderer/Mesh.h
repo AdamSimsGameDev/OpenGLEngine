@@ -17,6 +17,10 @@ namespace Cy
 
 	public:
 		Mesh(const String& name);
+		Mesh(const String& name, 
+			const std::vector<float>& vertices,
+			const std::vector<uint32_t>& triangles,
+			const std::vector<float>& normals);
 
 		void SetVertices(const std::vector<Vector3>& vertices);
 		void SetVertices(const std::vector<float>& vertices);

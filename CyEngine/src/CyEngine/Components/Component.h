@@ -15,6 +15,10 @@ namespace Cy
 		virtual void End() override;
 		virtual void Tick(float deltaTime) { }
 
+#if CY_EDITOR
+		virtual void EditorTick(float deltaTime);
+#endif
+
 		class SceneObject* GetOwner() const;
 	};
 }

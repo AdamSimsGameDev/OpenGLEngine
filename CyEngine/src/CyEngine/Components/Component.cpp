@@ -15,6 +15,13 @@ namespace Cy
 		World::UnregisterComponent(this);
 	}
 
+#if CY_EDITOR
+	void Component::EditorTick(float deltaTime)
+	{
+		// Stub
+	}
+#endif
+
 	SceneObject* Component::GetOwner() const
 	{
 		return GetParent<SceneObject>();

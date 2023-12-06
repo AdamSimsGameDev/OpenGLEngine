@@ -23,6 +23,10 @@ namespace Cy
 		virtual void Tick(float deltaTime);
 		virtual void SetParent(Object* parent) override;
 
+#if CY_EDITOR
+		virtual void EditorTick(float deltaTime);
+#endif
+
 		const Transform& GetTransform() const { return m_Transform; }
 		Transform& GetTransform() { return m_Transform; }
 
@@ -36,6 +40,18 @@ namespace Cy
 		}
 		void AddComponent(Component* component);
 
+		template<class T>
+		T* GetComponent() const
+		{
+			for (auto comp : m_Components)
+			{
+				if (T* c = Cast<T>(comp))
+				{
+					return c;
+				}
+			}
+			return nullptr;
+		}
 		const Array<Component*>& GetComponents() const { return m_Components; }
 
 		const Array<SceneObject*> GetChildren() const { return m_Children; }

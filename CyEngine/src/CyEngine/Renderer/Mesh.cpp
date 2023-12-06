@@ -11,6 +11,14 @@ namespace Cy
 		m_Name = name;
 	}
 
+	Mesh::Mesh(const String& name, const std::vector<float>& vertices, const std::vector<uint32_t>& triangles, const std::vector<float>& normals)
+	{
+		m_Name = name;
+		SetVertices(vertices);
+		SetTriangles(triangles);
+		SetNormals(normals);
+	}
+
 	void Mesh::SetVertices(const std::vector<Vector3>& vertices)
 	{
 		for (int i = 0; i < vertices.size(); i++)
