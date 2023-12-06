@@ -34,6 +34,13 @@ namespace Cy
 			{
 				CurrentCopiedObject = CurrentSelectedObject;
 			}
+
+			if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_D))
+			{
+				SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+				n->Object::CopyFrom(CurrentSelectedObject.Get());
+				CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+			}
 		}
 
 		if (CurrentCopiedObject.IsValid() && Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_V))
