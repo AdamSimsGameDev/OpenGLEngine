@@ -58,6 +58,12 @@ namespace Cy
 		World* scene = World::Get();
 		if (scene)
 		{
+			if (ImGui::Button("+##NewObject"))
+			{
+				SceneObject* so = scene->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+				so->Name = "New Object";
+			}
+
 			SceneObject* currentItem = scene->CurrentSelectedObject;
 			if (ImGui::TreeNodeEx("World##Outliner", ImGuiTreeNodeFlags_DefaultOpen))
 			{
