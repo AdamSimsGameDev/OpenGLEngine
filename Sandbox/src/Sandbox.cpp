@@ -30,8 +30,12 @@ public:
 		m_Camera = cam->CreateAndAddComponent<CameraComponent>();
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 
-		m_Scene->CreateSceneObject<CubeObject>(Vector3::Zero, Quat::Identity, Vector3::One);
-	
+		SceneObject* cube = m_Scene->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity, Vector3::One);
+		cube->Name = "Cube";
+		MeshComponent* cubeMesh = cube->CreateAndAddComponent<MeshComponent>();
+		cubeMesh->SetMeshType(MeshComponentType::Cube);
+		cubeMesh->SetShader(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
+
 		Array<int> arr;
 		arr.Add(1);
 		CopyTest(arr);

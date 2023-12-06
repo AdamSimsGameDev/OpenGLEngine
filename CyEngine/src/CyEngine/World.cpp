@@ -26,6 +26,17 @@ namespace Cy
 		{
 			CurrentSelectedObject->Destroy();
 		}
+
+#if CY_EDITOR
+		// TODO: check if we are an editor world
+		if (true)
+		{
+			for (auto obj : m_SceneObjects)
+			{
+				obj->EditorTick(deltaTime);
+			}
+		}
+#endif
 	}
 
 	void World::DestroyObject(SceneObject* obj)

@@ -173,8 +173,10 @@ namespace Cy
 	bool PropertyFieldEnum::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
 	{
 		// get the enum value from the name.
-		if (int* i = cl->GetPropertyValueFromName<int>(prop.first, obj))
+		if (uint8_t* i = cl->GetPropertyValueFromName<uint8_t>(prop.first, obj))
 		{
+			CY_LOG("before {0}", *i);
+
 			Array<String> items;
 			int size = Class::GetEnumLength(prop.second.Type);
 			for (int i = 0; i < size; i++)
@@ -189,6 +191,8 @@ namespace Cy
 
 			// update i to the new value
 			*i = Class::GetEnumElementValue(prop.second.Type, index);
+
+			CY_LOG("after {0}", *i);
 
 			return true;
 		}

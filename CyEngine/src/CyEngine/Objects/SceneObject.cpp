@@ -37,6 +37,16 @@ namespace Cy
         }
     }
 
+#if CY_EDITOR
+    void SceneObject::EditorTick(float deltaTime)
+    {
+        for (auto& component : m_Components)
+        {
+            component->EditorTick(deltaTime);
+        }
+    }
+#endif
+
     void SceneObject::AddComponent(Component* component)
     {
         component->SetParent(this);
