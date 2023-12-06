@@ -7,9 +7,14 @@ namespace Cy
     class Mesh;
     class Shader;
 
+    ENUM()
     enum class MeshComponentType : uint8_t
     {
-        Cube
+        Cube,
+        Sphere,
+        Plane,
+        Cylinder,
+        Custom
     };
 
     CLASS()

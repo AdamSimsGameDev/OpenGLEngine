@@ -19,6 +19,9 @@ static std::string class_format =
 
 static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n%s\n}\n";
 
+static std::string enum_format = "{ \"%s\", { %s } },";
+static std::string enum_entry_format = "{ %i, \"%s\" }";
+
 class ClassInfo
 {
 public:
@@ -35,6 +38,22 @@ public:
     }
 };
 
+class EnumInfo
+{
+public:
+    std::string name;
+    std::unordered_map<int, std::string> values;
+
+    EnumInfo(std::string n)
+    {
+        name = n;
+    }
+
+    void AddEnumValue(int val, std::string n)
+    {
+        values[val] = n;
+    }
+};
 
 void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
 {    

@@ -29,5 +29,9 @@ namespace Cy
 { "World", &WorldClass::Get },
 
 	};
+	std::unordered_map<String, std::unordered_map<int, String>> ClassLibrary::EnumMap =
+	{
+		{ "MeshComponentType", { { 0, "Cube" }, { 1, "Sphere" }, { 2, "Plane" }, { 3, "Cylinder" }, { 4, "Custom" } } },
+	};
 }
 

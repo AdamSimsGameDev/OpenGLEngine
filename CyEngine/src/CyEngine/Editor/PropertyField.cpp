@@ -162,4 +162,36 @@ namespace Cy
 		}
 		return false;
 	}
+
+	static bool ArrayStrGetter(void* data, int n, const char** out_str) 
+	{ 
+		*out_str = *((const String*)data)[n]; 
+		return true; 
+	}
+
+	DEFINE_PROPERTY_FIELD(PropertyFieldEnum);
+	bool PropertyFieldEnum::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	{
+		// get the enum value from the name.
+		if (int* i = cl->GetPropertyValueFromName<int>(prop.first, obj))
+		{
+			Array<String> items;
+			int size = Class::GetEnumLength(prop.second.Type);
+			for (int i = 0; i < size; i++)
+			{
+				items.Add(Class::GetEnumElementName(prop.second.Type, i));
+			}
+
+			int index = Class::GetEnumValueIndex(prop.second.Type, *i);
+
+			ItemLabel(prop.first);
+			ImGui::Combo(*String::Format("##%s", *prop.first), &index, &ArrayStrGetter, *items, size);
+
+			// update i to the new value
+			*i = Class::GetEnumElementValue(prop.second.Type, index);
+
+			return true;
+		}
+		return false;
+	}
 }

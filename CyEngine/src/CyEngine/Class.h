@@ -84,14 +84,11 @@ namespace Cy
 		const char* Type;
 		bool IsArray;
 		bool IsFixedArray;
+		bool IsEnum;
 		const std::type_info* TypeInfo;
 		std::vector<ClassPropertyMetaData> MetaData;
 		void(*Setter)(void*, void*);
 		void*(*Getter)(const void*);
-
-		//size_t(*GetArraySize)(const void*);
-		//void*(*GetArrayElement)(const void*, size_t);
-		//void(*AddArrayElement)(const void*, void*);
 
 		ClassProperty(const char name[], const char full_type[], const char type[], const std::type_info* type_id, void* (*getter)(const void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
 		{
@@ -106,8 +103,9 @@ namespace Cy
 			// array
 			IsArray = false;
 			IsFixedArray = false;
-			//GetArraySize = nullptr;
-			//GetArrayElement = nullptr;
+
+			// other props
+			IsEnum = false;
 		}
 
 		template<typename T>
@@ -130,6 +128,8 @@ namespace Cy
 		}
 	};
 
+	typedef std::pair<String, std::unordered_map<int, String>> EnumInfo;
+
 	class Class
 	{
 	public:
@@ -139,6 +139,11 @@ namespace Cy
 		const ClassProperty* GetPropertyFromName(String property_name) const;
 
 		static const Class* GetClassFromName(String class_name);
+		static bool GetEnumFromName(String enum_name, EnumInfo& outInfo);
+		static int GetEnumLength(String enum_name);
+		static String GetEnumElementName(String enum_name, int index);
+		static int GetEnumElementValue(String enum_name, int index);
+		static int GetEnumValueIndex(String enum_name, int value);
 
 		template<typename ValueType>
 		const ValueType* GetPropertyValueFromName(String property_name, const void* obj) const
@@ -154,7 +159,7 @@ namespace Cy
 		{
 			Array<String> spl = String::Split(property_name, '.');
 			const auto* prop = GetPropertyFromName(spl[0]);
-			if (prop == nullptr || String(prop->Type) != property_type)
+			if (prop == nullptr || (!prop->IsEnum && String(prop->Type) != property_type))
 			{
 				return nullptr;
 			}
@@ -165,7 +170,7 @@ namespace Cy
 		{
 			Array<String> spl = String::Split(property_name, '.');
 			const auto* prop = GetPropertyFromName(spl[0]);
-			if (prop == nullptr || prop->TypeInfo != &typeid(ValueType))
+			if (prop == nullptr || (!prop->IsEnum && prop->TypeInfo != &typeid(ValueType)))
 			{
 				return nullptr;
 			}

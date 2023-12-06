@@ -10,6 +10,7 @@ public:
     bool is_array;
     bool is_fixed_array;
     bool is_pointer;
+    bool is_enum;
     std::unordered_map<std::string, std::string> meta_data;
 
     PropertyInfo(std::string n, std::string ft, std::string t, const std::unordered_map<std::string, std::string>& m)
@@ -21,6 +22,7 @@ public:
         is_array = false;
         is_fixed_array = false;
         is_pointer = false;
+        is_enum = false;
     }
 };
 
@@ -29,6 +31,7 @@ static std::string property_constructor_format =
      \tClassProperty cp = ClassProperty(\"%s\", \"%s\", \"%s\", &typeid(%s), &%s::execGet%s, &%s::execSet%s, { %s });\n\
      \tcp.IsArray = %s;\n\
      \tcp.IsFixedArray = %s;\n\
+     \tcp.IsEnum = %s;\n\
      \tProperties.emplace(\"%s\", cp);\n\
     }\n";
 static std::string property_function_h_format = "static void* execGet%s(const void* obj);\nstatic void execSet%s(void* obj, void* val);\n";
@@ -118,6 +121,7 @@ std::string generate_property_for_constructor(PropertyInfo info, std::string cla
         property_meta_data.c_str(), 
         info.is_array ? "true" : "false", 
         info.is_fixed_array ? "true" : "false", 
+        info.is_enum ? "true" : "false",
         property_name.c_str()
     );
 }

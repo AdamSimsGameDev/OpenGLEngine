@@ -13,13 +13,14 @@ namespace Cy
 		virtual String GetType() const { return "NULL"; }
 		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const { return false; }
 
-		static bool RenderPropertyOfType(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop)
+		static bool RenderPropertyOfType(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop, const String* overrideType = nullptr)
 		{
-			if (PropertyFields.find(prop.second.Type) == PropertyFields.end())
+			String type = overrideType ? *overrideType : prop.second.Type;
+			if (PropertyFields.find(type) == PropertyFields.end())
 			{
 				return false;
 			}
-			const PropertyFieldBase* field = PropertyFields[prop.second.Type];
+			const PropertyFieldBase* field = PropertyFields[type];
 			field->RenderProperty(obj, cl, prop);
 			return true;
 		}
@@ -92,6 +93,13 @@ namespace Cy
 	struct PropertyFieldQuat : PropertyField<PropertyFieldQuat>
 	{
 		virtual String GetType() const override { return "Quat"; }
+		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
+	};
+
+	// custom fields, for custom rendering
+	struct PropertyFieldEnum : PropertyField<PropertyFieldEnum>
+	{
+		virtual String GetType() const override { return "Enum"; }
 		virtual bool RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const override;
 	};
 }

@@ -97,6 +97,14 @@ namespace Cy
 					continue;
 				}
 
+				// if we are an enum render differently.
+				if (pair.second.IsEnum)
+				{
+					static const String ENUM_NAME = "Enum";
+					PropertyFieldBase::RenderPropertyOfType(obj, cl, pair, &ENUM_NAME);
+					continue;
+				}
+
 				if (RenderProperty(obj, cl, "", pair))
 				{
 					{

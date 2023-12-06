@@ -41,6 +41,7 @@ static To* CastChecked(From* from)
 #define __CLASS__ 
 
 #define CLASS(...)
+#define ENUM(...)
 #define STRUCT(...)
 #define PROPERTY(...)
 #define GENERATED_CLASS(type) public:\

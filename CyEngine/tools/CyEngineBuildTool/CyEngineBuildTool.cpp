@@ -78,6 +78,7 @@ int main()
     FindFileNamesOfTypeInDirectory(generated_paths, generated_path, ".gen.h");
 
     std::unordered_map<std::string, ClassInfo*> found_classes;
+    std::unordered_map<std::string, EnumInfo*> found_enums;
 
     std::ifstream infile;
     for (const auto& entry : paths)
@@ -106,6 +107,7 @@ int main()
 
         bool next_line_class = false;
         bool next_line_property = false;
+        bool next_line_enum = false;
         bool has_namespace = false;
         int brace_depth = 0;
         int class_brace_depth = 0;
@@ -113,6 +115,8 @@ int main()
         std::string generated_h;
         std::string generated_cpp;
         ClassInfo* current_class = nullptr;
+        EnumInfo* current_enum = nullptr;
+        int next_enum_value = 0;
         bool found_class = false;
         bool found_generated_class = false;
         bool in_comment_block = false;
@@ -208,6 +212,7 @@ int main()
                     info.is_array = is_array;
                     info.is_fixed_array = is_fixed_array;
                     info.is_pointer = is_pointer;
+                    info.is_enum = found_enums.find(type) != found_enums.end();
                     current_class->properties.push_back(info);
                     meta_data.clear();
 
@@ -294,6 +299,76 @@ int main()
             }
             else
             {
+                if (!current_enum)
+                {
+                    if (contains(line, "ENUM("))
+                    {
+                        next_line_enum = true;
+                    }
+                    else if (next_line_enum && contains(line, "enum class "))
+                    {
+                        current_enum = new EnumInfo(split(line, ' ')[2]);
+                        next_enum_value = 0;
+                    }
+                }
+                else
+                {
+                    std::string enum_line = line;
+                    enum_line.erase(std::remove(enum_line.begin(), enum_line.end(), '\t'), enum_line.end());
+                    enum_line.erase(std::remove(enum_line.begin(), enum_line.end(), ' '), enum_line.end());
+                    enum_line.erase(std::remove(enum_line.begin(), enum_line.end(), ','), enum_line.end());
+                    // look for enum properties.
+                    if (contains(enum_line, "}"))
+                    {
+                        found_enums.emplace(current_enum->name, current_enum);
+                        current_enum = nullptr;
+                    }
+                    else if (!contains(enum_line, "{"))
+                    {
+                        // make sure that the line has content
+                        std::vector<std::string> split_line = split(enum_line, '=');
+                        // make sure the first element has cjontent
+                        if (split_line.size() == 1)
+                        {
+                            current_enum->AddEnumValue(next_enum_value, split_line[0]);
+                            next_enum_value++;
+                        }
+                        else if (split_line.size() == 2)
+                        {
+                            std::vector<std::string> split_value = split(split_line[1], '<');
+                            if (split_value.size() == 1)
+                            {
+                                split_value[0].pop_back();
+                                // just the value
+                                next_enum_value = std::stoi(split_value[0]);
+                                current_enum->AddEnumValue(next_enum_value, split_line[0]);
+                                next_enum_value++;
+                            }
+                            else
+                            {
+                                // erase any spaces, commas, brackets or extra '<' from each of the sections
+                                for (auto& s : split_value)
+                                {
+                                    s.erase(std::remove(s.begin(), s.end(), '\t'), s.end());
+                                    s.erase(std::remove(s.begin(), s.end(), ' '), s.end());
+                                    s.erase(std::remove(s.begin(), s.end(), '<'), s.end());
+                                    s.erase(std::remove(s.begin(), s.end(), '('), s.end());
+                                    s.erase(std::remove(s.begin(), s.end(), ')'), s.end());
+                                    s.erase(std::remove(s.begin(), s.end(), ','), s.end());
+                                }
+
+                                // get the two values.
+                                int x = std::stoi(split_value[0]);
+                                int y = std::stoi(split_value[1]);
+
+                                next_enum_value = x << y;
+                                current_enum->AddEnumValue(next_enum_value, split_line[0]);
+                                next_enum_value++;
+                            }
+                        }
+                    }
+                }
+
                 // check if we expect the next line to tell us the class
                 if ((contains(line, "class ") || contains(line, "struct ")) && !contains(line, ";") && !contains(line, "template<"))
                 {
@@ -428,6 +503,27 @@ int main()
     std::cout << "Creating class library!" << std::endl;
     if (found_classes.size() > 0)
     {
+        // generate the enum list string
+        std::string enum_string;
+        for (const auto& f : found_enums)
+        {
+            std::string enum_names;
+            bool first = true;
+            for (const auto& f2 : f.second->values)
+            {
+                if (!first)
+                {
+                    enum_names += ", ";
+                }
+
+                enum_names += string_format(enum_entry_format, f2.first, f2.second.c_str());
+
+                first = false;
+            }
+
+            enum_string += string_format(enum_format, f.first.c_str(), enum_names.c_str());
+        }
+
         // generate the property list string
         std::string properties_include_string;
         std::string properties_string;
@@ -440,7 +536,7 @@ int main()
         }
 
         std::ofstream outcpp(generated_path + "\\ClassLibrary.cpp");
-        outcpp << string_format(class_library_format_cpp, properties_include_string.c_str(), properties_string.c_str()) << std::endl;
+        outcpp << string_format(class_library_format_cpp, properties_include_string.c_str(), properties_string.c_str(), enum_string.c_str()) << std::endl;
         outcpp.close();
 
         std::ofstream outh(generated_path + "\\ClassLibrary.h");
