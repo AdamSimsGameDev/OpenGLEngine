@@ -22,31 +22,29 @@ namespace Cy
 				node_flags |= ImGuiTreeNodeFlags_Selected;
 			if (objects[i]->GetChildCount() == 0)
 				node_flags |= ImGuiTreeNodeFlags_Leaf;
-			if (i < 3)
+
+			bool node_open = ImGui::TreeNodeEx(*(objects[i]->GetGUID().Value), node_flags, *String::Format("%s", objects[i]->Name));
+			if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+				currentItem = objects[i];
+			if (ImGui::BeginDragDropSource())
 			{
-				bool node_open = ImGui::TreeNodeEx(*(objects[i]->GetGUID().Value), node_flags, *String::Format("%s", objects[i]->Name));
-				if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-					currentItem = objects[i];
-				if (ImGui::BeginDragDropSource())
+				ImGui::SetDragDropPayload("_OUTLINER", &objects[i], sizeof(SceneObject*));
+				ImGui::EndDragDropSource();
+			}
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_OUTLINER"))
 				{
-					ImGui::SetDragDropPayload("_OUTLINER", &objects[i], sizeof(SceneObject*));
-					ImGui::EndDragDropSource();
+					SceneObject* target = *(SceneObject**)payload->Data;
+					if (target != objects[i])
+						target->SetParent(objects[i]);
 				}
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_OUTLINER"))
-					{
-						SceneObject* target = *(SceneObject**)payload->Data;
-						if (target != objects[i])
-							target->SetParent(objects[i]);
-					}
-					ImGui::EndDragDropTarget();
-				}
-				if (node_open)
-				{
-					RenderTree(objects[i]->GetChildren(), currentItem);
-					ImGui::TreePop();
-				}
+				ImGui::EndDragDropTarget();
+			}
+			if (node_open)
+			{
+				RenderTree(objects[i]->GetChildren(), currentItem);
+				ImGui::TreePop();
 			}
 		}
 	}

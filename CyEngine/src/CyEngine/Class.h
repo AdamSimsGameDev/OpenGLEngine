@@ -134,7 +134,16 @@ namespace Cy
 	{
 	public:
 		String Name;
+		const Class* ParentClass;
 		std::unordered_map<String, ClassProperty> Properties;
+
+		template<typename T>
+		T* New() const { return (T*)New(); }
+		virtual void* New() const { return nullptr; }
+
+		template<class T>
+		bool IsChildOf() const { return IsChildOf(T::GetStaticClass()); }
+		bool IsChildOf(const Class* Other) const;
 
 		const ClassProperty* GetPropertyFromName(String property_name) const;
 

@@ -14,10 +14,12 @@ static std::string class_format =
                 %s_Instance = new %s();\n\
             }\n\
             return %s_Instance;\n\
-        }\n\n%s\n\
+        }\n\
+        virtual void* New() const override; \n\
+        \n%s\n\
     };\n";
 
-static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n%s\n}\n";
+static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n\tParentClass = %s;\n%s\n}\n";
 
 static std::string enum_format = "{ \"%s\", { %s } },";
 static std::string enum_entry_format = "{ %i, \"%s\" }";
@@ -86,10 +88,13 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
 
     cpp += true_class_name + "* " + true_class_name + "::" + true_class_name + "_Instance = nullptr;\n";
 
+    cpp += "void* " + true_class_name + "::New() const { return (void*)new " + class_info->name.c_str() + "(); }\n\n";
+
     cpp += string_format(constructor_format,
         true_class_name.c_str(),
         true_class_name.c_str(),
         class_info->name.c_str(),
+        class_info->parent_class.empty() ? "nullptr" : string_format("%sClass::Get()", class_info->parent_class.c_str()).c_str(),
         properties_string.c_str());
 
     for (const auto& prop : class_info->properties)

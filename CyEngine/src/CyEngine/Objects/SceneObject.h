@@ -23,6 +23,9 @@ namespace Cy
 		virtual void Tick(float deltaTime);
 		virtual void SetParent(Object* parent) override;
 
+		virtual void CopyFrom(ObjectCopyState& state, const Object* obj) override;
+		virtual void UpdateReferencesFrom(const ObjectCopyState& state) override;
+
 #if CY_EDITOR
 		virtual void EditorTick(float deltaTime);
 #endif

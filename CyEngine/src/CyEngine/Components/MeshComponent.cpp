@@ -25,6 +25,13 @@ namespace Cy
         { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, }
     );
 
+    void MeshComponent::Start()
+    {
+        Component::Start();
+
+        SetMeshType(Type);
+    }
+
     void MeshComponent::SetMeshType(MeshComponentType type)
     {
         Type = type;
