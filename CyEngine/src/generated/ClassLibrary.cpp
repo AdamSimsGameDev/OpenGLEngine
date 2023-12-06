@@ -5,7 +5,6 @@
 #include "CameraComponent.gen.h"
 #include "Component.gen.h"
 #include "Object.gen.h"
-#include "PlaneObject.gen.h"
 #include "SceneObject.gen.h"
 #include "Mesh.gen.h"
 #include "Transform.gen.h"
@@ -20,7 +19,6 @@ namespace Cy
 { "CameraComponent", &CameraComponentClass::Get },
 { "Component", &ComponentClass::Get },
 { "Object", &ObjectClass::Get },
-{ "PlaneObject", &PlaneObjectClass::Get },
 { "SceneObject", &SceneObjectClass::Get },
 { "Mesh", &MeshClass::Get },
 { "Transform", &TransformClass::Get },
@@ -29,7 +27,7 @@ namespace Cy
 	};
 	std::unordered_map<String, std::unordered_map<int, String>> ClassLibrary::EnumMap =
 	{
-		{ "MeshComponentType", { { 0, "Cube" }, { 1, "Sphere" }, { 2, "Plane" }, { 3, "Cylinder" }, { 4, "Custom" } } },
+		{ "MeshComponentType", { { 0, "Cube" }, { 1, "Sphere" }, { 2, "Plane" }, { 3, "Custom" } } },
 	};
 }
 

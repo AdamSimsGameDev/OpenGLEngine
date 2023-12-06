@@ -1,6 +1,6 @@
 #include <CyEngine.h>
 #include "CyEngine/Components/CameraComponent.h"
-#include <CyEngine/Objects/PlaneObject.h>
+#include "CyEngine/Components/MeshComponent.h"
 #include <CyEngine/Serialization/Serialization.h>
 
 using namespace Cy;

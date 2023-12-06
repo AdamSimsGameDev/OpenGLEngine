@@ -13,7 +13,6 @@ namespace Cy
         Cube,
         Sphere,
         Plane,
-        Cylinder,
         Custom
     };
 
@@ -47,6 +46,8 @@ namespace Cy
 #endif
 
         static Mesh CubeMesh;
+        static Mesh SphereMesh;
+        static Mesh PlaneMesh;
 
     private:
         Shader* m_Shader;
