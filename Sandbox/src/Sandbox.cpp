@@ -1,6 +1,5 @@
 #include <CyEngine.h>
 #include "CyEngine/Components/CameraComponent.h"
-#include "CyEngine/Objects/CubeObject.h"
 #include <CyEngine/Objects/PlaneObject.h>
 #include <CyEngine/Serialization/Serialization.h>
 
