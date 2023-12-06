@@ -16,6 +16,7 @@ namespace Cy
 		friend class Renderer;
 
 	public:
+		Mesh() { }
 		Mesh(const String& name);
 		Mesh(const String& name, 
 			const std::vector<float>& vertices,

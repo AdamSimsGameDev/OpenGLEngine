@@ -22,12 +22,27 @@ namespace Cy
 			obj->Tick(deltaTime);
 		}
 
-		if (Input::IsKeyPressed(CY_KEY_DELETE) && CurrentSelectedObject)
+#if CY_EDITOR
+		if (CurrentSelectedObject.IsValid())
 		{
-			CurrentSelectedObject->Destroy();
+			if (Input::IsKeyPressed(CY_KEY_DELETE))
+			{
+				CurrentSelectedObject->Destroy();
+			}
+
+			if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_C))
+			{
+				CurrentCopiedObject = CurrentSelectedObject;
+			}
 		}
 
-#if CY_EDITOR
+		if (CurrentCopiedObject.IsValid() && Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_V))
+		{
+			SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+			n->Object::CopyFrom(CurrentCopiedObject.Get());
+			CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+		}
+
 		// TODO: check if we are an editor world
 		if (true)
 		{

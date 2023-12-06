@@ -24,6 +24,8 @@ namespace Cy
         friend class Renderer;
 
     public:
+        virtual void Start() override;
+
         void SetMesh(Mesh* mesh) { m_Mesh = mesh; }
         Mesh* GetMesh() const { return m_Mesh; }
 
@@ -50,7 +52,10 @@ namespace Cy
         static Mesh PlaneMesh;
 
     private:
+        PROPERTY()
         Shader* m_Shader;
+
+        PROPERTY()
         Mesh* m_Mesh;
     };
 }

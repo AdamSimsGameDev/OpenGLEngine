@@ -37,6 +37,30 @@ namespace Cy
         }
     }
 
+    void SceneObject::CopyFrom(ObjectCopyState& state, const Object* obj)
+    {
+        Object::CopyFrom(state, obj);
+
+        const SceneObject* _obj = Cast<SceneObject>(obj);
+        for (const auto& comp : _obj->m_Components)
+        {
+            Component* nc = comp->GetClass()->New<Component>();
+            nc->CopyFrom(comp);
+            AddComponent(nc);
+        }
+    }
+
+    void SceneObject::UpdateReferencesFrom(const ObjectCopyState& state)
+    {
+        Object::UpdateReferencesFrom(state);
+
+        for (auto& comp : m_Components)
+        {
+            comp->UpdateReferencesFrom(state);
+            comp->Start();
+        }
+    }
+
 #if CY_EDITOR
     void SceneObject::EditorTick(float deltaTime)
     {

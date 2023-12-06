@@ -65,8 +65,10 @@ namespace Cy
 		static void RegisterComponent(Component* component);
 		static void UnregisterComponent(Component* component);
 
-		// the current selected object.
+#if CY_EDITOR
 		WeakPtr<SceneObject> CurrentSelectedObject = nullptr;
+		WeakPtr<SceneObject> CurrentCopiedObject = nullptr;
+#endif
 
 		static World* Get() { return s_Scene; }
 

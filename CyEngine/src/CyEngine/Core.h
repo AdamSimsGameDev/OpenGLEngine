@@ -29,6 +29,14 @@ inline Target* Cast(Source* x)
 	return tmp;
 }
 
+template <typename Target, typename Source>
+inline const Target* Cast(const Source* x)
+{
+	const Target* tmp = dynamic_cast<const Target*>(x);
+	if (tmp == nullptr) return nullptr;
+	return tmp;
+}
+
 #define GET_NAME(x) typeid(x).name()
 #define GET_NAME_SAFE(x) x ? typeid(x).name() : "NULL"
 

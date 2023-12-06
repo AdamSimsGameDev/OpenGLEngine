@@ -4,6 +4,24 @@
 
 namespace Cy
 {
+	bool Class::IsChildOf(const Class* Other) const
+	{
+		if (Other == this)
+			return true;
+
+		const Class* p = ParentClass;
+		while (p)
+		{
+			if (p == Other)
+			{
+				return true;
+			}
+			p = p->ParentClass;
+		}
+
+		return false;
+	}
+
 	const ClassProperty* Class::GetPropertyFromName(String property_name) const
 	{
 		return &(Properties.find(property_name)->second);
