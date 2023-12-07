@@ -34,6 +34,11 @@ namespace Cy
         if (SceneObject* so = GetParent<SceneObject>())
         {
             so->m_Children.Add(this);
+            m_Transform->SetParent(so->m_Transform, true);
+        }
+        else
+        {
+            m_Transform->SetParent(nullptr, true);
         }
     }
 
@@ -44,6 +49,8 @@ namespace Cy
         const SceneObject* _obj = Cast<SceneObject>(obj);
         for (const auto& comp : _obj->m_Components)
         {
+            if (comp == _obj->m_Transform)
+                continue;
             Component* nc = comp->GetClass()->New<Component>();
             nc->CopyFrom(comp);
             AddComponent(nc);
