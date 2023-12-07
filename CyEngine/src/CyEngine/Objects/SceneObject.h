@@ -70,7 +70,6 @@ namespace Cy
 		String Name;
 
 	protected:
-		PROPERTY()
 		Transform* m_Transform;
 
 		Array<Component*> m_Components;

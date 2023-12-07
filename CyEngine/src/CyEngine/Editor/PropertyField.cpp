@@ -120,7 +120,8 @@ namespace Cy
 	{
 		if (Vector3* i = cl->GetPropertyValueFromName<Vector3>(prop.first, obj))
 		{
-			ItemLabel(prop.first);
+			const ClassPropertyMetaData* displayName = prop.second.GetMetaData("DisplayName");
+			ItemLabel(displayName ? displayName->GetValue<String>() : prop.first);
 			float pos[3]{ i->x, i->y, i->z };
 			ImGui::DragFloat3(*String::Format("##%s", *prop.first), pos);
 			i->x = pos[0];

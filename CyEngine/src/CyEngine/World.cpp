@@ -57,8 +57,7 @@ namespace Cy
 				CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
 			}
 
-			// TODO: check if we are an editor world
-			if (true)
+			if (bIsEditorWorld)
 			{
 				for (auto obj : m_SceneObjects)
 				{
@@ -105,17 +104,21 @@ namespace Cy
 	{
 		bIsEditorWorld = true;
 		// spawn editor camera
+		SceneObject* cameraParent = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
+		cameraParent->Name = "Camera Parent";
 #if 1
 		EditorCamera = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
-		EditorCamera->Name = "Main Camera";
+		EditorCamera->Name = "Editor Camera";
 #elif
 		EditorCamera = ObjectManager::CreateObject<SceneObject>();
-		EditorCamera->Name = "Main Camera";
+		EditorCamera->Name = "Editor Camera";
 		EditorCamera->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
-		EditorCamera->GetTransform()->SetPosition(Vector3(0, 0.5f, -4));
+		EditorCamera->GetTransform()->SetPosition(Vector3(0, 0, 0));
 		EditorCamera->GetTransform()->SetScale(Vector3::One);
 		EditorCamera->Start();
 #endif
+		EditorCamera->SetParent(cameraParent);
+
 		EditorCameraComponent* m_Camera = EditorCamera->CreateAndAddComponent<EditorCameraComponent>();
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 	}

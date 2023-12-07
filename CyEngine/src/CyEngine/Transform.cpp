@@ -3,9 +3,18 @@
 
 namespace Cy
 {
+#if CY_EDITOR
+	void Transform::EditorTick(float deltaTime)
+	{
+		LocalRotation = Quat::FromEuler(EulerAngles);
+		SetDirty();
+	}
+#endif
+
 	void Transform::SetPosition(Vector3 position)
 	{ 
-		LocalPosition = InverseTransformPoint(position);
+		LocalPosition = Parent ? InverseTransformPoint(position) : position;
+		SetDirty();
 	}
 
 	void Transform::AddPosition(Vector3 position)
@@ -16,11 +25,13 @@ namespace Cy
 	void Transform::SetRotation(Quat rotation)
 	{
 		LocalRotation = rotation;
+		EulerAngles = Quat::ToEuler(LocalRotation);
+		SetDirty();
 	}
 
 	void Transform::Rotate(Quat rotation)
 	{
-		LocalRotation = LocalRotation * rotation;
+		SetRotation(LocalRotation * rotation);
 	}
 
 	void Transform::RotateAround(const Vector3& point, float degs, const Vector3& axis)
@@ -50,16 +61,32 @@ namespace Cy
 		return mat;
 	}
 
-	void Transform::SetParent(Transform* parent)
+	void Transform::SetParent(Transform* parent, bool keepTransform)
 	{
 		if (Parent != nullptr)
 		{
 			Parent->Children.Remove(this);
 		}
+
+		Transform* lastParent = Parent;
 		Parent = parent;
+
 		if (Parent)
 		{
 			Parent->Children.Add(this);
+
+			if (keepTransform)
+			{
+				LocalPosition = LocalPosition - Parent->GetPosition();
+				LocalRotation = Quat::Inverse(Parent->GetRotation()) * LocalRotation;
+				LocalScale = LocalScale / Parent->GetScale();
+			}
+		}
+		else if (keepTransform && lastParent)
+		{
+			LocalPosition = LocalPosition + lastParent->GetPosition();
+			LocalRotation = lastParent->GetRotation() * LocalRotation;
+			LocalScale = LocalScale * lastParent->GetScale();
 		}
 		SetDirty();
 	}

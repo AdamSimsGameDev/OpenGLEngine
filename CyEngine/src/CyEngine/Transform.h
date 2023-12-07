@@ -18,6 +18,10 @@ namespace Cy
 	public:
 		Transform() : LocalPosition(Vector3::Zero), LocalRotation(Quat::Identity), LocalScale(Vector3::One), Parent(nullptr) { }
 
+#if CY_EDITOR
+		virtual void EditorTick(float deltaTime) override;
+#endif
+
 		void SetPosition(Vector3 position);
 		Vector3 GetPosition() const { return Parent ? Parent->TransformPoint(LocalPosition) : LocalPosition; }
 		void AddPosition(Vector3 position);
@@ -27,7 +31,7 @@ namespace Cy
 		void Rotate(Quat rotation);
 
 		Vector3 GetScale() const { return Parent ? Parent->GetScale() * LocalScale : LocalScale; }
-		void SetScale(Vector3 scale) { LocalScale = scale; }
+		void SetScale(Vector3 scale) { LocalScale = scale; SetDirty(); }
 
 		void RotateAround(const Vector3& point, float degs, const Vector3& axis);
 		void RotateAroundRads(const Vector3& point, float rad, const Vector3& axis);
@@ -38,7 +42,7 @@ namespace Cy
 
 		Matrix4x4 GetWorldTransformationMatrix() const;
 
-		void SetParent(Transform* parent);
+		void SetParent(Transform* parent, bool keepTransform);
 		Transform* GetParent() const { return Parent; }
 		const Array<Transform*>& GetChildren() const { return Children; }
 
@@ -93,18 +97,20 @@ namespace Cy
 	private:
 		void SetDirty();
 
-		PROPERTY()
+		PROPERTY(DisplayName = "Position")
 		Vector3 LocalPosition;
-		PROPERTY()
+		PROPERTY(DisplayName = "Rotation")
+		Vector3 EulerAngles;
+		PROPERTY(Hidden)
 		Quat LocalRotation;
-		PROPERTY()
+		PROPERTY(DisplayName = "Scale")
 		Vector3 LocalScale;
 
 	private:
-		PROPERTY()
+		PROPERTY(Hidden)
 		Transform* Parent;
 
-		PROPERTY()
+		PROPERTY(Hidden)
 		Array<Transform*> Children;
 
 		mutable bool isDirty = false;
