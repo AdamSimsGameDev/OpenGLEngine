@@ -29,6 +29,7 @@ namespace Cy
 
 	Matrix4x4 Matrix4x4::Translate(const Matrix4x4& mat, const Vector3& vec) { return glm::translate(mat, vec); }
 	Matrix4x4 Matrix4x4::Rotate(const Matrix4x4& mat, const float& radians, const Vector3& axis) { return glm::rotate(mat, radians, axis); }
+	Matrix4x4 Matrix4x4::Scale(const Matrix4x4& mat, const Vector3& vec) { return glm::scale(mat, vec); }
 
 	String Matrix4x4::ToString() const
 	{

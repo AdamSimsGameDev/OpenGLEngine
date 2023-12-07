@@ -38,8 +38,8 @@ namespace Cy
 
 	void CameraComponent::RecalculateViewMatrix()
 	{
-		Matrix4x4 rotate = Matrix4x4::MatCast(GetOwner()->GetTransform().GetRotation());
-		Matrix4x4 transform = Matrix4x4::Translate(Matrix4x4(1.0f), GetOwner()->GetTransform().GetPosition()) * rotate;
+		Matrix4x4 rotate = Matrix4x4::MatCast(GetOwner()->GetTransform()->GetRotation());
+		Matrix4x4 transform = Matrix4x4::Translate(Matrix4x4(1.0f), GetOwner()->GetTransform()->GetPosition()) * rotate;
 		m_ViewMatrix = Matrix4x4::Inverse(transform);
 		m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}

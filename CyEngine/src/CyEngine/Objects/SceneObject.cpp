@@ -34,6 +34,11 @@ namespace Cy
         if (SceneObject* so = GetParent<SceneObject>())
         {
             so->m_Children.Add(this);
+            m_Transform->SetParent(so->m_Transform);
+        }
+        else
+        {
+            m_Transform->SetParent(nullptr);
         }
     }
 

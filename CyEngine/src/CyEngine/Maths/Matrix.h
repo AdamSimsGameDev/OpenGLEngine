@@ -38,5 +38,6 @@ namespace Cy
 
 		static Matrix4x4 Translate(const Matrix4x4& mat, const Vector3& vec);
 		static Matrix4x4 Rotate(const Matrix4x4& mat, const float& radians, const Vector3& axis);
+		static Matrix4x4 Scale(const Matrix4x4& mat, const Vector3& vec);
 	};
 }

@@ -105,12 +105,17 @@ namespace Cy
 	{
 		bIsEditorWorld = true;
 		// spawn editor camera
+#if 1
+		EditorCamera = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
+		EditorCamera->Name = "Main Camera";
+#elif
 		EditorCamera = ObjectManager::CreateObject<SceneObject>();
 		EditorCamera->Name = "Main Camera";
 		EditorCamera->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
-		EditorCamera->GetTransform().SetPosition(Vector3(0, 0.5f, -4));
-		EditorCamera->GetTransform().SetScale(Vector3::One);
+		EditorCamera->GetTransform()->SetPosition(Vector3(0, 0.5f, -4));
+		EditorCamera->GetTransform()->SetScale(Vector3::One);
 		EditorCamera->Start();
+#endif
 		EditorCameraComponent* m_Camera = EditorCamera->CreateAndAddComponent<EditorCameraComponent>();
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 	}

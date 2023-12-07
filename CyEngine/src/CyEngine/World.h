@@ -33,9 +33,9 @@ namespace Cy
 		T* CreateSceneObject(Vector3 position, Quat rotation, Vector3 scale)
 		{
 			T* t = ObjectManager::CreateObject<T>();
-			t->GetTransform().SetPosition(position);
-			t->GetTransform().SetRotation(rotation);
-			t->GetTransform().SetScale(scale);
+			t->GetTransform()->SetPosition(position);
+			t->GetTransform()->SetRotation(rotation);
+			t->GetTransform()->SetScale(scale);
 			m_SceneObjects.Emplace(t);
 			t->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
 			t->Start();

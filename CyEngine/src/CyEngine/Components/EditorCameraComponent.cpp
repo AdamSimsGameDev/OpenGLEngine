@@ -8,41 +8,39 @@ namespace Cy
 	{
 		CameraComponent::Tick(deltaTime);
 
-		Transform& transform = GetOwner()->GetTransform();
+		Transform* transform = GetOwner()->GetTransform();
 		if (Input::IsKeyDown(CY_KEY_W))
 		{
-			transform.AddPosition(transform.GetForwardVector() * deltaTime * MovementSpeed);
+			transform->AddPosition(transform->GetForwardVector() * deltaTime * MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_S))
 		{
-			transform.AddPosition(transform.GetForwardVector() * deltaTime * -MovementSpeed);
+			transform->AddPosition(transform->GetForwardVector() * deltaTime * -MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_D))
 		{
-			transform.AddPosition(transform.GetRightVector() * deltaTime * MovementSpeed);
+			transform->AddPosition(transform->GetRightVector() * deltaTime * MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_A))
 		{
-			transform.AddPosition(transform.GetRightVector() * deltaTime * -MovementSpeed);
+			transform->AddPosition(transform->GetRightVector() * deltaTime * -MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_SPACE))
 		{
-			transform.AddPosition(transform.GetUpVector() * deltaTime * MovementSpeed);
+			transform->AddPosition(transform->GetUpVector() * deltaTime * MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL))
 		{
-			transform.AddPosition(transform.GetUpVector() * deltaTime * -MovementSpeed);
+			transform->AddPosition(transform->GetUpVector() * deltaTime * -MovementSpeed);
 		}
 
 		if (Input::IsMouseButtonDown(CY_MOUSE_BUTTON_RIGHT))
 		{
-			CY_LOG("{0}", *Input::GetMouseDelta().ToString());
-
 			XAngle += deltaTime * TurnSpeed * -Input::GetMouseDelta().x;
 			YAngle += deltaTime * TurnSpeed * -Input::GetMouseDelta().y;
 			Quat pitch = Quat::FromEuler({ YAngle, 0.0f, 0.0f });
 			Quat yaw = Quat::FromEuler({ 0.f, XAngle, 0.f });
-			transform.SetRotation(pitch * yaw);
+			transform->SetRotation(pitch * yaw);
 		}
 	}
 }

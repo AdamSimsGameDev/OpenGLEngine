@@ -17,7 +17,10 @@ namespace Cy
 		friend class World;
 
 	public:
-		SceneObject() : Object(), m_Transform() { }
+		SceneObject() : Object()
+		{ 
+			m_Transform = CreateAndAddComponent<Transform>();
+		}
 
 		virtual void Destroy() override;
 		virtual void Tick(float deltaTime);
@@ -30,8 +33,8 @@ namespace Cy
 		virtual void EditorTick(float deltaTime);
 #endif
 
-		const Transform& GetTransform() const { return m_Transform; }
-		Transform& GetTransform() { return m_Transform; }
+		const Transform* GetTransform() const { return m_Transform; }
+		Transform* GetTransform() { return m_Transform; }
 
 		template<typename ComponentType>
 		ComponentType* CreateAndAddComponent()
@@ -68,7 +71,7 @@ namespace Cy
 
 	protected:
 		PROPERTY()
-		Transform m_Transform;
+		Transform* m_Transform;
 
 		Array<Component*> m_Components;
 		Array<SceneObject*> m_Children;
