@@ -4,6 +4,11 @@
 
 namespace Cy
 {
+	Vector2 Vector2::Up			= Vector2(0.0f, 1.0f);
+	Vector2 Vector2::Right		= Vector2(1.0f, 0.0f);
+	Vector2 Vector2::Zero		= Vector2(0.0f, 0.0f);
+	Vector2 Vector2::One		= Vector2(1.0f, 1.0f);
+
 	Vector3 Vector3::Forward	= Vector3(0.0f, 0.0f, 1.0f);
 	Vector3 Vector3::Up			= Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 Vector3::Right		= Vector3(1.0f, 0.0f, 0.0f);

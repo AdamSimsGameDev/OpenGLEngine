@@ -48,6 +48,12 @@ namespace Cy
             nc->CopyFrom(comp);
             AddComponent(nc);
         }
+        for (const auto& _so : _obj->m_Children)
+        {
+            SceneObject* so = GetWorld()->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+            so->CopyFrom(state, _so);
+            so->SetParent(this);
+        }
     }
 
     void SceneObject::UpdateReferencesFrom(const ObjectCopyState& state)

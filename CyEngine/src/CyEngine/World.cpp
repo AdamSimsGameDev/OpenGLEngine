@@ -2,6 +2,9 @@
 #include "World.h"
 #include "Components/CameraComponent.h"
 #include "Components/MeshComponent.h"
+#if CY_EDITOR
+#include "Components/EditorCameraComponent.h"
+#endif
 
 namespace Cy
 {
@@ -23,39 +26,44 @@ namespace Cy
 		}
 
 #if CY_EDITOR
-		if (CurrentSelectedObject.IsValid())
+		if (bIsEditorWorld)
 		{
-			if (Input::IsKeyPressed(CY_KEY_DELETE))
+			EditorCamera->Tick(deltaTime);
+
+			if (CurrentSelectedObject.IsValid())
 			{
-				CurrentSelectedObject->Destroy();
+				if (Input::IsKeyPressed(CY_KEY_DELETE))
+				{
+					CurrentSelectedObject->Destroy();
+				}
+
+				if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_C))
+				{
+					CurrentCopiedObject = CurrentSelectedObject;
+				}
+
+				if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_D))
+				{
+					SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+					n->Object::CopyFrom(CurrentSelectedObject.Get());
+					CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+				}
 			}
 
-			if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_C))
-			{
-				CurrentCopiedObject = CurrentSelectedObject;
-			}
-
-			if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_D))
+			if (CurrentCopiedObject.IsValid() && Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_V))
 			{
 				SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
-				n->Object::CopyFrom(CurrentSelectedObject.Get());
+				n->Object::CopyFrom(CurrentCopiedObject.Get());
 				CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
 			}
-		}
 
-		if (CurrentCopiedObject.IsValid() && Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_V))
-		{
-			SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
-			n->Object::CopyFrom(CurrentCopiedObject.Get());
-			CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
-		}
-
-		// TODO: check if we are an editor world
-		if (true)
-		{
-			for (auto obj : m_SceneObjects)
+			// TODO: check if we are an editor world
+			if (true)
 			{
-				obj->EditorTick(deltaTime);
+				for (auto obj : m_SceneObjects)
+				{
+					obj->EditorTick(deltaTime);
+				}
 			}
 		}
 #endif
@@ -91,6 +99,22 @@ namespace Cy
 	{
 		s_Scene->UnregisterComponent_Internal(component);
 	}
+
+#if CY_EDITOR
+	void World::SetIsEditorWorld()
+	{
+		bIsEditorWorld = true;
+		// spawn editor camera
+		EditorCamera = ObjectManager::CreateObject<SceneObject>();
+		EditorCamera->Name = "Main Camera";
+		EditorCamera->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
+		EditorCamera->GetTransform().SetPosition(Vector3(0, 0.5f, -4));
+		EditorCamera->GetTransform().SetScale(Vector3::One);
+		EditorCamera->Start();
+		EditorCameraComponent* m_Camera = EditorCamera->CreateAndAddComponent<EditorCameraComponent>();
+		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
+	}
+#endif
 
 	void World::RegisterComponent_Internal(Component* component)
 	{

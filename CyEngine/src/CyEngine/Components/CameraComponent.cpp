@@ -8,9 +8,6 @@ namespace Cy
 	{
 		Component::Tick(deltaTime);
 
-		// rotate the camera around the cube.
-		GetOwner()->GetTransform().RotateAround(Vector3::Zero, RotationSpeed * deltaTime, Vector3::Up);
-
 		// TODO: Not do this on tick
 		RecalculateViewMatrix();
 	}
@@ -24,6 +21,7 @@ namespace Cy
 		m_FarPlane = settings.FarPlane;
 
 		m_ProjectionMatrix = glm::perspectiveFov(m_FOV, m_Width, m_Height, m_NearPlane, m_FarPlane);
+		m_ProjectionMatrix = glm::scale(m_ProjectionMatrix, { 1.0f, 1.0f, -1.0f });
 		m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 

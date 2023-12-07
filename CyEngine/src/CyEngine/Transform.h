@@ -33,6 +33,10 @@ namespace Cy
 		void RotateAround(const Vector3& point, float degs, const Vector3& axis);
 		void RotateAroundRads(const Vector3& point, float rad, const Vector3& axis);
 
+		Vector3 GetForwardVector() const { return Rotation * Vector3::Forward; }
+		Vector3 GetRightVector() const { return Rotation * Vector3::Right; }
+		Vector3 GetUpVector() const { return Rotation * Vector3::Up; }
+
 		PROPERTY()
 		Vector3 Position;
 		PROPERTY()

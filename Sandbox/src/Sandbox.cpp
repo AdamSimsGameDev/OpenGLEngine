@@ -21,6 +21,7 @@ public:
 	virtual void OnAttach() override
 	{
 		m_Scene = new World();
+		m_Scene->SetIsEditorWorld();
 		m_Scene->Start();
 
 		// Create starting camera

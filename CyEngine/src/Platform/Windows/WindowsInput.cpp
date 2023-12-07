@@ -4,6 +4,7 @@
 #include "CyEngine/Application.h"
 #include <GLFW/glfw3.h>
 #include <CyEngine/KeyCode.h>
+#include <CyEngine/Maths/Vector.h>
 
 namespace Cy
 {
@@ -166,6 +167,13 @@ namespace Cy
 		{
 			PressedMouseButtons[button] = glfwGetMouseButton(window, button);
 		}
+
+		// get the mouse delta
+		Vector2 mousePosition = GetMousePos();
+		MouseDelta = LastMousePosition - mousePosition;
+		MouseDelta.x *= -1;
+		MouseDeltaNormalized = MouseDelta.SqrMagnitude() > 0 ? MouseDelta.Normalized() : Vector2::Zero;
+		LastMousePosition = mousePosition;
 	}
 
 	bool WindowsInput::IsKeyPressedImpl(int keycode)
@@ -200,17 +208,15 @@ namespace Cy
 
 	float WindowsInput::GetMouseXImpl()
 	{
-		auto [x, y] = GetMousePosImpl();
-		return x;
+		return GetMousePosImpl().x;
 	}
 
 	float WindowsInput::GetMouseYImpl()
 	{
-		auto [x, y] = GetMousePosImpl();
-		return y;
+		return GetMousePosImpl().y;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePosImpl()
+	Vector2 WindowsInput::GetMousePosImpl()
 	{
 		auto window = Application::Get().GetWindow().GetNativeWindowTyped<GLFWwindow>();
 		double xpos, ypos;

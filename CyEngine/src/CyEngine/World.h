@@ -66,8 +66,11 @@ namespace Cy
 		static void UnregisterComponent(Component* component);
 
 #if CY_EDITOR
+		void SetIsEditorWorld();
+		bool bIsEditorWorld = false;
 		WeakPtr<SceneObject> CurrentSelectedObject = nullptr;
 		WeakPtr<SceneObject> CurrentCopiedObject = nullptr;
+		SceneObject* EditorCamera = nullptr;
 #endif
 
 		static World* Get() { return s_Scene; }

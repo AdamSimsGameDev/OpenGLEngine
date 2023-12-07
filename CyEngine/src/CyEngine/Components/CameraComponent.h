@@ -42,9 +42,6 @@ namespace Cy
 		Matrix4x4 GetViewMatrix() const { return m_ViewMatrix; }
 		Matrix4x4 GetProjectionViewMatrix() const { return m_ProjectionViewMatrix;  }
 
-		PROPERTY()
-		float RotationSpeed = 10.0f;
-
 	protected:
 		void RecalculateViewMatrix();
 

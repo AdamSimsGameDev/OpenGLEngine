@@ -16,15 +16,27 @@ namespace Cy
 		RenderCommand::Clear();
 
 		// get the first camera.
-		Array<CameraComponent*> cameras = scene->GetAllComponentsOfType<CameraComponent>();
-		if (cameras.Count() == 0)
+		CameraComponent* mainCamera = nullptr;
+#if CY_EDITOR
+		if (scene->bIsEditorWorld)
 		{
-			CY_CORE_ERROR("Unable to render as no cameras exist in scene! ");
-			return;
+			mainCamera = scene->EditorCamera->GetComponent<CameraComponent>();
 		}
+		else
+		{
+#endif
+			Array<CameraComponent*> cameras = scene->GetAllComponentsOfType<CameraComponent>();
+			if (cameras.Count() == 0)
+			{
+				CY_CORE_ERROR("Unable to render as no cameras exist in scene! ");
+				return;
+			}
+			mainCamera = cameras[0];
+#if CY_EDITOR
+		}
+#endif
 
-		// set shader view matrix
-		s_SceneData->ViewProjectionMatrix = cameras[0]->GetProjectionViewMatrix();
+		s_SceneData->ViewProjectionMatrix = mainCamera->GetProjectionViewMatrix();
 
 		for (Component* comp : scene->GetAllComponentsOfType("MeshComponent"))
 		{

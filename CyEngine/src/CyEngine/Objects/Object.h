@@ -46,7 +46,9 @@ namespace Cy
 		const guid& GetGUID() const;
 
 	private:
+		PROPERTY()
 		Object* m_Parent;
+
 		guid ObjectGUID;
 	};
 }

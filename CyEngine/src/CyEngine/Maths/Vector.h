@@ -16,6 +16,7 @@ namespace Cy
 	struct Vector2 : public glm::vec2
 	{
 	public:
+		Vector2() : glm::vec2(0.0f, 0.0f) { }
 		Vector2(const glm::vec2& vec) : glm::vec2(vec) { }
 		Vector2(float _x, float _y) : glm::vec2(_x, _y) { }
 
@@ -23,7 +24,7 @@ namespace Cy
 
 		static inline Vector2 Cross(const Vector2& a, const Vector2& b) { return { a.x * b.x, a.y * b.y }; }
 
-		inline Vector2 Normalized(const Vector2& inVector) const
+		inline Vector2 Normalized() const
 		{
 			const float l = Magnitude();
 			return { x / l, y / l };
@@ -47,7 +48,6 @@ namespace Cy
 			return (x * x) + (y * y);
 		}
 
-		static Vector2 Forward;
 		static Vector2 Up;
 		static Vector2 Right;
 		static Vector2 Zero;

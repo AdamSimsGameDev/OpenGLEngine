@@ -22,7 +22,10 @@ namespace Cy
 
 		virtual float GetMouseXImpl() override;
 		virtual float GetMouseYImpl() override;
-		virtual std::pair<float, float> GetMousePosImpl() override;
+		virtual Vector2 GetMousePosImpl() override;
+
+		virtual Vector2 GetMouseDeltaImpl() override { return MouseDelta; }
+		virtual Vector2 GetMouseDeltaNormalizedImpl() override { return MouseDeltaNormalized; }
 
 	private:
 		std::vector<int> AllKeys;
@@ -32,6 +35,10 @@ namespace Cy
 		std::vector<int> AllMouseButtons;
 		std::unordered_map<int, bool> PressedMouseButtons;
 		std::unordered_map<int, bool> LastPressedMouseButtons;
+
+		Vector2 MouseDelta;
+		Vector2 MouseDeltaNormalized;
+		Vector2 LastMousePosition;
 	};
 }
 

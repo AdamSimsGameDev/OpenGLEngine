@@ -4,6 +4,7 @@
 #include "MeshComponent.gen.h"
 #include "CameraComponent.gen.h"
 #include "Component.gen.h"
+#include "EditorCameraComponent.gen.h"
 #include "Object.gen.h"
 #include "SceneObject.gen.h"
 #include "Mesh.gen.h"
@@ -18,6 +19,7 @@ namespace Cy
 		{ "MeshComponent", &MeshComponentClass::Get },
 { "CameraComponent", &CameraComponentClass::Get },
 { "Component", &ComponentClass::Get },
+{ "EditorCameraComponent", &EditorCameraComponentClass::Get },
 { "Object", &ObjectClass::Get },
 { "SceneObject", &SceneObjectClass::Get },
 { "Mesh", &MeshClass::Get },

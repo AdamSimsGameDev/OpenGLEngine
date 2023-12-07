@@ -37,6 +37,7 @@ namespace Cy
 	void Mesh::SetTriangles(const std::vector<uint32_t>& triangles)
 	{
 		m_Triangles = triangles;
+		std::reverse(m_Triangles.begin(), m_Triangles.end());
 	}
 
 	void Mesh::SetNormals(const std::vector<float>& normals)
