@@ -13,7 +13,35 @@ namespace Cy
 {
 	bool InspectorTab::RenderProperty(void* obj, const Class* objectClass, const String& prefix, const std::pair<String, ClassProperty>& prop)
 	{
-		return PropertyFieldBase::RenderPropertyOfType(obj, objectClass, prop);
+		// if we are an enum render differently.
+		if (prop.second.IsEnum)
+		{
+			static const String ENUM_NAME = "Enum";
+			PropertyFieldBase::RenderPropertyOfType(obj, objectClass, prop, &ENUM_NAME);
+			return true;
+		}
+
+		if (PropertyFieldBase::RenderPropertyOfType(obj, objectClass, prop))
+		{
+			{
+				const ClassPropertyMetaData* md = prop.second.GetMetaData("Tooltip");
+				if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+				{
+					ImGui::SetTooltip(*md->GetValue<String>());
+				}
+			}
+			return true;
+		}
+
+		// see if the property itself is a class
+		const Class* ncl = Class::GetClassFromName(prop.second.Type);
+		if (ncl)
+		{
+			RenderObjectClass(objectClass->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj), ncl, true);
+			return true;
+		}
+
+		return false;
 	}
 
 	void InspectorTab::RenderObject(void* obj, const Class* cl, bool showHeader)
@@ -97,32 +125,7 @@ namespace Cy
 					continue;
 				}
 
-				// if we are an enum render differently.
-				if (pair.second.IsEnum)
-				{
-					static const String ENUM_NAME = "Enum";
-					PropertyFieldBase::RenderPropertyOfType(obj, cl, pair, &ENUM_NAME);
-					continue;
-				}
-
-				if (RenderProperty(obj, cl, "", pair))
-				{
-					{
-						const ClassPropertyMetaData* md = pair.second.GetMetaData("Tooltip");
-						if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						{
-							ImGui::SetTooltip(*md->GetValue<String>());
-						}
-					}
-					continue;
-				}
-
-				// see if the property itself is a class
-				const Class* ncl = Class::GetClassFromName(pair.second.Type);
-				if (ncl)
-				{
-					RenderObjectClass(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj), ncl, true);
-				}
+				RenderProperty(obj, cl, "", pair);
 			}
 
 			// TODO: solve this fuckin mess

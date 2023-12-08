@@ -1,5 +1,7 @@
 #include "cypch.h"
 #include "EditorCameraComponent.h"
+#include "CyEngine/Editor/ViewportTab.h"
+#include "CyEngine/Layers/EditorLayer.h"
 #include "CyEngine/Objects/SceneObject.h"
 
 namespace Cy
@@ -7,6 +9,13 @@ namespace Cy
 	void EditorCameraComponent::Tick(float deltaTime)
 	{
 		CameraComponent::Tick(deltaTime);
+
+		// don't take any input if the viewport isn't focused.
+		ViewportTab* tab = EditorLayer::Get().FindTab<ViewportTab>();
+		if (!tab || !tab->IsFocused())
+		{
+			return;
+		}
 
 		Transform* transform = GetOwner()->GetTransform();
 		Transform* parent = transform->GetParent();
@@ -28,11 +37,11 @@ namespace Cy
 		}
 		if (Input::IsKeyDown(CY_KEY_SPACE))
 		{
-			parent->AddPosition(transform->GetUpVector() * deltaTime * MovementSpeed);
+			parent->AddPosition(Vector3::Up * deltaTime * MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL))
 		{
-			parent->AddPosition(transform->GetUpVector() * deltaTime * -MovementSpeed);
+			parent->AddPosition(Vector3::Up * deltaTime * -MovementSpeed);
 		}
 
 		if (Input::IsMouseButtonDown(CY_MOUSE_BUTTON_RIGHT))

@@ -17,6 +17,8 @@ namespace Cy
 
 		if (ImGui::Begin("Viewport", &m_TabOpen))
 		{
+			m_HasFocus = ImGui::IsWindowFocused();
+
 			ImVec2 newSize = ImGui::GetContentRegionAvail();
 			uint64_t textureId = m_FrameBuffer->GetColorAttachmentRendererId();
 

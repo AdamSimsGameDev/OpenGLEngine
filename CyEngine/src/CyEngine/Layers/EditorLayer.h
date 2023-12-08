@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CyEngine/Core.h"
 #include "Layer.h"
 #include "EditorTab.h"
 #include <CyEngine/Renderer/FrameBuffer.h>
@@ -18,6 +19,19 @@ namespace Cy
 
 		void PushTab(EditorTab* tab);
 		void PopTab(unsigned int id);
+
+		template<typename T>
+		T* FindTab() const
+		{
+			for (auto& tab : m_Tabs)
+			{
+				if (T* t = Cast<T>(tab.second))
+				{
+					return t;
+				}
+			}
+			return nullptr;
+		}
 
 		FrameBuffer* GetFrameBuffer() const { return m_FrameBuffer.get(); }
 

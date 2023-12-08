@@ -45,123 +45,90 @@ namespace Cy
 
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldInt);
-	bool PropertyFieldInt::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldInt::RenderProperty(int* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (int* i = cl->GetPropertyValueFromName<int>(prop.first, obj))
-		{
-			ItemLabel(prop.first);
-			ImGui::DragInt(*String::Format("##%s", *prop.first), i);
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		ImGui::DragInt(*String::Format("##%s", *displayName), data);
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldFloat);
-	bool PropertyFieldFloat::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldFloat::RenderProperty(float* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (float* i = cl->GetPropertyValueFromName<float>(prop.first, obj))
-		{
-			ItemLabel(prop.first);
-			ImGui::DragFloat(*String::Format("##%s", *prop.first), i);
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		ImGui::DragFloat(*String::Format("##%s", *displayName), data);
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldBool);
-	bool PropertyFieldBool::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldBool::RenderProperty(bool* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (bool* i = cl->GetPropertyValueFromName<bool>(prop.first, obj))
-		{
-			ItemLabel(prop.first);
-			ImGui::Checkbox(*String::Format("##%s", *prop.first), i);
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		ImGui::Checkbox(*String::Format("##%s", *displayName), data);
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldString);
-	bool PropertyFieldString::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldString::RenderProperty(String* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (String* i = cl->GetPropertyValueFromName<String>(prop.first, obj))
+		char* i_copy = new char[data->Length() + 1];
+		strcpy(i_copy, **data);
+		i_copy[data->Length()] = '\0';
+		ItemLabel(displayName);
+		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 16 - ImGui::GetStyle().ItemSpacing.x);
+		ImGui::InputText(*String::Format("##%s", *displayName), i_copy, 256);
+		if (*data != i_copy)
 		{
-			char* i_copy = new char[i->Length() + 1];
-			strcpy(i_copy, **i);
-			i_copy[i->Length()] = '\0';
-			ItemLabel(prop.first);
-			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 16 - ImGui::GetStyle().ItemSpacing.x);
-			ImGui::InputText(*String::Format("##%s", *prop.first), i_copy, 256);
-			if (*i != i_copy)
-			{
-				*i = String(i_copy);
-			}
-			return true;
+			*data = String(i_copy);
 		}
-		return false;
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldVector2);
-	bool PropertyFieldVector2::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldVector2::RenderProperty(Vector2* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (Vector2* i = cl->GetPropertyValueFromName<Vector2>(prop.first, obj))
-		{
-			ItemLabel(prop.first);
-			float pos[2]{ i->x, i->y };
-			ImGui::DragFloat2(*String::Format("##%s", *prop.first), pos);
-			i->x = pos[0];
-			i->y = pos[1];
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		float pos[2]{ data->x, data->y };
+		ImGui::DragFloat2(*String::Format("##%s", *displayName), pos);
+		data->x = pos[0];
+		data->y = pos[1];
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldVector3);
-	bool PropertyFieldVector3::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldVector3::RenderProperty(Vector3* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (Vector3* i = cl->GetPropertyValueFromName<Vector3>(prop.first, obj))
-		{
-			const ClassPropertyMetaData* displayName = prop.second.GetMetaData("DisplayName");
-			ItemLabel(displayName ? displayName->GetValue<String>() : prop.first);
-			float pos[3]{ i->x, i->y, i->z };
-			ImGui::DragFloat3(*String::Format("##%s", *prop.first), pos);
-			i->x = pos[0];
-			i->y = pos[1];
-			i->z = pos[2];
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		float pos[3]{ data->x, data->y, data->z };
+		ImGui::DragFloat3(*String::Format("##%s", *displayName), pos);
+		data->x = pos[0];
+		data->y = pos[1];
+		data->z = pos[2];
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldVector4);
-	bool PropertyFieldVector4::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldVector4::RenderProperty(Vector4* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (Vector4* i = cl->GetPropertyValueFromName<Vector4>(prop.first, obj))
-		{
-			ItemLabel(prop.first);
-			float pos[4]{ i->x, i->y, i->z, i->w };
-			ImGui::DragFloat3(*String::Format("##%s", *prop.first), pos);
-			i->x = pos[0];
-			i->y = pos[1];
-			i->z = pos[2];
-			i->w = pos[3];
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		float pos[4]{ data->x, data->y, data->z, data->w };
+		ImGui::DragFloat3(*String::Format("##%s", *displayName), pos);
+		data->x = pos[0];
+		data->y = pos[1];
+		data->z = pos[2];
+		data->w = pos[3];
+		return true;
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldQuat);
-	bool PropertyFieldQuat::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldQuat::RenderProperty(Quat* data, const String& displayName, const ClassProperty& info) const
 	{
-		if (Quat* i = cl->GetPropertyValueFromName<Quat>(prop.first, obj))
-		{
-			ItemLabel(prop.first);
-			Vector3 v = Quat::ToEuler(*i);
-			float rot[3]{ v.x, v.y, v.z };
-			ImGui::DragFloat3(*String::Format("##%s", *prop.first), rot);
-			*i = Quat::FromEuler({ rot[0], rot[1], rot[2] });
-			return true;
-		}
-		return false;
+		ItemLabel(displayName);
+		Vector3 v = Quat::ToEuler(*data);
+		float rot[3]{ v.x, v.y, v.z };
+		ImGui::DragFloat3(*String::Format("##%s", *displayName), rot);
+		*data = Quat::FromEuler({ rot[0], rot[1], rot[2] });
+		return true;
 	}
 
 	static bool ArrayStrGetter(void* data, int n, const char** out_str) 
@@ -171,28 +138,23 @@ namespace Cy
 	}
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldEnum);
-	bool PropertyFieldEnum::RenderProperty(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop) const
+	bool PropertyFieldEnum::RenderProperty(uint8_t* data, const String& displayName, const ClassProperty& info) const
 	{
-		// get the enum value from the name.
-		if (uint8_t* i = cl->GetPropertyValueFromName<uint8_t>(prop.first, obj))
+		Array<String> items;
+		int size = Class::GetEnumLength(info.Type);
+		for (int i = 0; i < size; i++)
 		{
-			Array<String> items;
-			int size = Class::GetEnumLength(prop.second.Type);
-			for (int i = 0; i < size; i++)
-			{
-				items.Add(Class::GetEnumElementName(prop.second.Type, i));
-			}
-
-			int index = Class::GetEnumValueIndex(prop.second.Type, *i);
-
-			ItemLabel(prop.first);
-			ImGui::Combo(*String::Format("##%s", *prop.first), &index, &ArrayStrGetter, *items, size);
-
-			// update i to the new value
-			*i = Class::GetEnumElementValue(prop.second.Type, index);
-
-			return true;
+			items.Add(Class::GetEnumElementName(info.Type, i));
 		}
-		return false;
+
+		int index = Class::GetEnumValueIndex(info.Type, *data);
+
+		ItemLabel(displayName);
+		ImGui::Combo(*String::Format("##%s", *displayName), &index, &ArrayStrGetter, *items, size);
+
+		// update i to the new value
+		*data = Class::GetEnumElementValue(info.Type, index);
+
+		return true;
 	}
 }
