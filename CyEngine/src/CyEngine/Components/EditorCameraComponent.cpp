@@ -28,11 +28,11 @@ namespace Cy
 		}
 		if (Input::IsKeyDown(CY_KEY_SPACE))
 		{
-			parent->AddPosition(transform->GetUpVector() * deltaTime * MovementSpeed);
+			parent->AddPosition(Vector3::Up * deltaTime * MovementSpeed);
 		}
 		if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL))
 		{
-			parent->AddPosition(transform->GetUpVector() * deltaTime * -MovementSpeed);
+			parent->AddPosition(Vector3::Up * deltaTime * -MovementSpeed);
 		}
 
 		if (Input::IsMouseButtonDown(CY_MOUSE_BUTTON_RIGHT))
