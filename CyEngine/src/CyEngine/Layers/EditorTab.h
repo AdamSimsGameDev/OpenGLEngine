@@ -20,8 +20,11 @@ namespace Cy
 		inline bool IsTabOpen() const { return m_TabOpen; }
 		inline bool& GetIsTabOpen() { return m_TabOpen; }
 
+		inline bool IsFocused() const { return m_HasFocus; }
+
 	protected:
 		bool m_TabOpen;
+		bool m_HasFocus;
 
 	private:
 		String m_DebugName;

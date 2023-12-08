@@ -1,5 +1,7 @@
 #include "cypch.h"
 #include "EditorCameraComponent.h"
+#include "CyEngine/Editor/ViewportTab.h"
+#include "CyEngine/Layers/EditorLayer.h"
 #include "CyEngine/Objects/SceneObject.h"
 
 namespace Cy
@@ -7,6 +9,13 @@ namespace Cy
 	void EditorCameraComponent::Tick(float deltaTime)
 	{
 		CameraComponent::Tick(deltaTime);
+
+		// don't take any input if the viewport isn't focused.
+		ViewportTab* tab = EditorLayer::Get().FindTab<ViewportTab>();
+		if (!tab || !tab->IsFocused())
+		{
+			return;
+		}
 
 		Transform* transform = GetOwner()->GetTransform();
 		Transform* parent = transform->GetParent();
