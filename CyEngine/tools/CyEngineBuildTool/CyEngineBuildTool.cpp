@@ -61,8 +61,6 @@ bool should_skip_file(const std::string& path, const std::string& file)
     return false;
 }
 
-
-
 int main()
 {
     std::cout << "Running CyEngine Build Tool!\n";
@@ -80,6 +78,29 @@ int main()
     std::unordered_map<std::string, ClassInfo*> found_classes;
     std::unordered_map<std::string, EnumInfo*> found_enums;
 
+    // iterate over each of the paths, backwards
+    for (int i = paths.size() - 1; i >= 0; i--)
+    {        
+        // get the file name.
+        std::vector<std::string> split_path = split(paths[i], '\\');
+        std::string file_name = split(split_path[split_path.size() - 1], '.')[0];
+
+        // skip unchanged files
+        if (std::find(generated_paths.begin(), generated_paths.end(), file_name) != generated_paths.end())
+        {
+            if (std::filesystem::last_write_time(paths[i]) <= std::filesystem::last_write_time(generated_path + "//" + file_name + ".gen.h"))
+            {
+                std::cout << "Skipping unchanged file " << paths[i] << std::endl;
+            }
+            else
+            {
+                generated_paths.erase(std::find(generated_paths.begin(), generated_paths.end(), file_name));
+            }
+        }
+    }
+
+    bool has_updated_generated_file = false;
+
     std::ifstream infile;
     for (const auto& entry : paths)
     {
@@ -91,15 +112,6 @@ int main()
         // get the file name.
         std::vector<std::string> split_path = split(entry, '\\');
         std::string file_name = split(split_path[split_path.size() - 1], '.')[0];
-
-        //// skip unchanged files
-        //if (std::find(generated_paths.begin(), generated_paths.end(), file_name) != generated_paths.end())
-        //{
-        //    if (std::filesystem::last_write_time(entry) <= std::filesystem::last_write_time(generated_path + "//" + file_name + ".gen.h"))
-        //    {
-        //        continue;
-        //    }
-        //}
 
         // load the file
         infile.open(entry);
@@ -451,32 +463,52 @@ int main()
     
         if (found_class)
         {
-            std::string h_name = file_name + ".gen.h";
-
-            std::cout << "Generated class: " << class_name << std::endl;
-
-            std::ofstream outcpp(generated_path + "\\" + file_name + ".gen.cpp");
-            outcpp << "#include \"cypch.h\"" << std::endl;
-            outcpp << "#include \"" + h_name + "\"" << std::endl;
-            outcpp << "#include \"" + entry + "\"" << std::endl;
-            outcpp << "#include \"ClassLibrary.h\"" << std::endl;
-            outcpp << generated_cpp << std::endl;
-            outcpp.close();
-
-            std::ofstream outh(generated_path + "\\" + h_name);
-            outh << "#pragma once" << std::endl;
-            auto* cl = found_classes[class_name];
-            if (cl->parent_class.empty())
+            if (std::find(generated_paths.begin(), generated_paths.end(), file_name) == generated_paths.end())
             {
-                outh << "#include \"CyEngine/Class.h\"" << std::endl << std::endl;
+                has_updated_generated_file = true;
+
+                std::string h_name = file_name + ".gen.h";
+
+                std::cout << "Generated class: " << class_name << std::endl;
+
+                std::ofstream outcpp(generated_path + "\\" + file_name + ".gen.cpp");
+                outcpp << "#include \"cypch.h\"" << std::endl;
+                outcpp << "#include \"" + h_name + "\"" << std::endl;
+                outcpp << "#include \"" + entry + "\"" << std::endl;
+                outcpp << "#include \"ClassLibrary.h\"" << std::endl;
+                outcpp << generated_cpp << std::endl;
+                outcpp.close();
+
+                std::ofstream outh(generated_path + "\\" + h_name);
+                outh << "#pragma once" << std::endl;
+                auto* cl = found_classes[class_name];
+                if (cl->parent_class.empty())
+                {
+                    outh << "#include \"CyEngine/Class.h\"" << std::endl << std::endl;
+                }
+                else
+                {
+                    outh << string_format("#include \"generated/%s.gen.h\"", cl->parent_class.c_str()) << std::endl << std::endl;
+                }
+                outh << generated_h << std::endl;
+                outh.close();
             }
             else
             {
-                outh << string_format("#include \"generated/%s.gen.h\"", cl->parent_class.c_str()) << std::endl << std::endl;
+                generated_paths.erase(std::find(generated_paths.begin(), generated_paths.end(), file_name));
             }
-            outh << generated_h << std::endl;
-            outh.close();
         }
+    }
+
+    // remove any generated files we haven't skipped or overwritten
+    for (int i = 0; i < generated_paths.size(); i++)
+    {
+        has_updated_generated_file = true;
+
+        std::cout << "Deleting generated files for " << generated_paths[i] << std::endl;
+
+        std::filesystem::remove(generated_path + "\\" + generated_paths[i] + ".gen.cpp");
+        std::filesystem::remove(generated_path + "\\" + generated_paths[i] + ".gen.h");
     }
 
     // iterate over all of the classes, and make sure that if a class isn't generated, it's parent also isn't generated, and vice-versa
@@ -501,7 +533,7 @@ int main()
 
     // create the class library.
     std::cout << "Creating class library!" << std::endl;
-    if (found_classes.size() > 0)
+    if (has_updated_generated_file && found_classes.size() > 0)
     {
         // generate the enum list string
         std::string enum_string;
