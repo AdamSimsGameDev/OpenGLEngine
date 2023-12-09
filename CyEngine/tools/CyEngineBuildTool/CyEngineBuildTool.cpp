@@ -61,6 +61,76 @@ bool should_skip_file(const std::string& path, const std::string& file)
     return false;
 }
 
+void scrape_meta_data(const std::string& line, std::unordered_map<std::string, std::string>& meta_data)
+{
+    // store data
+    std::string meta_key;
+    std::string meta_value;
+    bool is_quoted = false;
+    bool has_started = false;
+    bool is_key = false;
+    int brackets_depth = 0;
+
+    // format the line
+    std::string test = line;
+    test.erase(std::remove(test.begin(), test.end(), ';'), test.end());
+    test.erase(std::remove(test.begin(), test.end(), '\t'), test.end());
+
+    // loop over the line
+    for (const char& c : test)
+    {
+        if (!has_started && c == '(')
+        {
+            has_started = true;
+            is_key = true;
+            brackets_depth++;
+            continue;
+        }
+
+        if (!has_started)
+        {
+            continue;
+        }
+
+
+        if (!is_quoted && (c == ',' || c == ')'))
+        {
+            meta_data.emplace(meta_key, meta_value);
+            meta_key.clear();
+            meta_value.clear();
+            is_key = true;
+
+            if (c == ')')
+            {
+                brackets_depth--;
+                if (brackets_depth == 0)
+                    break;
+            }
+            continue;
+        }
+        else if (c == '=')
+        {
+            is_key = false;
+        }
+        else if (c == '"')
+        {
+            if (is_quoted)
+            {
+                is_quoted = false;
+            }
+            else
+            {
+                is_quoted = true;
+            }
+            (is_key ? meta_key : meta_value) += c;
+        }
+        else if (is_quoted || c != ' ')
+        {
+            (is_key ? meta_key : meta_value) += c;
+        }
+    }
+}
+
 int main()
 {
     std::cout << "Running CyEngine Build Tool!\n";
@@ -236,72 +306,7 @@ int main()
 
                     if (!contains(line, "PROPERTY()"))
                     {
-                        // store data
-                        std::string meta_key;
-                        std::string meta_value;
-                        bool is_quoted = false;
-                        bool has_started = false;
-                        bool is_key = false;
-                        int brackets_depth = 0;
-
-                        // format the line
-                        std::string test = line;
-                        test.erase(std::remove(test.begin(), test.end(), ';'), test.end());
-                        test.erase(std::remove(test.begin(), test.end(), '\t'), test.end());
-
-                        // loop over the line
-                        for (const char& c : test)
-                        {
-                            if (!has_started && c == '(')
-                            {
-                                has_started = true;
-                                is_key = true;
-                                brackets_depth++;
-                                continue;
-                            }
-
-                            if (!has_started)
-                            {
-                                continue;
-                            }
-
-
-                            if (!is_quoted && (c == ',' || c == ')'))
-                            {
-                                meta_data.emplace(meta_key, meta_value);
-                                meta_key.clear();
-                                meta_value.clear();
-                                is_key = true;
-
-                                if (c == ')')
-                                {
-                                    brackets_depth--;
-                                    if (brackets_depth == 0)
-                                        break;
-                                }
-                                continue;
-                            }
-                            else if (c == '=')
-                            {
-                                is_key = false;
-                            }
-                            else if (c == '"')
-                            {
-                                if (is_quoted)
-                                {
-                                    is_quoted = false;
-                                }
-                                else
-                                {
-                                    is_quoted = true;
-                                }
-                                (is_key ? meta_key : meta_value) += c;
-                            }
-                            else if (is_quoted || c != ' ')
-                            {
-                                (is_key ? meta_key : meta_value) += c;
-                            }
-                        }
+                        scrape_meta_data(line, meta_data);
                     }
                 }
                 else if (contains(line, "GENERATED_CLASS("))
@@ -392,6 +397,8 @@ int main()
                     std::vector<std::string> non_templated_parent = split(split_parent_class.size() > 1 ? split_parent_class[1] : "", '<');
 
                     ClassInfo* class_info = new ClassInfo(split_class[split_class.size() == 2 ? 1 : 2], non_templated_parent.size() > 0 ? non_templated_parent[0] : "");
+                    class_info->meta_data = meta_data;
+                    meta_data.clear();
 
                     if (next_line_class)
                     {
@@ -414,8 +421,13 @@ int main()
 
                     found_classes.emplace(class_info->name, class_info);
                 }
-                else if ((contains(line, "CLASS()") || contains(line, "STRUCT()")) && !contains(line, "GENERATED_CLASS()"))
+                else if ((contains(line, "CLASS(") || contains(line, "STRUCT(")) && !contains(line, "GENERATED_CLASS()"))
                 {
+                    if (!contains(line, "CLASS()") && !contains(line, "STRUCT()"))
+                    {
+                        scrape_meta_data(line, meta_data);
+                    }
+
                     next_line_class = true;
                 }
                 else if (contains(line, "namespace "))

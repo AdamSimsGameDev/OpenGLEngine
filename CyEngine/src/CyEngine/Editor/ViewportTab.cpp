@@ -17,6 +17,10 @@ namespace Cy
 
 		if (ImGui::Begin("Viewport", &m_TabOpen))
 		{
+			if (ImGui::IsWindowHovered() && Input::IsMouseButtonPressed(CY_MOUSE_BUTTON_RIGHT))
+			{
+				ImGui::SetWindowFocus();
+			}
 			m_HasFocus = ImGui::IsWindowFocused();
 
 			ImVec2 newSize = ImGui::GetContentRegionAvail();
@@ -53,7 +57,7 @@ namespace Cy
 
 		ImGui::End();
 	}
-	
+
 	void ViewportTab::SetFrameBuffer(std::shared_ptr<FrameBuffer> inBuffer)
 	{
 		m_FrameBuffer = inBuffer;

@@ -8,7 +8,7 @@
 
 namespace Cy
 {
-	CLASS()
+	CLASS(EditorSpawnable = false)
 	class Transform : public Component
 	{
 		GENERATED_CLASS(Transform)

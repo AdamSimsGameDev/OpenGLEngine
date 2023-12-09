@@ -36,8 +36,8 @@ static std::string property_constructor_format =
     }\n";
 static std::string property_function_h_format = "static void* execGet%s(const void* obj);\nstatic void execSet%s(void* obj, void* val);\n";
 static std::string property_function_cpp_format = "void* %sClass::execGet%s(const void* obj) { return reinterpret_cast<void*>(&reinterpret_cast<%s*>(const_cast<void*>(obj))->%s); }\nvoid %sClass::execSet%s(void* obj, void* val) { reinterpret_cast<%s*>(obj)->%s = *reinterpret_cast<%s*>(val); }\n";;
-static std::string meta_data_format = "ClassPropertyMetaData(%s, %s),";
-static std::string meta_data_format_single = "ClassPropertyMetaData(%s, true),";
+static std::string meta_data_format = "MetaDataProperty(%s, %s),";
+static std::string meta_data_format_single = "MetaDataProperty(%s, true),";
 
 std::string generate_property_for_constructor(PropertyInfo info, std::string class_name)
 {

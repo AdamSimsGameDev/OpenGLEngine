@@ -5,7 +5,7 @@
 
 namespace Cy
 {
-	CLASS()
+	CLASS(EditorSpawnable = false)
 	class EditorCameraComponent : public CameraComponent
 	{
 		GENERATED_CLASS(EditorCameraComponent)

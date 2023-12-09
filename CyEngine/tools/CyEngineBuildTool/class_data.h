@@ -19,10 +19,13 @@ static std::string class_format =
         \n%s\n\
     };\n";
 
-static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n\tParentClass = %s;\n%s\n}\n";
+static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n\tParentClass = %s;\n%s\n\n%s\n}\n";
 
 static std::string enum_format = "{ \"%s\", { %s } },";
 static std::string enum_entry_format = "{ %i, \"%s\" }";
+
+static std::string class_meta_data_format = "MetaData.push_back(MetaDataProperty(%s, %s));\n";
+static std::string class_meta_data_format_single = "MetaData.push_back(MetaDataProperty(%s, true));\n";
 
 class ClassInfo
 {
@@ -32,6 +35,7 @@ public:
     std::vector<PropertyInfo> properties;
     bool is_generated;
     bool is_struct;
+    std::unordered_map<std::string, std::string> meta_data;
 
     ClassInfo(std::string n, std::string p)
     {
@@ -90,12 +94,76 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
 
     cpp += "void* " + true_class_name + "::New() const { return (void*)new " + class_info->name.c_str() + "(); }\n\n";
 
+    std::string class_meta_data;
+    for (auto& meta_data : class_info->meta_data)
+    {
+        std::string value;
+        bool solo = meta_data.second == "";
+        if (!solo)
+        {
+            // check for bool
+            std::string str_copy = meta_data.second;
+            to_lower(str_copy);
+            if (contains(str_copy, "true"))
+            {
+                value = "true";
+            }
+            else if (contains(str_copy, "false"))
+            {
+                value = "false";
+            }
+            // check for a string.
+            else if (contains(meta_data.second, "\""))
+            {
+                value = "std::string(" + meta_data.second + ")";
+            }
+            // check for a float.
+            else if (contains(meta_data.second, "."))
+            {
+                float f;
+                try
+                {
+                    f = std::stof(meta_data.second);
+                }
+                catch (...)
+                {
+                    // error management
+                }
+                value = std::to_string(f) + "f";
+            }
+            // check for an int.
+            else
+            {
+                int i;
+                try
+                {
+                    i = std::stoi(meta_data.second);
+                }
+                catch (...)
+                {
+                    // error management
+                }
+                value = std::to_string(i);
+            }
+        }
+
+        if (solo)
+        {
+            class_meta_data += string_format(class_meta_data_format_single, ("\"" + meta_data.first + "\"").c_str());
+        }
+        else
+        {
+            class_meta_data += string_format(class_meta_data_format, ("\"" + meta_data.first + "\"").c_str(), value.c_str());
+        }
+    }
+
     cpp += string_format(constructor_format,
         true_class_name.c_str(),
         true_class_name.c_str(),
         class_info->name.c_str(),
         class_info->parent_class.empty() ? "nullptr" : string_format("%sClass::Get()", class_info->parent_class.c_str()).c_str(),
-        properties_string.c_str());
+        properties_string.c_str(),
+        class_meta_data.c_str());
 
     for (const auto& prop : class_info->properties)
     {

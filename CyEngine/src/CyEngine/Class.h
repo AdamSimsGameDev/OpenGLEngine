@@ -8,7 +8,7 @@
 
 namespace Cy
 {
-	struct ClassPropertyMetaData
+	struct MetaDataProperty
 	{
 		enum class Type : uint8_t
 		{
@@ -23,25 +23,25 @@ namespace Cy
 		std::variant<bool, int, float, String> Value;
 		Type PropertyType;
 
-		ClassPropertyMetaData(String key, bool value)
+		MetaDataProperty(String key, bool value)
 		{
 			Key = key;
 			Value = value;
 			PropertyType = Type::Bool;
 		}
-		ClassPropertyMetaData(String key, String value)
+		MetaDataProperty(String key, String value)
 		{
 			Key = key;
 			Value = value;
 			PropertyType = Type::String;
 		}		
-		ClassPropertyMetaData(String key, int value)
+		MetaDataProperty(String key, int value)
 		{
 			Key = key;
 			Value = value;
 			PropertyType = Type::Int;
 		}		
-		ClassPropertyMetaData(String key, float value)
+		MetaDataProperty(String key, float value)
 		{
 			Key = key;
 			Value = value;
@@ -72,7 +72,7 @@ namespace Cy
 			return std::get<int>(Value);
 		}
 
-		bool operator==(const ClassPropertyMetaData& other) const { return other.Key == Key; }
+		bool operator==(const MetaDataProperty& other) const { return other.Key == Key; }
 		bool operator==(const String& key) const { return key == Key; }
 	};
 
@@ -86,11 +86,11 @@ namespace Cy
 		bool IsFixedArray;
 		bool IsEnum;
 		const std::type_info* TypeInfo;
-		std::vector<ClassPropertyMetaData> MetaData;
+		std::vector<MetaDataProperty> MetaData;
 		void(*Setter)(void*, void*);
 		void*(*Getter)(const void*);
 
-		ClassProperty(const char name[], const char full_type[], const char type[], const std::type_info* type_id, void* (*getter)(const void*), void(*setter)(void*, void*), const std::vector<ClassPropertyMetaData>& metaData)
+		ClassProperty(const char name[], const char full_type[], const char type[], const std::type_info* type_id, void* (*getter)(const void*), void(*setter)(void*, void*), const std::vector<MetaDataProperty>& metaData)
 		{
 			Name = name;
 			FullType = full_type;
@@ -114,11 +114,11 @@ namespace Cy
 			return *(static_cast<T*>(Getter(obj, src)));
 		}
 
-		const ClassPropertyMetaData* GetMetaData(String key) const
+		const MetaDataProperty* GetMetaData(String key) const
 		{
 			for (auto it = MetaData.begin(); it != MetaData.end(); ++it)
 			{
-				const ClassPropertyMetaData& m = *it;
+				const MetaDataProperty& m = *it;
 				if (m == key)
 				{
 					return &m;
@@ -136,6 +136,7 @@ namespace Cy
 		String Name;
 		const Class* ParentClass;
 		std::unordered_map<String, ClassProperty> Properties;
+		std::vector<MetaDataProperty> MetaData;
 
 		template<typename T>
 		T* New() const { return (T*)New(); }
@@ -226,6 +227,19 @@ namespace Cy
 			}
 			ArrayBase* arr = reinterpret_cast<ArrayBase*>(prop->Getter(obj));
 			return arr->Count();
+		}
+
+		const MetaDataProperty* GetMetaData(String key) const
+		{
+			for (auto it = MetaData.begin(); it != MetaData.end(); ++it)
+			{
+				const MetaDataProperty& m = *it;
+				if (m == key)
+				{
+					return &m;
+				}
+			}
+			return nullptr;
 		}
 	};
 }

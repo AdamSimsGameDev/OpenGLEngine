@@ -20,7 +20,7 @@ namespace Cy
 			{
 				return false;
 			}
-			const ClassPropertyMetaData* displayName = prop.second.GetMetaData("DisplayName");
+			const MetaDataProperty* displayName = prop.second.GetMetaData("DisplayName");
 			return PropertyFields[type]->RenderProperty(obj, cl, displayName ? displayName->GetValue<String>() : prop.first, prop.second);
 		}
 

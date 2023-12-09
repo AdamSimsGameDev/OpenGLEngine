@@ -24,7 +24,7 @@ namespace Cy
 		if (PropertyFieldBase::RenderPropertyOfType(obj, objectClass, prop))
 		{
 			{
-				const ClassPropertyMetaData* md = prop.second.GetMetaData("Tooltip");
+				const MetaDataProperty* md = prop.second.GetMetaData("Tooltip");
 				if (md && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 				{
 					ImGui::SetTooltip(*md->GetValue<String>());
@@ -128,8 +128,7 @@ namespace Cy
 				RenderProperty(obj, cl, "", pair);
 			}
 
-			// TODO: solve this fuckin mess
-			if (cl->Name == "SceneObject" || cl->Name == "CubeObject")
+			if (cl->Name == "SceneObject")
 			{
 				if (SceneObject* so = reinterpret_cast<SceneObject*>(obj))
 				{
@@ -163,6 +162,11 @@ namespace Cy
 				Array<const Class*> classes = Class::GetChildClassesOfType<Component>();
 				for (const auto& cl : classes)
 				{
+					const auto* spawnableMetaData = cl->GetMetaData("EditorSpawnable");
+					if (spawnableMetaData && !spawnableMetaData->GetValue<bool>())
+					{
+						continue;
+					}
 					if (ImGui::Button(*String::Format("%s##AddComponent", *cl->Name), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y * 2.0f)))
 					{
 						scene->CurrentSelectedObject->CreateAndAddComponent(cl);
