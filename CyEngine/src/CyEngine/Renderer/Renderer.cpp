@@ -56,7 +56,7 @@ namespace Cy
 
 	void Renderer::Submit(MeshComponent* comp)
 	{
-		if (!comp->GetMesh())
+		if (!comp->GetMesh() || !comp->GetShader())
 			return;
 		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray, comp->GetParent<SceneObject>()->GetTransform()->GetWorldTransformationMatrix());
 	}

@@ -150,6 +150,27 @@ namespace Cy
 		if (scene && scene->CurrentSelectedObject)
 		{
 			RenderObject(scene->CurrentSelectedObject, scene->CurrentSelectedObject->GetClass(), false);
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+			if (ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f)))
+			{
+				ImGui::OpenPopup("##AddComponent");
+			}
+
+			if (ImGui::BeginPopup("##AddComponent"))
+			{
+				Array<const Class*> classes = Class::GetChildClassesOfType<Component>();
+				for (const auto& cl : classes)
+				{
+					if (ImGui::Button(*String::Format("%s##AddComponent", *cl->Name), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y * 2.0f)))
+					{
+						scene->CurrentSelectedObject->CreateAndAddComponent(cl);
+					}
+				}
+
+				ImGui::EndPopup();
+			}
 		}
 
 		ImGui::End();

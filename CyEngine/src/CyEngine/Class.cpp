@@ -22,6 +22,20 @@ namespace Cy
 		return false;
 	}
 
+	Array<const Class*> Class::GetChildClassesOfType(const Class* Cl)
+	{
+		Array<const Class*> classes;
+		for (const auto& pair : ClassLibrary::ClassMap)
+		{
+			const Class* c = pair.second();
+			if (c->IsChildOf(Cl) && c != Cl)
+			{
+				classes.Add(c);
+			}
+		}
+		return classes;
+	}
+
 	const ClassProperty* Class::GetPropertyFromName(String property_name) const
 	{
 		return &(Properties.find(property_name)->second);

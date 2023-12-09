@@ -145,6 +145,10 @@ namespace Cy
 		bool IsChildOf() const { return IsChildOf(T::GetStaticClass()); }
 		bool IsChildOf(const Class* Other) const;
 
+		template<class T>
+		static Array<const Class*> GetChildClassesOfType() { return GetChildClassesOfType(T::GetStaticClass()); }
+		static Array<const Class*> GetChildClassesOfType(const Class* Cl);
+
 		const ClassProperty* GetPropertyFromName(String property_name) const;
 
 		static const Class* GetClassFromName(String class_name);

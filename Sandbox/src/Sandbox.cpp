@@ -34,7 +34,6 @@ public:
 		cube->Name = "Cube";
 		MeshComponent* cubeMesh = cube->CreateAndAddComponent<MeshComponent>();
 		cubeMesh->SetMeshType(MeshComponentType::Cube);
-		cubeMesh->SetShader(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
 
 		Array<int> arr;
 		arr.Add(1);

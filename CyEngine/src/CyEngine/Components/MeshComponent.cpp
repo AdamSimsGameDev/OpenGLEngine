@@ -1,6 +1,7 @@
 #include "cypch.h"
 #include "MeshComponent.h"
 #include "CyEngine/Renderer/Mesh.h"
+#include "CyEngine/Renderer/Shader.h"
 
 namespace Cy
 {
@@ -30,6 +31,7 @@ namespace Cy
         Component::Start();
 
         SetMeshType(Type);
+        SetShader(Shader::CreateFromFiles("resources/Shader.vert", "resources/Shader.frag"));
     }
 
     void MeshComponent::SetMeshType(MeshComponentType type)

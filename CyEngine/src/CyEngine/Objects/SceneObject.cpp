@@ -84,6 +84,14 @@ namespace Cy
     }
 #endif
 
+    Component* SceneObject::CreateAndAddComponent(const Class* cl)
+    {
+        Component* t = cl->New<Component>();
+        AddComponent(t);
+        t->Start();
+        return t;
+    }
+
     void SceneObject::AddComponent(Component* component)
     {
         component->SetParent(this);

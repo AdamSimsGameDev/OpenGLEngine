@@ -39,11 +39,9 @@ namespace Cy
 		template<typename ComponentType>
 		ComponentType* CreateAndAddComponent()
 		{
-			ComponentType* t = new ComponentType();
-			AddComponent(t);
-			t->Start();
-			return t;
+			return Cast<ComponentType>(CreateAndAddComponent(ComponentType::GetStaticClass()));
 		}
+		Component* CreateAndAddComponent(const Class* cl);
 		void AddComponent(Component* component);
 
 		template<class T>
