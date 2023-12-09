@@ -5,7 +5,7 @@
 
 namespace Cy
 {
-	void RenderTree(const Array<SceneObject*>& objects, SceneObject*& currentItem, bool isRoot = false)
+	void OutlinerTab::RenderTree(World* world, const Array<SceneObject*>& objects, SceneObject*& currentItem, bool isRoot)
 	{
 		static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DefaultOpen;
 
@@ -26,6 +26,11 @@ namespace Cy
 			bool node_open = ImGui::TreeNodeEx(*(objects[i]->GetGUID().Value), node_flags, *String::Format("%s", objects[i]->Name));
 			if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 				currentItem = objects[i];
+			if (ImGui::IsItemHovered() && Input::IsMouseButtonPressed(CY_MOUSE_BUTTON_RIGHT))
+			{
+				ContextMenuObject = ObjectManager::GetSharedPtrTyped<SceneObject>(objects[i]).MakeWeak();
+				ImGui::OpenPopup("##OutlinerTabContextMenu");
+			}
 			if (ImGui::BeginDragDropSource())
 			{
 				ImGui::SetDragDropPayload("_OUTLINER", &objects[i], sizeof(SceneObject*));
@@ -43,9 +48,40 @@ namespace Cy
 			}
 			if (node_open)
 			{
-				RenderTree(objects[i]->GetChildren(), currentItem);
+				RenderTree(world, objects[i]->GetChildren(), currentItem);
 				ImGui::TreePop();
 			}
+		}
+
+		if (ImGui::BeginPopup("##OutlinerTabContextMenu"))
+		{
+			if (ImGui::MenuItem("Select"))
+			{
+				currentItem = ContextMenuObject;
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Copy", "Ctrl+C"))
+			{
+				world->CurrentCopiedObject = ContextMenuObject;
+			}			
+			if (ImGui::MenuItem("Paste", "Ctrl+V"))
+			{
+				SceneObject* n = world->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+				n->Object::CopyFrom(world->CurrentCopiedObject.Get());
+				world->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+			}			
+			if (ImGui::MenuItem("Duplicate", "Ctrl+D"))
+			{
+				SceneObject* n = world->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
+				n->Object::CopyFrom(ContextMenuObject.Get());
+				world->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Delete", "Del"))
+			{
+				ContextMenuObject->Destroy();
+			}
+			ImGui::EndPopup();
 		}
 	}
 
@@ -76,7 +112,7 @@ namespace Cy
 				}
 
 				const Array<SceneObject*> objects = scene->GetSceneObjects();
-				RenderTree(objects, currentItem, true);
+				RenderTree(scene, objects, currentItem, true);
 
 				if (currentItem != scene->CurrentSelectedObject)
 				{

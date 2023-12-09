@@ -5,6 +5,9 @@
 
 namespace Cy
 {
+	class SceneObject;
+	class World;
+
 	class OutlinerTab : public EditorTab
 	{
 	public:
@@ -12,6 +15,12 @@ namespace Cy
 			: EditorTab("Outliner") {}
 
 		virtual void OnRender() override;
+
+	protected:
+		void RenderTree(World* world, const Array<SceneObject*>& objects, SceneObject*& currentItem, bool isRoot = false);
+
+	private:
+		WeakPtr<SceneObject> ContextMenuObject;
 	};
 }
 
