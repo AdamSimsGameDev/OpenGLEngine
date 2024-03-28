@@ -69,6 +69,10 @@ namespace Cy
 
 	void Object::SetParent(Object* parent)
 	{
+		if ( parent && parent->GetParent<Object>() == this )
+		{
+			parent->SetParent( nullptr );
+		}
 		m_Parent = parent;
 	}
 
