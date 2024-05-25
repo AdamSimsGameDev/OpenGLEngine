@@ -136,8 +136,8 @@ int main()
     std::cout << "Running CyEngine Build Tool!\n";
 
     // gather header files
-    std::string path = "C:\\dev\\OpenGLEngine\\CyEngine\\src\\CyEngine";
-    std::string generated_path = "C:\\dev\\OpenGLEngine\\CyEngine\\src\\generated";
+    std::string path = "C:\\Users\\adams\\Documents\\OpenGLEngine\\CyEngine\\src\\CyEngine";
+    std::string generated_path = "C:\\Users\\adams\\Documents\\OpenGLEngine\\CyEngine\\src\\generated";
 
     std::vector<std::string> paths;
     FindFilePathsOfTypeInDirectory(paths, path, ".h");

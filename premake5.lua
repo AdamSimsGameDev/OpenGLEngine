@@ -33,7 +33,7 @@ project "CyEngine"
 	pchheader "cypch.h"
 	pchsource "CyEngine/src/cypch.cpp"
 
-	prebuildcommands { "%{prj.location}/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe" }
+	prebuildcommands { "msbuild %{prj.location}/tools/CyEngineBuildTool/CyEngineBuildTool.sln /p:Configuration=Debug", "%{prj.location}/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe" }
 
 	files
 	{
@@ -65,7 +65,8 @@ project "CyEngine"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS"
 	}
 
 	filter "system:windows" 
@@ -128,7 +129,8 @@ project "Sandbox"
 
 		defines
 		{
-			"CY_PLATFORM_WINDOWS"
+			"CY_PLATFORM_WINDOWS",
+			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS"
 		}
 
 	filter "configurations:Debug"

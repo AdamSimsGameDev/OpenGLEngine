@@ -3,6 +3,7 @@
 bin/
 int/
 CyEngine/tools/CyEngineBuildTool/x64/Debug
+CyEngine/tools/CyEngineBuildTool/CyEngine.35776e3f/
 
 # files
 *.user
