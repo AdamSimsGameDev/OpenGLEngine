@@ -143,11 +143,14 @@ public:
 	}
 	~WeakPtr()
 	{
-		rc->DecrementWeak();
-		if (rc->ShouldInvalidate())
+		if (rc)
 		{
-			delete[] rc;
-			rc = nullptr;
+			rc->DecrementWeak();
+			if (rc->ShouldInvalidate())
+			{
+				delete[] rc;
+				rc = nullptr;
+			}
 		}
 	}
 
