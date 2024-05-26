@@ -7,6 +7,7 @@ namespace Cy
 {
 	class SceneObject;
 	class World;
+	class Texture;
 
 	class OutlinerTab : public EditorTab
 	{
@@ -14,6 +15,7 @@ namespace Cy
 		OutlinerTab()
 			: EditorTab("Outliner") {}
 
+		virtual void OnBegin() override;
 		virtual void OnRender() override;
 
 	protected:
@@ -21,6 +23,7 @@ namespace Cy
 
 	private:
 		WeakPtr<SceneObject> ContextMenuObject;
+		Texture* m_Texture;
 	};
 }
 

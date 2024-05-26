@@ -144,6 +144,9 @@ namespace Cy
 
 		// create the tab from the func
 		m_Tabs[id] = tab;
+
+		// tell the tab to start up
+		tab->OnBegin();
 	}
 
 	void EditorLayer::PopTab(unsigned int id)
@@ -159,6 +162,9 @@ namespace Cy
 			CY_CORE_ERROR("Can't pop a tab that doesn't exist, id {0}, name {1}", id, *m_Tabs[id]->GetName());
 			return;
 		}
+
+		// tell the tab to end
+		m_Tabs[id]->OnEnd();
 
 		// remove the tab
 		delete m_Tabs[id];
