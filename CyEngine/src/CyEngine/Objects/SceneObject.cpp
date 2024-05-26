@@ -97,4 +97,14 @@ namespace Cy
         component->SetParent(this);
         m_Components.Add(component);
     }
+
+    void SceneObject::RemoveComponent(Component* component)
+    {
+        if (component->GetParent<SceneObject>() != this)
+        {
+            return;
+        }
+        component->SetParent(nullptr);
+        m_Components.Remove(component);
+    }
 }

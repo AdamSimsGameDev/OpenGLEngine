@@ -44,6 +44,8 @@ namespace Cy
 		Component* CreateAndAddComponent(const Class* cl);
 		void AddComponent(Component* component);
 
+		void RemoveComponent(Component* component);
+
 		template<class T>
 		T* GetComponent() const
 		{

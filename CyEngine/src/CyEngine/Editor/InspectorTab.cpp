@@ -81,6 +81,17 @@ namespace Cy
 	{
 		if (!showHeader || ImGui::CollapsingHeader(*cl->Name, ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			if (showHeader && ImGui::IsItemHovered())
+			{
+				if (Component* component = reinterpret_cast<Component*>(obj))
+				{
+					if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+					{
+						ImGui::OpenPopup(*String::Format("rightclickcontext_%s", *component->GetGUID().Value));
+					}
+				}
+			}
+
 			for (const auto& pair : cl->Properties)
 			{
 				const bool hideInEditor = pair.second.GetMetaData("Hidden") != nullptr;
@@ -137,6 +148,20 @@ namespace Cy
 						RenderObject(comp, comp->GetClass(), true);
 					}
 				}
+			}
+		}
+
+		if (Component* component = reinterpret_cast<Component*>(obj))
+		{
+			if (ImGui::BeginPopup(*String::Format("rightclickcontext_%s", *component->GetGUID().Value)))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					component->GetOwner()->RemoveComponent(component);
+					component->Destroy();
+				}
+
+				ImGui::EndPopup();
 			}
 		}
 	}

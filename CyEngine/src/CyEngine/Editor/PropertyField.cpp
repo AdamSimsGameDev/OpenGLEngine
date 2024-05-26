@@ -48,7 +48,7 @@ namespace Cy
 	bool PropertyFieldInt::RenderProperty(int* data, const String& displayName, const ClassProperty& info) const
 	{
 		ItemLabel(displayName);
-		ImGui::DragInt(*String::Format("##%s", *displayName), data);
+		ImGui::DragInt(*String::Format("##%s_%p", *displayName, data), data);
 		return true;
 	}
 
@@ -56,7 +56,7 @@ namespace Cy
 	bool PropertyFieldFloat::RenderProperty(float* data, const String& displayName, const ClassProperty& info) const
 	{
 		ItemLabel(displayName);
-		ImGui::DragFloat(*String::Format("##%s", *displayName), data);
+		ImGui::DragFloat(*String::Format("##%s_%p", *displayName, data), data);
 		return true;
 	}
 
@@ -64,7 +64,7 @@ namespace Cy
 	bool PropertyFieldBool::RenderProperty(bool* data, const String& displayName, const ClassProperty& info) const
 	{
 		ItemLabel(displayName);
-		ImGui::Checkbox(*String::Format("##%s", *displayName), data);
+		ImGui::Checkbox(*String::Format("##%s_%p", *displayName, data), data);
 		return true;
 	}
 
@@ -76,7 +76,7 @@ namespace Cy
 		i_copy[data->Length()] = '\0';
 		ItemLabel(displayName);
 		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 16 - ImGui::GetStyle().ItemSpacing.x);
-		ImGui::InputText(*String::Format("##%s", *displayName), i_copy, 256);
+		ImGui::InputText(*String::Format("##%s_%p", *displayName, data), i_copy, 256);
 		if (*data != i_copy)
 		{
 			*data = String(i_copy);
@@ -89,7 +89,7 @@ namespace Cy
 	{
 		ItemLabel(displayName);
 		float pos[2]{ data->x, data->y };
-		ImGui::DragFloat2(*String::Format("##%s", *displayName), pos);
+		ImGui::DragFloat2(*String::Format("##%s_%p", *displayName, data), pos);
 		data->x = pos[0];
 		data->y = pos[1];
 		return true;
@@ -100,7 +100,7 @@ namespace Cy
 	{
 		ItemLabel(displayName);
 		float pos[3]{ data->x, data->y, data->z };
-		ImGui::DragFloat3(*String::Format("##%s", *displayName), pos);
+		ImGui::DragFloat3(*String::Format("##%s_%p", *displayName, data), pos);
 		data->x = pos[0];
 		data->y = pos[1];
 		data->z = pos[2];
@@ -112,7 +112,7 @@ namespace Cy
 	{
 		ItemLabel(displayName);
 		float pos[4]{ data->x, data->y, data->z, data->w };
-		ImGui::DragFloat3(*String::Format("##%s", *displayName), pos);
+		ImGui::DragFloat3(*String::Format("##%s_%p", *displayName, data), pos);
 		data->x = pos[0];
 		data->y = pos[1];
 		data->z = pos[2];
@@ -126,7 +126,7 @@ namespace Cy
 		ItemLabel(displayName);
 		Vector3 v = Quat::ToEuler(*data);
 		float rot[3]{ v.x, v.y, v.z };
-		ImGui::DragFloat3(*String::Format("##%s", *displayName), rot);
+		ImGui::DragFloat3(*String::Format("##%s_%p", *displayName, data), rot);
 		*data = Quat::FromEuler({ rot[0], rot[1], rot[2] });
 		return true;
 	}
@@ -150,7 +150,7 @@ namespace Cy
 		int index = Class::GetEnumValueIndex(info.Type, *data);
 
 		ItemLabel(displayName);
-		ImGui::Combo(*String::Format("##%s", *displayName), &index, &ArrayStrGetter, *items, size);
+		ImGui::Combo(*String::Format("##%s_%p", *displayName, data), &index, &ArrayStrGetter, *items, size);
 
 		// update i to the new value
 		*data = Class::GetEnumElementValue(info.Type, index);
