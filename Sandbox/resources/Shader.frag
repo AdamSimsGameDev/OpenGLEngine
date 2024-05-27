@@ -6,6 +6,9 @@ layout(location = 0) out vec4 color;
 
 in vec3 FragPos;  
 in vec3 Normal;  
+in vec2 TexCoord;
+
+uniform sampler2D ourTexture;
 
 void main()
 {
@@ -16,7 +19,7 @@ void main()
 	float diff = clamp(dot(lightDir, norm), 0., 1.);
 	vec3 diffuse = diff * lightColor;
 
-	vec3 objectColor = vec3(0.1, 0.6, 0.8);
+	vec3 objectColor = vec3(1.0, 1.0, 1.0);
 	vec3 result = (0.1 + diffuse) * objectColor;
-	color = vec4(result, 1.0);
+	color = vec4(result, 1.0) * texture(ourTexture, TexCoord);
 }

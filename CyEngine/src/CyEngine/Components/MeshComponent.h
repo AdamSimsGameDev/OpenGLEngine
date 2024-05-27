@@ -6,6 +6,7 @@ namespace Cy
 {
     class Mesh;
     class Shader;
+    class Texture;
 
     ENUM()
     enum class MeshComponentType : uint8_t
@@ -52,6 +53,8 @@ namespace Cy
         static Mesh PlaneMesh;
 
     private:
+        Texture* m_Texture;
+
         PROPERTY()
         Shader* m_Shader;
 

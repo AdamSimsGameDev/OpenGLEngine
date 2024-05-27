@@ -65,6 +65,14 @@ namespace Cy
 		m_Packed.reserve(m_Vertices.size() + m_Normals.size());
 		CY_ASSERT(m_Vertices.size() == m_Normals.size(), "Normals and Vertices arrays should be of the same length!");
 
+		// make sure the uvs array is big enough
+		unsigned int uvCount = m_UVs.size();
+		for (int i = 0; i < (m_Vertices.size() / 3) - (uvCount / 2) + 1; i++)
+		{
+			m_UVs.push_back(0.0f);
+			m_UVs.push_back(0.0f);
+		}
+
 		int uv = 0;
 		for (int i = 0; i < m_Vertices.size(); i+=3, uv+=2)
 		{
@@ -85,7 +93,7 @@ namespace Cy
 		{
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float3, "a_Normal"},
-			{ ShaderDataType::Float2, "a_UV"},
+			{ ShaderDataType::Float2, "a_TexCoord"},
 		};
 
 		m_VertexBuffer->SetLayout(layout);

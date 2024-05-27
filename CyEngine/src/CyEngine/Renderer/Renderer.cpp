@@ -4,6 +4,7 @@
 #include "CyEngine/Components/MeshComponent.h"
 #include "CyEngine/Renderer/Mesh.h"
 #include "CyEngine/Renderer/Shader.h"
+#include "CyEngine/Textures/Texture.h"
 #include "CyEngine/World.h"
 
 namespace Cy
@@ -58,6 +59,7 @@ namespace Cy
 	{
 		if (!comp->GetMesh() || !comp->GetShader())
 			return;
+		comp->m_Texture->Bind();
 		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray, comp->GetParent<SceneObject>()->GetTransform()->GetWorldTransformationMatrix());
 	}
 
