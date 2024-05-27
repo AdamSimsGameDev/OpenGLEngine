@@ -86,11 +86,6 @@ namespace Cy
 		}
 	}
 
-	void OutlinerTab::OnBegin()
-	{
-		m_Texture = Texture::LoadTexture("resources/cube-line-icon.png");
-	}
-
 	void OutlinerTab::OnRender()
 	{
 		ImGui::Begin("Outliner", &m_TabOpen);
@@ -103,8 +98,6 @@ namespace Cy
 				SceneObject* so = scene->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
 				so->Name = "New Object";
 			}
-
-			ImGui::Image((void*)(intptr_t)m_Texture->m_RendererId, ImVec2(m_Texture->m_Width, m_Texture->m_Height));
 
 			SceneObject* currentItem = scene->CurrentSelectedObject;
 			if (ImGui::TreeNodeEx("World##Outliner", ImGuiTreeNodeFlags_DefaultOpen))

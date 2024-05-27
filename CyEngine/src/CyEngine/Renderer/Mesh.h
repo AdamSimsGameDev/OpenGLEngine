@@ -21,7 +21,8 @@ namespace Cy
 		Mesh(const String& name, 
 			const std::vector<float>& vertices,
 			const std::vector<uint32_t>& triangles,
-			const std::vector<float>& normals);
+			const std::vector<float>& normals,
+			const std::vector<float>& uvs);
 
 		void SetVertices(const std::vector<Vector3>& vertices);
 		void SetVertices(const std::vector<float>& vertices);
@@ -29,6 +30,9 @@ namespace Cy
 		void SetNormals(const std::vector<float>& normals);
 
 		void SetTriangles(const std::vector<uint32_t>& triangles);
+
+		void SetUVs(const std::vector<Vector2>& uvs);
+		void SetUVs(const std::vector<float>& uvs);
 
 		String GetName() const { return m_Name; }
 
@@ -41,6 +45,7 @@ namespace Cy
 		std::vector<float> m_Vertices;
 		std::vector<float> m_Normals;
 		std::vector<uint32_t> m_Triangles;
+		std::vector<float> m_UVs;
 
 		std::shared_ptr<VertexBuffer> m_VertexBuffer;
 		std::shared_ptr<IndexBuffer> m_IndexBuffer;

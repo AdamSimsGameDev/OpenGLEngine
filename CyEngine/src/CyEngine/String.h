@@ -158,6 +158,7 @@ namespace Cy
 		// Statics
 		static Array<String> Split(const String& str, const char& separator);
 		static Array<String> SplitUnquoted(const String& str, const char& separator);
+		static String ToString(unsigned int value);
 		static String ToString(int value);
 		static String ToString(float value);
 		static String ToString(bool value);

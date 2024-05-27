@@ -29,7 +29,7 @@ namespace Cy
 	};
 	std::unordered_map<String, std::unordered_map<int, String>> ClassLibrary::EnumMap =
 	{
-		{ "MeshComponentType", { { 0, "Cube" }, { 1, "Sphere" }, { 2, "Plane" }, { 3, "Custom" } } },
+		{ "MeshComponentType", { { 0, "Cube" }, { 1, "Sphere" }, { 2, "Plane" }, { 3, "Custom" } } },{ "TextureFilterMode", { { 0, "Point" }, { 1, "Linear" } } },{ "TextureClampMode", { { 0, "Clamp" }, { 1, "Repeat" }, { 2, "Mirrored" } } },
 	};
 }
 

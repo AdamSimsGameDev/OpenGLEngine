@@ -15,7 +15,6 @@ namespace Cy
 		OutlinerTab()
 			: EditorTab("Outliner") {}
 
-		virtual void OnBegin() override;
 		virtual void OnRender() override;
 
 	protected:
@@ -23,7 +22,6 @@ namespace Cy
 
 	private:
 		WeakPtr<SceneObject> ContextMenuObject;
-		Texture* m_Texture;
 	};
 }
 

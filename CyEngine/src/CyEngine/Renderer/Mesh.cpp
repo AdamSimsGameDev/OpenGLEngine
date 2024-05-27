@@ -11,12 +11,13 @@ namespace Cy
 		m_Name = name;
 	}
 
-	Mesh::Mesh(const String& name, const std::vector<float>& vertices, const std::vector<uint32_t>& triangles, const std::vector<float>& normals)
+	Mesh::Mesh(const String& name, const std::vector<float>& vertices, const std::vector<uint32_t>& triangles, const std::vector<float>& normals, const std::vector<float>& uvs)
 	{
 		m_Name = name;
 		SetVertices(vertices);
 		SetTriangles(triangles);
 		SetNormals(normals);
+		SetUVs(uvs);
 	}
 
 	void Mesh::SetVertices(const std::vector<Vector3>& vertices)
@@ -40,6 +41,20 @@ namespace Cy
 		std::reverse(m_Triangles.begin(), m_Triangles.end());
 	}
 
+	void Mesh::SetUVs(const std::vector<Vector2>& uvs)
+	{
+		for (int i = 0; i < uvs.size(); i++)
+		{
+			m_Vertices.push_back(uvs[i].x);
+			m_Vertices.push_back(uvs[i].y);
+		}
+	}
+
+	void Mesh::SetUVs(const std::vector<float>& uvs)
+	{
+		m_UVs = uvs;
+	}
+
 	void Mesh::SetNormals(const std::vector<float>& normals)
 	{
 		m_Normals = normals;
@@ -50,7 +65,8 @@ namespace Cy
 		m_Packed.reserve(m_Vertices.size() + m_Normals.size());
 		CY_ASSERT(m_Vertices.size() == m_Normals.size(), "Normals and Vertices arrays should be of the same length!");
 
-		for (int i = 0; i < m_Vertices.size(); i+=3)
+		int uv = 0;
+		for (int i = 0; i < m_Vertices.size(); i+=3, uv+=2)
 		{
 			m_Packed.push_back(m_Vertices[i]);
 			m_Packed.push_back(m_Vertices[i + 1]);
@@ -58,6 +74,8 @@ namespace Cy
 			m_Packed.push_back(m_Normals[i]);
 			m_Packed.push_back(m_Normals[i + 1]);
 			m_Packed.push_back(m_Normals[i + 2]);
+			m_Packed.push_back(m_UVs[uv]);
+			m_Packed.push_back(m_UVs[uv + 1]);
 		}
 
 		m_VertexArray.reset(VertexArray::Create());
@@ -67,6 +85,7 @@ namespace Cy
 		{
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float3, "a_Normal"},
+			{ ShaderDataType::Float2, "a_UV"},
 		};
 
 		m_VertexBuffer->SetLayout(layout);

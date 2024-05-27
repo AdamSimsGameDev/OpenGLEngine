@@ -237,6 +237,11 @@ namespace Cy
 		return outstr;
 	}
 
+	String String::ToString(unsigned int value)
+	{
+		return String(std::to_string(value).c_str());
+	}
+
 	String String::ToString(int value)
 	{
 		return String(std::to_string(value).c_str());
