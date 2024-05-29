@@ -19,20 +19,20 @@ namespace Cy
 		Mesh() { }
 		Mesh(const String& name);
 		Mesh(const String& name, 
-			const std::vector<float>& vertices,
-			const std::vector<uint32_t>& triangles,
-			const std::vector<float>& normals,
-			const std::vector<float>& uvs);
+			const Array<float>& vertices,
+			const Array<uint32_t>& triangles,
+			const Array<float>& normals,
+			const Array<float>& uvs);
 
-		void SetVertices(const std::vector<Vector3>& vertices);
-		void SetVertices(const std::vector<float>& vertices);
+		void SetVertices(const Array<Vector3>& vertices);
+		void SetVertices(const Array<float>& vertices);
 
-		void SetNormals(const std::vector<float>& normals);
+		void SetNormals(const Array<float>& normals);
 
-		void SetTriangles(const std::vector<uint32_t>& triangles);
+		void SetTriangles(const Array<uint32_t>& triangles);
 
-		void SetUVs(const std::vector<Vector2>& uvs);
-		void SetUVs(const std::vector<float>& uvs);
+		void SetUVs(const Array<Vector2>& uvs);
+		void SetUVs(const Array<float>& uvs);
 
 		String GetName() const { return m_Name; }
 
@@ -41,11 +41,11 @@ namespace Cy
 	private:
 		String m_Name;
 
-		std::vector<float> m_Packed;
-		std::vector<float> m_Vertices;
-		std::vector<float> m_Normals;
-		std::vector<uint32_t> m_Triangles;
-		std::vector<float> m_UVs;
+		Array<float> m_Packed;
+		Array<float> m_Vertices;
+		Array<float> m_Normals;
+		Array<uint32_t> m_Triangles;
+		Array<float> m_UVs;
 
 		std::shared_ptr<VertexBuffer> m_VertexBuffer;
 		std::shared_ptr<IndexBuffer> m_IndexBuffer;

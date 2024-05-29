@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "Vector.h"
 
 namespace Cy
 {
@@ -15,6 +15,8 @@ namespace Cy
 
 		Colour(uint8_t _r, uint8_t _g, uint8_t _b) : r(_r * _c32m), g(_g * _c32m), b(_b * _c32m), a(1.0f) { }
 		Colour(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a) : r(_r * _c32m), g(_g* _c32m), b(_b* _c32m), a(_a* _c32m) { }
+
+		Vector3 ToRGB() const { return Vector3(r, g, b); }
 
 		const float& operator[](int index) const
 		{
@@ -45,7 +47,8 @@ namespace Cy
 			}
 		}
 
-		operator glm::vec4() const { return glm::vec4(r, g, b, a); }
+		operator Vector3() const { return Vector3(r, g, b); }
+		operator Vector4() const { return Vector4(r, g, b, a); }
 
 		static Colour White;
 		static Colour Black;

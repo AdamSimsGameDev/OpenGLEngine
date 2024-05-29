@@ -11,7 +11,7 @@ namespace Cy
 		m_Name = name;
 	}
 
-	Mesh::Mesh(const String& name, const std::vector<float>& vertices, const std::vector<uint32_t>& triangles, const std::vector<float>& normals, const std::vector<float>& uvs)
+	Mesh::Mesh(const String& name, const Array<float>& vertices, const Array<uint32_t>& triangles, const Array<float>& normals, const Array<float>& uvs)
 	{
 		m_Name = name;
 		SetVertices(vertices);
@@ -20,74 +20,74 @@ namespace Cy
 		SetUVs(uvs);
 	}
 
-	void Mesh::SetVertices(const std::vector<Vector3>& vertices)
+	void Mesh::SetVertices(const Array<Vector3>& vertices)
 	{
-		for (int i = 0; i < vertices.size(); i++)
+		for (int i = 0; i < vertices.Count(); i++)
 		{
-			m_Vertices.push_back(vertices[i].x);
-			m_Vertices.push_back(vertices[i].y);
-			m_Vertices.push_back(vertices[i].z);
+			m_Vertices.Add(vertices[i].x);
+			m_Vertices.Add(vertices[i].y);
+			m_Vertices.Add(vertices[i].z);
 		}
 	}
 
-	void Mesh::SetVertices(const std::vector<float>& vertices)
+	void Mesh::SetVertices(const Array<float>& vertices)
 	{
 		m_Vertices = vertices;
 	}
 
-	void Mesh::SetTriangles(const std::vector<uint32_t>& triangles)
+	void Mesh::SetTriangles(const Array<uint32_t>& triangles)
 	{
 		m_Triangles = triangles;
-		std::reverse(m_Triangles.begin(), m_Triangles.end());
+		m_Triangles.Reverse();
 	}
 
-	void Mesh::SetUVs(const std::vector<Vector2>& uvs)
+	void Mesh::SetUVs(const Array<Vector2>& uvs)
 	{
-		for (int i = 0; i < uvs.size(); i++)
+		for (int i = 0; i < uvs.Count(); i++)
 		{
-			m_Vertices.push_back(uvs[i].x);
-			m_Vertices.push_back(uvs[i].y);
+			m_Vertices.Add(uvs[i].x);
+			m_Vertices.Add(uvs[i].y);
 		}
 	}
 
-	void Mesh::SetUVs(const std::vector<float>& uvs)
+	void Mesh::SetUVs(const Array<float>& uvs)
 	{
 		m_UVs = uvs;
 	}
 
-	void Mesh::SetNormals(const std::vector<float>& normals)
+	void Mesh::SetNormals(const Array<float>& normals)
 	{
 		m_Normals = normals;
 	}
 
 	void Mesh::Generate()
 	{
-		m_Packed.reserve(m_Vertices.size() + m_Normals.size());
-		CY_ASSERT(m_Vertices.size() == m_Normals.size(), "Normals and Vertices arrays should be of the same length!");
+		m_Packed.Reserve(m_Vertices.Count() + m_Normals.Count());
+		CY_ASSERT(m_Vertices.Count() == m_Normals.Count(), "Normals and Vertices arrays should be of the same length!");
 
 		// make sure the uvs array is big enough
-		unsigned int uvCount = m_UVs.size();
-		for (int i = 0; i < (m_Vertices.size() / 3) - (uvCount / 2) + 1; i++)
+		int uvCount = m_UVs.Count();
+		for (int i = 0; i < (m_Vertices.Count() / 3) - (uvCount / 2) + 1; i++)
 		{
-			m_UVs.push_back(0.0f);
-			m_UVs.push_back(0.0f);
+			m_UVs.Add(0.0f);
+			m_UVs.Add(0.0f);
 		}
 
 		int uv = 0;
-		for (int i = 0; i < m_Vertices.size(); i+=3, uv+=2)
+		for (int i = 0; i < m_Vertices.Count(); i+=3, uv+=2)
 		{
-			m_Packed.push_back(m_Vertices[i]);
-			m_Packed.push_back(m_Vertices[i + 1]);
-			m_Packed.push_back(m_Vertices[i + 2]);
-			m_Packed.push_back(m_Normals[i]);
-			m_Packed.push_back(m_Normals[i + 1]);
-			m_Packed.push_back(m_Normals[i + 2]);
-			m_Packed.push_back(m_UVs[uv]);
-			m_Packed.push_back(m_UVs[uv + 1]);
+			m_Packed.Add(m_Vertices[i]);
+			m_Packed.Add(m_Vertices[i + 1]);
+			m_Packed.Add(m_Vertices[i + 2]);
+			m_Packed.Add(m_Normals[i]);
+			m_Packed.Add(m_Normals[i + 1]);
+			m_Packed.Add(m_Normals[i + 2]);
+			m_Packed.Add(m_UVs[uv]);
+			m_Packed.Add(m_UVs[uv + 1]);
 		}
 
 		m_VertexArray.reset(VertexArray::Create());
-		m_VertexBuffer.reset(VertexBuffer::Create(m_Packed.data(), (uint32_t)(sizeof(float) * m_Packed.size())));
+		m_VertexBuffer.reset(VertexBuffer::Create(m_Packed.Data(), (uint32_t)(sizeof(float) * m_Packed.Count())));
 
 		BufferLayout layout =
 		{
@@ -98,7 +98,7 @@ namespace Cy
 
 		m_VertexBuffer->SetLayout(layout);
 
-		m_IndexBuffer.reset(IndexBuffer::Create(m_Triangles.data(), (uint32_t)m_Triangles.size()));
+		m_IndexBuffer.reset(IndexBuffer::Create(m_Triangles.Data(), (uint32_t)m_Triangles.Count()));
 
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);

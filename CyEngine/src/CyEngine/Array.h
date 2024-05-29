@@ -139,6 +139,14 @@ public:
 	{
 		Reserve(2);
 	}
+	Array(std::initializer_list<T> l)
+	{
+		Reserve(l.size());
+		for (auto ptr = l.begin(); ptr < l.end(); ptr++)
+		{
+			Add(*ptr);
+		}
+	}
 	Array(const Array& arr)
 	{
 		Reserve(arr.m_Capacity);
@@ -178,6 +186,8 @@ public:
 
 	Array& operator=(const Array& arr)
 	{
+		Reserve(arr.m_Capacity);
+		m_Size = arr.m_Size;
 		for (int i = 0; i < m_Size; i++)
 		{
 			if (std::is_pointer<T>())
@@ -320,6 +330,18 @@ public:
 			m_Data[i] = m_Data[i + 1];
 		}
 		m_Size--;
+	}
+
+	void Reverse()
+	{
+		int start = 0;
+		int end = Count() - 1;
+		for (; start < end; start++, end--)
+		{
+			T p = m_Data[start];
+			m_Data[start] = m_Data[end];
+			m_Data[end] = p;
+		}
 	}
 
 	virtual int Count() const override { return m_Size; }
