@@ -1,5 +1,6 @@
 #include <CyEngine.h>
 #include "CyEngine/Components/CameraComponent.h"
+#include "CyEngine/Components/LightComponent.h"
 #include "CyEngine/Components/MeshComponent.h"
 #include <CyEngine/Serialization/Serialization.h>
 
@@ -30,10 +31,16 @@ public:
 		m_Camera = cam->CreateAndAddComponent<CameraComponent>();
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 
+		// Create default cube
 		SceneObject* cube = m_Scene->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity, Vector3::One);
 		cube->Name = "Cube";
 		MeshComponent* cubeMesh = cube->CreateAndAddComponent<MeshComponent>();
 		cubeMesh->SetMeshType(MeshComponentType::Cube);
+
+		// Create light
+		SceneObject* mainLight = m_Scene->CreateSceneObject<SceneObject>(Vector3(5, 5, 5), Quat::FromEuler(-30.0f, 45.0f, 0.0f));
+		mainLight->Name = "Main Light";
+		LightComponent* lightComp = mainLight->CreateAndAddComponent<LightComponent>();
 
 		Array<int> arr;
 		arr.Add(1);

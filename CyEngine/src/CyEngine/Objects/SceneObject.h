@@ -33,8 +33,8 @@ namespace Cy
 		virtual void EditorTick(float deltaTime);
 #endif
 
-		const Transform* GetTransform() const { return m_Transform; }
-		Transform* GetTransform() { return m_Transform; }
+		const Transform& GetTransform() const { return *m_Transform; }
+		Transform& GetTransform() { return *m_Transform; }
 
 		template<typename ComponentType>
 		ComponentType* CreateAndAddComponent()

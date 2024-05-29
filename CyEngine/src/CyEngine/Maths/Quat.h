@@ -38,6 +38,7 @@ namespace Cy
 
 		static Vector3 ToEuler(const Quat& quat);
 		static Quat FromEuler(const Vector3& euler);
+		static Quat FromEuler(float x, float y, float z);
 
 		Vector3 xyz() const;
 

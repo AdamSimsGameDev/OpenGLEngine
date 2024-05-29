@@ -17,6 +17,8 @@ namespace Cy
 		Matrix3x3(float val) : glm::mat3(val) { }
 		Matrix3x3(const glm::mat3& mat) : glm::mat3(mat) { }
 
+		operator glm::mat3() const { return glm::mat3((*this)[0], (*this)[1], (*this)[2]); }
+
 		String ToString() const;
 
 		inline static Matrix3x3 Inverse(const Matrix3x3& mat) { return glm::inverse(mat); }
@@ -29,6 +31,8 @@ namespace Cy
 	public:		
 		Matrix4x4(float val) : glm::mat4(val) { }
 		Matrix4x4(const glm::mat4& mat) : glm::mat4(mat) { }
+
+		operator glm::mat4() const { return glm::mat4((*this)[0], (*this)[1], (*this)[2], (*this)[3]); }
 
 		String ToString() const;
 

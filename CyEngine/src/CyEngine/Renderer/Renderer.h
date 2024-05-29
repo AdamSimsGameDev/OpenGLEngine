@@ -23,8 +23,17 @@ namespace Cy
 	private:
 		struct SceneData
 		{
-			SceneData() : ViewProjectionMatrix(Matrix4x4(1.0f)) {}
+			SceneData() 
+				: ViewProjectionMatrix(Matrix4x4(1.0f))
+				, MainLightPosition(Vector3::Zero)
+				, MainLightDirection(Vector3::Zero)
+			{
+			}
+
 			Matrix4x4 ViewProjectionMatrix;
+
+			Vector3 MainLightPosition;
+			Vector3 MainLightDirection;
 		};
 
 		static SceneData* s_SceneData;

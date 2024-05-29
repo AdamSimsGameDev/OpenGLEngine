@@ -82,16 +82,19 @@ project "CyEngine"
 
 	filter "configurations:Debug"
 		defines "CY_DEBUG"
+		staticruntime "off"
 		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Development"
 		defines "CY_DEVELOPMENT"
+		staticruntime "off"
 		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "CY_RELEASE"
+		staticruntime "off"
 		runtime "Release"
 		optimize "On"
 
@@ -135,16 +138,19 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "CY_DEBUG"
+		staticruntime "off"
 		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Development"
 		defines "CY_DEVELOPMENT"
+		staticruntime "off"
 		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "CY_RELEASE"
+		staticruntime "off"
 		runtime "Release"
 		optimize "On"
 

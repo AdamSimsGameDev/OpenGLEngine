@@ -1,6 +1,7 @@
 #include "cypch.h"
 #include "World.h"
 #include "Components/CameraComponent.h"
+#include "Components/LightComponent.h"
 #include "Components/MeshComponent.h"
 #if CY_EDITOR
 #include "Components/EditorCameraComponent.h"
@@ -16,6 +17,7 @@ namespace Cy
 
 		ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
 		ADD_TRACKED_COMPONENT_TYPE(CameraComponent);
+		ADD_TRACKED_COMPONENT_TYPE(LightComponent);
 	}
 
 	void World::Tick(float deltaTime)

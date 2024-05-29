@@ -39,6 +39,11 @@ namespace Cy
         return glm::quat(euler * DEG_TO_RAD);
     }
 
+	Quat Quat::FromEuler(float x, float y, float z)
+	{
+		return FromEuler(Vector3(x, y, z));
+	}
+
 	Vector3 Quat::xyz() const
 	{
 		return Vector3(x, y, z);

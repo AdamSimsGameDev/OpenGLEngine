@@ -1,7 +1,7 @@
 #pragma once
-#include <CyEngine/String.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "CyEngine/Maths/Vector.h"
+#include "CyEngine/Maths/Matrix.h"
+#include "CyEngine/String.h"
 
 namespace Cy
 {	
@@ -16,8 +16,8 @@ namespace Cy
 		static Shader* CreateFromFiles(const String& vertexPath, const String& fragmentPath);
 		static Shader* Create(const String& vertexSrc, const String& fragmentSrc);
 
-		virtual void UploadUniformVec3(const String& name, const glm::vec3& vector) = 0;
-		virtual void UploadUniformMat4(const String& name, const glm::mat4& matrix) = 0;
+		virtual void UploadUniformVec3(const String& name, const Vector3& vector) = 0;
+		virtual void UploadUniformMat4(const String& name, const glm::mat4x4& matrix) = 0;
 
 	private:
 		static void ParseShader(const String& filePath, String& outSource);

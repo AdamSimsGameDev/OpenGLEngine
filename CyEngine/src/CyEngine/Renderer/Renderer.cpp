@@ -1,6 +1,7 @@
 #include "cypch.h"
 #include "Renderer.h"
 #include "CyEngine/Components/CameraComponent.h"
+#include "CyEngine/Components/LightComponent.h"
 #include "CyEngine/Components/MeshComponent.h"
 #include "CyEngine/Renderer/Mesh.h"
 #include "CyEngine/Renderer/Shader.h"
@@ -39,6 +40,20 @@ namespace Cy
 
 		s_SceneData->ViewProjectionMatrix = mainCamera->GetProjectionViewMatrix();
 
+		// gather the main light
+		Array<LightComponent*> lights = scene->GetAllComponentsOfType<LightComponent>();
+		if (lights.Count() > 0)
+		{
+			const Transform& transform = lights[0]->GetParent<SceneObject>()->GetTransform();
+			s_SceneData->MainLightPosition = transform.GetPosition();
+			s_SceneData->MainLightDirection = transform.GetForwardVector();
+		}
+		else
+		{
+			s_SceneData->MainLightDirection = Vector3::Zero;
+			s_SceneData->MainLightPosition = Vector3::Zero;
+		}
+
 		for (Component* comp : scene->GetAllComponentsOfType("MeshComponent"))
 		{
 			if (MeshComponent* meshComp = CastChecked<MeshComponent>(comp))
@@ -60,13 +75,14 @@ namespace Cy
 		if (!comp->GetMesh() || !comp->GetShader())
 			return;
 		comp->m_Texture->Bind();
-		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray, comp->GetParent<SceneObject>()->GetTransform()->GetWorldTransformationMatrix());
+		Submit(comp->GetShader(), comp->GetMesh()->m_VertexArray, comp->GetParent<SceneObject>()->GetTransform().GetWorldTransformationMatrix());
 	}
 
 	void Renderer::Submit(Shader* shader, const std::shared_ptr<VertexArray>& vertexArray, const Matrix4x4& objectMatrix)
 	{
 		shader->Bind();
-		shader->UploadUniformVec3("u_LightPosition", glm::vec3(1.5f, 1.5f, 1.5f));
+		shader->UploadUniformVec3("u_LightPosition", s_SceneData->MainLightPosition);
+		shader->UploadUniformVec3("u_LightDirection", s_SceneData->MainLightDirection.Normalized());
 		shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
 		shader->UploadUniformMat4("u_Model", objectMatrix);
 		vertexArray->Bind();

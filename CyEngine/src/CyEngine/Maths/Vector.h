@@ -65,7 +65,7 @@ namespace Cy
 
 		static inline Vector3 Cross(const Vector3& a, const Vector3& b) { return { a.x * b.x, a.y * b.y, a.z * b.z }; }
 
-		inline Vector3 Normalized(const Vector3& inVector) const
+		inline Vector3 Normalized() const
 		{
 			const float l = Magnitude();
 			return { x / l, y / l, z / l };

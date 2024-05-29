@@ -2,6 +2,7 @@
 #include "OpenGLShader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Cy
 {
@@ -130,13 +131,13 @@ namespace Cy
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUniformVec3(const String& name, const glm::vec3& vector)
+	void OpenGLShader::UploadUniformVec3(const String& name, const Vector3& vector)
 	{
 		uint32_t location = glGetUniformLocation(m_RendererId, *name);
 		glUniform3fv(location, 1, &vector[0]);
 	}
 
-	void OpenGLShader::UploadUniformMat4(const String& name, const glm::mat4& matrix)
+	void OpenGLShader::UploadUniformMat4(const String& name, const glm::mat4x4& matrix)
 	{
 		uint32_t location = glGetUniformLocation(m_RendererId, *name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
