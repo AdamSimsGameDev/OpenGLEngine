@@ -157,4 +157,12 @@ namespace Cy
 
 		return true;
 	}
+
+	DEFINE_PROPERTY_FIELD(PropertyFieldColour);
+	bool PropertyFieldColour::RenderProperty(Colour* data, const String& displayName, const ClassProperty& info) const
+	{
+		ItemLabel(displayName);
+		ImGui::ColorEdit4(*String::Format("##%s_%p", *displayName, data), &(data->r));
+		return true;
+	}
 }

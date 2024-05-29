@@ -116,6 +116,9 @@ namespace Cy
 		{
 			return (x * x) + (y * y) + (z * z) + (w * w);
 		}
+
+		static Vector4 Zero;
+		static Vector4 One;
 	};
 
 	struct SerializableVector2 : Serializable<SerializableVector2, Vector2>

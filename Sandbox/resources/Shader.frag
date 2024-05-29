@@ -2,6 +2,7 @@
 			
 uniform vec3 u_LightPosition;
 uniform vec3 u_LightDirection;
+uniform vec4 u_LightColour;
 
 layout(location = 0) out vec4 color;
 
@@ -20,6 +21,6 @@ void main()
 	vec3 diffuse = diff * lightColor;
 
 	vec3 objectColor = vec3(1.0, 1.0, 1.0);
-	vec3 result = (0.1 + diffuse) * objectColor;
-	color = vec4(result, 1.0) * texture(ourTexture, TexCoord);
+	vec4 result = vec4((0.1 + diffuse) * objectColor, 1.0) * u_LightColour;
+	color = result * texture(ourTexture, TexCoord);
 }

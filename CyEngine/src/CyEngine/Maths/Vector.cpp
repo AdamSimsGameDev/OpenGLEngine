@@ -15,6 +15,9 @@ namespace Cy
 	Vector3 Vector3::Zero		= Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 Vector3::One		= Vector3(1.0f, 1.0f, 1.0f);
 
+	Vector4 Vector4::Zero = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 Vector4::One = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	String Vector2::ToString() const
 	{
 		return String::Format("(%f, %f)", x, y);

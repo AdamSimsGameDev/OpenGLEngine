@@ -27,6 +27,7 @@ namespace Cy
 				: ViewProjectionMatrix(Matrix4x4(1.0f))
 				, MainLightPosition(Vector3::Zero)
 				, MainLightDirection(Vector3::Zero)
+				, MainLightColour(Vector4::One)
 			{
 			}
 
@@ -34,6 +35,7 @@ namespace Cy
 
 			Vector3 MainLightPosition;
 			Vector3 MainLightDirection;
+			Vector4 MainLightColour;
 		};
 
 		static SceneData* s_SceneData;

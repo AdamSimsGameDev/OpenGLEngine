@@ -47,11 +47,13 @@ namespace Cy
 			const Transform& transform = lights[0]->GetParent<SceneObject>()->GetTransform();
 			s_SceneData->MainLightPosition = transform.GetPosition();
 			s_SceneData->MainLightDirection = transform.GetForwardVector();
+			s_SceneData->MainLightColour = lights[0]->LightColour;
 		}
 		else
 		{
 			s_SceneData->MainLightDirection = Vector3::Zero;
 			s_SceneData->MainLightPosition = Vector3::Zero;
+			s_SceneData->MainLightColour = Vector4::Zero;
 		}
 
 		for (Component* comp : scene->GetAllComponentsOfType("MeshComponent"))
@@ -83,6 +85,8 @@ namespace Cy
 		shader->Bind();
 		shader->UploadUniformVec3("u_LightPosition", s_SceneData->MainLightPosition);
 		shader->UploadUniformVec3("u_LightDirection", s_SceneData->MainLightDirection.Normalized());
+		shader->UploadUniformVec4("u_LightColour", s_SceneData->MainLightColour);
+
 		shader->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
 		shader->UploadUniformMat4("u_Model", objectMatrix);
 		vertexArray->Bind();

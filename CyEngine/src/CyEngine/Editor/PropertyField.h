@@ -102,6 +102,12 @@ namespace Cy
 		virtual bool RenderProperty(Quat* data, const String& displayName, const ClassProperty& info) const override;
 	};
 
+	struct PropertyFieldColour : PropertyField<PropertyFieldColour, Colour>
+	{
+		virtual String GetType() const override { return "Colour"; }
+		virtual bool RenderProperty(Colour* data, const String& displayName, const ClassProperty& info) const override;
+	};
+
 	// custom fields, for custom rendering
 	struct PropertyFieldEnum : PropertyField<PropertyFieldEnum, uint8_t>
 	{

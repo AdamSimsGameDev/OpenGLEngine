@@ -7,6 +7,8 @@ namespace Cy
 	struct Colour
 	{
 	public:
+		Colour() : r(1.0f), g(1.0f), b(1.0f), a(1.0f) { }
+
 		Colour(const glm::vec3& vec) : r(vec.x), g(vec.y), b(vec.z), a(1.0f) { }
 		Colour(const glm::vec4& vec) : r(vec.x), g(vec.y), b(vec.z), a(vec.w) { }
 

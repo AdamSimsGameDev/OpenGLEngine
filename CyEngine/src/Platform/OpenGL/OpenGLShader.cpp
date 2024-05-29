@@ -137,6 +137,12 @@ namespace Cy
 		glUniform3fv(location, 1, &vector[0]);
 	}
 
+	void OpenGLShader::UploadUniformVec4(const String& name, const Vector4& vector)
+	{
+		uint32_t location = glGetUniformLocation(m_RendererId, *name);
+		glUniform4fv(location, 1, &vector[0]);
+	}
+
 	void OpenGLShader::UploadUniformMat4(const String& name, const glm::mat4x4& matrix)
 	{
 		uint32_t location = glGetUniformLocation(m_RendererId, *name);

@@ -17,6 +17,8 @@ namespace Cy
 		static Shader* Create(const String& vertexSrc, const String& fragmentSrc);
 
 		virtual void UploadUniformVec3(const String& name, const Vector3& vector) = 0;
+		virtual void UploadUniformVec4(const String& name, const Vector4& vector) = 0;
+
 		virtual void UploadUniformMat4(const String& name, const glm::mat4x4& matrix) = 0;
 
 	private:
