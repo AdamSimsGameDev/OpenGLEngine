@@ -39,5 +39,5 @@ namespace Cy
 #define CY_FATAL(...) ::Cy::Log::GetClientLogger()->critical(__VA_ARGS__)
 
 // Assert macros
-#define CY_CORE_ASSERT(condition, ...)	if (!condition) ::Cy::Log::GetCoreLogger()->critical(__VA_ARGS__);
-#define CY_ASSERT(condition, ...)		if (!condition) ::Cy::Log::GetClientLogger()->critical(__VA_ARGS__);
+#define CY_CORE_ASSERT(condition, ...)	if (!(condition)) ::Cy::Log::GetCoreLogger()->critical(__VA_ARGS__);
+#define CY_ASSERT(condition, ...)		if (!(condition)) ::Cy::Log::GetClientLogger()->critical(__VA_ARGS__);

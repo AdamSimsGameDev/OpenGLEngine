@@ -21,6 +21,7 @@ namespace Cy
 	public:
 		World();
 
+		virtual void Start() override;
 		virtual void Tick(float deltaTime);
 
 		template<typename T>

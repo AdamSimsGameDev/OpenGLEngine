@@ -79,6 +79,12 @@ public:
 		rc = other.rc;
 		rc->IncrementShared();
 	}
+	SharedPtr(SharedPtr&& other)
+	{
+		ptr = other.ptr;
+		rc = other.rc;
+		rc->IncrementShared();
+	}
 	~SharedPtr()
 	{
 		rc->DecrementShared();
@@ -93,6 +99,21 @@ public:
 				rc = nullptr;
 			}
 		}
+	}
+
+	SharedPtr& operator=(const SharedPtr& other)
+	{
+		ptr = other.ptr;
+		rc = other.rc;
+		rc->IncrementShared();
+		return *this;
+	}
+	SharedPtr& operator=(SharedPtr&& other) noexcept
+	{
+		ptr = other.ptr;
+		rc = other.rc;
+		rc->IncrementShared();
+		return *this;
 	}
 	
 	operator T*() const { return ptr; }

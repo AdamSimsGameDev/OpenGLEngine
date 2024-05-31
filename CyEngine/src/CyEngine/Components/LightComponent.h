@@ -4,7 +4,7 @@
 
 namespace Cy
 {
-	CLASS()
+	CLASS(EditorSpawnable)
 	class LightComponent : public Component
 	{
 		GENERATED_CLASS(LightComponent);

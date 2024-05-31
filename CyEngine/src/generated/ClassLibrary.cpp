@@ -2,6 +2,8 @@
 #include "ClassLibrary.h"
 
 #include "MeshComponent.gen.h"
+#include "AssetInfo.gen.h"
+#include "TextAsset.gen.h"
 #include "CameraComponent.gen.h"
 #include "Component.gen.h"
 #include "EditorCameraComponent.gen.h"
@@ -18,6 +20,8 @@ namespace Cy
 	std::unordered_map<String, Cy::ClassLibrary::ScriptFunction> ClassLibrary::ClassMap =
 	{
 		{ "MeshComponent", &MeshComponentClass::Get },
+{ "AssetInfo", &AssetInfoClass::Get },
+{ "TextAsset", &TextAssetClass::Get },
 { "CameraComponent", &CameraComponentClass::Get },
 { "Component", &ComponentClass::Get },
 { "EditorCameraComponent", &EditorCameraComponentClass::Get },

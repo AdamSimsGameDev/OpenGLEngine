@@ -1,7 +1,7 @@
 #pragma once
 
 static std::string class_format = 
-    "class %s : public %sClass\n\
+    "\tclass %s : public %sClass\n\
     {\n\
         friend %s %s;\n\
     public:\n\
@@ -15,17 +15,19 @@ static std::string class_format =
             }\n\
             return %s_Instance;\n\
         }\n\
-        virtual void* New() const override; \n\
+        %s\
         \n%s\n\
     };\n";
 
-static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n\tParentClass = %s;\n%s\n\n%s\n}\n";
+static std::string constructor_format = "%s::%s()\n{\n\tName = \"%s\";\n\tParentClass = %s;\n%s\n\n%s\n\n%s}\n";
 
 static std::string enum_format = "{ \"%s\", { %s } },";
 static std::string enum_entry_format = "{ %i, \"%s\" }";
 
-static std::string class_meta_data_format = "MetaData.push_back(MetaDataProperty(%s, %s));\n";
-static std::string class_meta_data_format_single = "MetaData.push_back(MetaDataProperty(%s, true));\n";
+static std::string class_meta_data_format = "AddMetaData(MetaDataProperty(%s, %s));\n";
+static std::string class_meta_data_format_single = "AddMetaData(MetaDataProperty(%s, true));\n";
+
+static std::string cdo_format = "ClassDefaultObject = New();\nGetClassDefaultObject_Mutable<%s>()->m_IsClassDefaultObject = true;";
 
 class ClassInfo
 {
@@ -41,6 +43,16 @@ public:
     {
         name = n;
         parent_class = p;
+    }
+
+    bool IsAbstract() const
+    {
+        auto data = meta_data.find("Abstract");
+        if (data != meta_data.end())
+        {
+            return ((*data).second) == "" || ((*data).second) == "true";
+        }
+        return false;
     }
 };
 
@@ -76,23 +88,27 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
         properties_func_string += generate_property_functions_h(prop.name, prop.full_type);
     }
 
-    h += string_format(class_format, 
-        true_class_name.c_str(), 
-        class_info->parent_class.c_str(), 
+    h += string_format(class_format,
+        true_class_name.c_str(),
+        class_info->parent_class.c_str(),
         class_info->is_struct ? "struct" : "class",
-        class_info->name.c_str(), 
-        true_class_name.c_str(), 
+        class_info->name.c_str(),
         true_class_name.c_str(),
         true_class_name.c_str(),
         true_class_name.c_str(),
         true_class_name.c_str(),
         true_class_name.c_str(),
         true_class_name.c_str(),
+        true_class_name.c_str(),
+        class_info->IsAbstract() ? "" : "virtual void* New() const override;\n",
         properties_func_string.c_str());
 
     cpp += true_class_name + "* " + true_class_name + "::" + true_class_name + "_Instance = nullptr;\n";
 
-    cpp += "void* " + true_class_name + "::New() const { return (void*)new " + class_info->name.c_str() + "(); }\n\n";
+    if (!class_info->IsAbstract())
+    {
+        cpp += "void* " + true_class_name + "::New() const { return (void*)new " + class_info->name.c_str() + "(); }\n\n";
+    }
 
     std::string class_meta_data;
     for (auto& meta_data : class_info->meta_data)
@@ -163,7 +179,8 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
         class_info->name.c_str(),
         class_info->parent_class.empty() ? "nullptr" : string_format("%sClass::Get()", class_info->parent_class.c_str()).c_str(),
         properties_string.c_str(),
-        class_meta_data.c_str());
+        class_meta_data.c_str(),
+        string_format(cdo_format.c_str(), class_info->name.c_str()).c_str());
 
     for (const auto& prop : class_info->properties)
     {

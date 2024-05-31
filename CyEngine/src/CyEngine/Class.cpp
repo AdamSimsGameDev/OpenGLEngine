@@ -36,6 +36,12 @@ namespace Cy
 		return classes;
 	}
 
+	bool Class::IsAbstract() const
+	{
+		const MetaDataProperty* property = GetMetaData("Abstract");
+		return property && property->GetValue<bool>() == true;
+	}
+
 	const ClassProperty* Class::GetPropertyFromName(String property_name) const
 	{
 		return &(Properties.find(property_name)->second);

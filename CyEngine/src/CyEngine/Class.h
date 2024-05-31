@@ -138,9 +138,29 @@ namespace Cy
 		std::unordered_map<String, ClassProperty> Properties;
 		std::vector<MetaDataProperty> MetaData;
 
+		void AddMetaData(MetaDataProperty metaData)
+		{
+			for (auto it = MetaData.begin(); it != MetaData.end(); ++it)
+			{
+				MetaDataProperty& m = *it;
+				if (m == metaData.Key)
+				{
+					m.Value = metaData.Value;
+					return;
+				}
+			}
+
+			MetaData.push_back(metaData);
+		}
+
 		template<typename T>
 		T* New() const { return (T*)New(); }
 		virtual void* New() const { return nullptr; }
+
+		template<typename T>
+		const T* GetClassDefaultObject() const { return (T*)ClassDefaultObject; }
+		template<typename T>
+		T* GetClassDefaultObject_Mutable() { return (T*)ClassDefaultObject; }
 
 		template<class T>
 		bool IsChildOf() const { return IsChildOf(T::GetStaticClass()); }
@@ -149,6 +169,8 @@ namespace Cy
 		template<class T>
 		static Array<const Class*> GetChildClassesOfType() { return GetChildClassesOfType(T::GetStaticClass()); }
 		static Array<const Class*> GetChildClassesOfType(const Class* Cl);
+
+		bool IsAbstract() const;
 
 		const ClassProperty* GetPropertyFromName(String property_name) const;
 
@@ -241,5 +263,8 @@ namespace Cy
 			}
 			return nullptr;
 		}
+
+	protected:
+		void* ClassDefaultObject = nullptr;
 	};
 }

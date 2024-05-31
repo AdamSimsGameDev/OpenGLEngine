@@ -22,8 +22,8 @@ public:
 	virtual void OnAttach() override
 	{
 		m_Scene = new World();
-		m_Scene->SetIsEditorWorld();
 		m_Scene->Start();
+		m_Scene->SetIsEditorWorld();
 
 		// Create starting camera
 		SceneObject* cam = m_Scene->CreateSceneObject<SceneObject>(Vector3(0, 0.5f, 4), Quat::Identity);

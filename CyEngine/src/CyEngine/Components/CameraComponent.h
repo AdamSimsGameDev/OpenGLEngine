@@ -22,7 +22,7 @@ namespace Cy
 		float Bottom;
 	};
 
-	CLASS()
+	CLASS(EditorSpawnable)
 	class CameraComponent : public Component
 	{
 		GENERATED_CLASS(CameraComponent)

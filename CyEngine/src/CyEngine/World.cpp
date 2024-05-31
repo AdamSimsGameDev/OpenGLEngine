@@ -13,11 +13,20 @@ namespace Cy
 
 	World::World()
 	{
-		s_Scene = this;
+	}
 
-		ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
-		ADD_TRACKED_COMPONENT_TYPE(CameraComponent);
-		ADD_TRACKED_COMPONENT_TYPE(LightComponent);
+	void World::Start()
+	{
+		Object::Start();
+
+		if (!IsClassDefaultObject())
+		{
+			s_Scene = this;
+
+			ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
+			ADD_TRACKED_COMPONENT_TYPE(CameraComponent);
+			ADD_TRACKED_COMPONENT_TYPE(LightComponent);
+		}
 	}
 
 	void World::Tick(float deltaTime)

@@ -114,12 +114,13 @@ namespace Cy
 	public:
 		String();
 		String(const char* val);
+		String(const char& val);
 		String(const std::string& val);
 		String(const String& other);
 		String(String&& other) noexcept;
 		~String();
 
-		size_t Length() const { return strlen(str); }
+		int Length() const;
 
 		// Operators
 		char& operator[](size_t index) { return str[index]; }
@@ -150,12 +151,23 @@ namespace Cy
 		String& Erase(size_t position, size_t length) noexcept;
 		void Empty() { Erase(0, strlen(str)); }
 
+		String& ReplaceFirst(const String& oldStr, const String& newStr);
+		String& ReplaceLast(const String& oldStr, const String& newStr);
+		String& ReplaceAll(const String& oldStr, const String& newStr);
+		String& Replace(size_t position, size_t length, const String& s);
+
 		// Const functions
 		String Substring(size_t position, size_t length) const;
 		bool Contains(const String& other) const { return strstr(str, other.str) != nullptr; }
 		bool IsEmpty() const { return strlen(str) == 0; }
 
+		size_t FindFirst(const String& toFind) const;
+		size_t FindLast(const String& toFind) const;
+		Array<size_t> FindAll(const String& toFind) const;
+
 		// Statics
+		static String Combine(const Array<String>& arr);
+		static String Reversed(const String& source);
 		static Array<String> Split(const String& str, const char& separator);
 		static Array<String> SplitUnquoted(const String& str, const char& separator);
 		static String ToString(unsigned int value);
@@ -243,6 +255,9 @@ namespace Cy
 		void fill(size_t length, size_t pos, char c);
 		void clear(size_t pos);
 	};
+
+	inline String operator+(const char* lhs, const String& rhs) { return String(lhs) + rhs; }
+	inline String operator+(const char& lhs, const String& rhs) { return String(lhs) + rhs; }
 }
 
 template<>

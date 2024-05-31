@@ -4,6 +4,7 @@
 #include "Events/WindowEvent.h"
 #include "CyEngine/Layers/EditorLayer.h"
 #include "Renderer/Renderer.h"
+#include "CyEngine/AssetManager/AssetManager.h"
 
 namespace Cy
 {
@@ -29,6 +30,8 @@ namespace Cy
 
 	void Application::Run()
 	{
+		AssetManager::Get();
+
 		while (m_Running)
 		{
 			Input::Update();

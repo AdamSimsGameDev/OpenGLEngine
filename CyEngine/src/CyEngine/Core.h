@@ -21,6 +21,8 @@
 
 #define CY_EDITOR 1
 
+#include "CyEngine/Log.h"
+
 template <typename Target, typename Source>
 inline Target* Cast(Source* x)
 {
@@ -44,7 +46,7 @@ template<typename To, typename From>
 static To* CastChecked(From* from)
 {
 	auto cast = Cast<To>(from);
-	//CY_CORE_ASSERT(cast, "CastChecked failed, {0} cannot be cast to type {1}. ", GET_NAME_SAFE(cast), typeid(from).name());
+	CY_CORE_ASSERT(cast, "CastChecked failed, {0} cannot be cast to type {1}. ", GET_NAME_SAFE(cast), typeid(from).name());
 	return cast;
 }
 
@@ -57,7 +59,24 @@ static To* CastChecked(From* from)
 #define GENERATED_CLASS(type) public:\
 	friend class type##Class;\
 	static class Class* GetStaticClass() { return type##Class::Get(); }\
-	virtual class Class* GetClass() const { return type##::GetStaticClass(); }
+	virtual class Class* GetClass() const { return type##::GetStaticClass(); }\
+	bool IsClassDefaultObject() const { return m_IsClassDefaultObject; }\
+	private:\
+	bool m_IsClassDefaultObject = false;\
+	public:
+
+static int SizeTToInt(size_t data)
+{
+	if (data > std::numeric_limits<int>::max())
+		throw std::exception("Invalid cast.");
+	return static_cast<int>(data);
+}
+
+template<typename T>
+static T* New()
+{
+	return T::GetStaticClass()->New<T>();
+}
 
 #include "CyEngine/SmartPointer.h"
 #include "CyEngine/Array.h"
@@ -70,8 +89,6 @@ static To* CastChecked(From* from)
 #include "CyEngine/Maths/Matrix.h"
 #include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Vector.h"
-
-#include "CyEngine/Log.h"
 
 // Input
 #include "CyEngine/Input.h"

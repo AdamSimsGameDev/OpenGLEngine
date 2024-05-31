@@ -141,7 +141,7 @@ public:
 	}
 	Array(std::initializer_list<T> l)
 	{
-		Reserve(l.size());
+		Reserve(SizeTToInt(l.size()));
 		for (auto ptr = l.begin(); ptr < l.end(); ptr++)
 		{
 			Add(*ptr);
@@ -167,6 +167,10 @@ public:
 	{
 		m_Size = arr.m_Size;
 		m_Capacity = arr.m_Capacity;
+
+		arr.m_Size = 0;
+		arr.m_Capacity = 0;
+
 		std::swap(m_Data, arr.m_Data);
 		::operator delete(arr.m_Data, m_Capacity * sizeof(T));
 		arr.m_Size = 0;
@@ -205,6 +209,10 @@ public:
 	{
 		m_Size = arr.m_Size;
 		m_Capacity = arr.m_Capacity;
+
+		arr.m_Size = 0;
+		arr.m_Capacity = 0;
+
 		std::swap(m_Data, arr.m_Data);
 		::operator delete(arr.m_Data, m_Capacity * sizeof(T));
 		return *this;
@@ -220,6 +228,19 @@ public:
 	const T& operator[](int index) const
 	{
 		return m_Data[index];
+	}
+
+	const T& First() const { return m_Data[0]; }
+	T& First() { return m_Data[0]; }
+
+	const T& Last() const { return m_Data[Count() - 1]; }
+	T& Last() { return m_Data[Count() - 1]; }
+
+	T Pop()
+	{
+		T t = (*this)[Count() - 1];
+		RemoveAt(Count() - 1);
+		return t;
 	}
 
 	virtual void Reserve(int capacity) override

@@ -1,5 +1,6 @@
 #include "cypch.h"
 #include "String.h"
+#include "Core.h"
 
 namespace Cy
 {
@@ -20,6 +21,12 @@ namespace Cy
 		str = new char[strlen(val) + 1];
 		strcpy(str, val);
 		str[strlen(val)] = '\0';
+	}
+	String::String(const char& val)
+	{
+		str = new char[2];
+		str[0] = val;
+		str[1] = '\0';
 	}
 
 	String::String(const std::string& val)
@@ -48,6 +55,11 @@ namespace Cy
 		str = nullptr;
 	}
 
+	int String::Length() const
+	{
+		return SizeTToInt(strlen(str));
+	}
+
 	String& String::Erase(size_t position, size_t length) noexcept
 	{
 		// iterate over the string
@@ -57,6 +69,58 @@ namespace Cy
 			operator[](i - length) = operator[](i);
 		}
 		clear(strlen(str) - length);
+
+		return *this;
+	}
+
+	String& String::ReplaceFirst(const String& oldStr, const String& newStr)
+	{
+		const size_t f = FindFirst(oldStr);
+		if (f != -1)
+		{
+			Replace(f, oldStr.Length(), newStr);
+		}
+		return *this;
+	}
+
+	String& String::ReplaceLast(const String& oldStr, const String& newStr)
+	{
+		const size_t f = FindLast(oldStr);
+		if (f != -1)
+		{
+			Replace(f, oldStr.Length(), newStr);
+		}
+		return *this;
+	}
+
+	String& String::ReplaceAll(const String& oldStr, const String& newStr)
+	{
+		const Array<size_t>& arr = FindAll(oldStr);
+		for (size_t pos : arr)
+		{
+			Replace(pos, oldStr.Length(), newStr);
+		}
+		return *this;
+	}
+
+	String& String::Replace(size_t position, size_t length, const String& s)
+	{
+		size_t l = Length() - length + s.Length() + 1;
+		char* buffer = new char[l];
+		buffer[l - 1] = '\0';
+
+		size_t i = 0;
+		for (; i < position; i++)
+			buffer[i] = str[i];
+		for (size_t j = 0; i + j < position + s.Length(); j++)
+			buffer[i + j] = s[j];
+		buffer[i + s.Length()] = '\0';
+		for (; i + s.Length() < l - 1; i++)
+			buffer[i + s.Length()] = str[i + length];
+
+		std::swap(str, buffer);
+		delete[] buffer;
+		buffer = nullptr;
 
 		return *this;
 	}
@@ -75,6 +139,73 @@ namespace Cy
 			buffer[i] = str[i + position];
 		buffer[end] = '\0';
 		return String(buffer);
+	}
+
+	size_t String::FindFirst(const String& toFind) const
+	{
+		for (int i = 0; i < Length() - toFind.Length() + 1; i++)
+		{
+			for (int j = 0; j < toFind.Length(); j++)
+			{
+				if (str[i + j] != toFind[j])
+				{
+					break;
+				}
+
+				if (j == toFind.Length() - 1)
+				{
+					return i;
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	size_t String::FindLast(const String& toFind) const
+	{
+		for (int i = Length() - toFind.Length(); i >= 0; i--)
+		{
+			for (int j = 0; j < toFind.Length(); j++)
+			{
+				if (str[i + j] != toFind[j])
+				{
+					break;
+				}
+
+				if (j == toFind.Length() - 1)
+				{
+					return i;
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	Array<size_t> String::FindAll(const String& toFind) const
+	{
+		Array<size_t> arr;
+
+		for (int i = 0; i < Length() - toFind.Length() + 1; i++)
+		{
+			for (int j = 0; j < toFind.Length(); j++)
+			{
+				if (str[i + j] != toFind[j])
+				{
+					break;
+				}
+
+				if (j == toFind.Length() - 1)
+				{
+					arr.Add(i);
+					i += toFind.Length();
+					break;
+				}
+			}
+		}
+
+		return arr;
 	}
 
 	String String::operator+(const String& rhs) const
@@ -181,6 +312,30 @@ namespace Cy
 		str = other.str;
 		other.str = nullptr;
 		return *this;
+	}
+
+	String String::Combine(const Array<String>& arr)
+	{
+		String s;
+		for (const auto& el : arr)
+		{
+			s += el;
+		}
+		return s;
+	}
+
+	String String::Reversed(const String& source)
+	{
+		size_t l = source.Length();
+		char* buffer = new char[l + 1];
+		buffer[l] = '\0';
+
+		for (size_t i = 0; i < source.Length(); i++)
+		{
+			buffer[i] = source[l - i - 1];
+		}
+
+		return String(buffer);
 	}
 
 	Array<String> String::Split(const String& str, const char& separator)

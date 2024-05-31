@@ -188,7 +188,7 @@ namespace Cy
 				for (const auto& cl : classes)
 				{
 					const auto* spawnableMetaData = cl->GetMetaData("EditorSpawnable");
-					if (spawnableMetaData && !spawnableMetaData->GetValue<bool>())
+					if (!spawnableMetaData || !spawnableMetaData->GetValue<bool>())
 					{
 						continue;
 					}

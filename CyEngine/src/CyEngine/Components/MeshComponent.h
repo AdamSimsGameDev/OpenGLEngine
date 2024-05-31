@@ -17,7 +17,7 @@ namespace Cy
         Custom
     };
 
-    CLASS()
+    CLASS(EditorSpawnable)
     class MeshComponent : public Component
     {
         GENERATED_CLASS(MeshComponent)

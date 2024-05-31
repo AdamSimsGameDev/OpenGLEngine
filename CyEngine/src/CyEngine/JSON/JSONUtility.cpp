@@ -32,8 +32,8 @@ namespace Cy
 					buffer += "\n";
 					buffer += add_indent(indent + 1);
 					buffer += "[\n";
-					size_t s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
-					for (size_t i = 0; i < s; i++)
+					int s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
+					for (int i = 0; i < s; i++)
 					{
 						buffer += add_indent(indent + 2);
 						void* n = cl->GetPropertyValuePtrFromName(prop.first + '.' + std::to_string(i), prop.second.Type, obj);
@@ -59,8 +59,8 @@ namespace Cy
 					buffer += "\n";
 					buffer += add_indent(indent + 1);
 					buffer += "[\n";
-					size_t s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
-					for (size_t i = 0; i < s; i++)
+					int s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
+					for (int i = 0; i < s; i++)
 					{
 						buffer += add_indent(indent + 2);
 						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), prop.second.Type, obj);
@@ -162,7 +162,7 @@ namespace Cy
 			{
 				// break out the individual properties of the array.
 				Array<String> spl = String::SplitUnquoted(prop.second.Substring(1, prop.second.Length() - 2), ',');
-				size_t s = spl.Count();
+				int s = spl.Count();
 				if (const SerializableBase* serializable = Serialization::FindSerializableProperty(classProp->Type))
 				{
 					if (!classProp->IsFixedArray)
@@ -171,7 +171,7 @@ namespace Cy
 						arr->Reserve(s);
 						arr->SetSize(s);
 					}
-					for (size_t i = 0; i < s; i++)
+					for (int i = 0; i < s; i++)
 					{
 						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), classProp->Type, obj);
 						serializable->Deserialize(spl[i], n);
@@ -179,7 +179,7 @@ namespace Cy
 				}
 				else if (const Class* ncl = Class::GetClassFromName(classProp->Type))
 				{
-					for (size_t i = 0; i < s; i++)
+					for (int i = 0; i < s; i++)
 					{
 						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), classProp->Type, obj);
 						ConvertFromJsonInternal(spl[i], ncl, n);
