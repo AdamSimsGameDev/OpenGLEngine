@@ -23,4 +23,14 @@ namespace Cy
 	{
 		AssetManager::Get().UnloadAsset(m_AssetId);
 	}
+
+	bool AssetInfo::Save()
+	{
+		if (OnSave())
+		{
+			m_IsDirty = false;
+			return true;
+		}
+		return false;
+	}
 }

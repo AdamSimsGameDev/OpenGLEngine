@@ -36,7 +36,14 @@ namespace Cy
 		void SyncLoad();
 		void Unload();
 
+		bool Save();
+
+		void MarkDirty() { m_IsDirty = true; }
+		bool IsDirty() const { return m_IsDirty; }
+
 	protected:
+		virtual bool OnSave() = 0;
+
 		virtual void OnLoad() = 0;
 		virtual void OnUnload() = 0;
 
@@ -51,5 +58,7 @@ namespace Cy
 
 		bool m_IsLoaded;
 		int m_AssetId;
+
+		bool m_IsDirty;
 	};
 }

@@ -4,6 +4,16 @@
 
 namespace Cy
 {
+	bool TextAsset::OnSave()
+	{
+		if (!AssetManager::WriteToTextFile(m_FullPath, m_Content))
+		{
+			CY_ERROR("Failed to write text to file \"%s\" from path \"%s\". ", *m_Name, *m_Path);
+			return false;
+		}
+		return true;
+	}
+
 	void TextAsset::OnLoad()
 	{
 		if (!AssetManager::ReadFromTextFile(m_FullPath, m_Content))

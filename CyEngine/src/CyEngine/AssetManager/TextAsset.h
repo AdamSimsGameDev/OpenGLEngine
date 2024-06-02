@@ -14,6 +14,8 @@ namespace Cy
 		const String& GetContent() const { return m_Content; }
 
 	protected:
+		virtual bool OnSave() override;
+
 		virtual void OnLoad() override;
 		virtual void OnUnload() override;
 
