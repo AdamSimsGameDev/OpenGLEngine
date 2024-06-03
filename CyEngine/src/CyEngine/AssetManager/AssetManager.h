@@ -22,8 +22,8 @@ namespace Cy
 			return m_PathElements[index];
 		}
 
-		const String& GetName() const { return m_Name; }
-		const String& GetFileExtension() const { return m_FileExtension; }
+		String GetName() const { return m_Name; }
+		String GetFileExtension() const { return m_FileExtension; }
 
 		String RebuildPath() const;
 		String RebuildRelativePath(const String& relativeTo) const;

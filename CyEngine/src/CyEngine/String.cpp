@@ -208,6 +208,17 @@ namespace Cy
 		return arr;
 	}
 
+	std::wstring String::ToWString() const
+	{
+		size_t newsize = strlen(str) + 1;
+		wchar_t* wcstring = new wchar_t[newsize];
+
+		// Convert char* string to a wchar_t* string.
+		size_t convertedChars = 0;
+		mbstowcs_s(&convertedChars, wcstring, newsize, str, _TRUNCATE);
+		return wcstring;
+	}
+
 	String String::operator+(const String& rhs) const
 	{
 		size_t l = strlen(str) + strlen(rhs.str);

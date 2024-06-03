@@ -128,6 +128,7 @@ namespace Cy
 		char* operator*() { return str; }
 		const char* operator*() const { return str; }
 		operator std::string() const { return str; }
+		std::wstring ToWString() const;
 
 		// Add Operations
 		String operator+(const String& rhs) const;

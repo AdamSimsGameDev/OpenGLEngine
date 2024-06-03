@@ -387,7 +387,7 @@ int main()
                 }
 
                 // check if we expect the next line to tell us the class
-                if ((contains(line, "class ") || contains(line, "struct ")) && !contains(line, ";") && !contains(line, "template<"))
+                if ((contains(line, "class ") || contains(line, "struct ")) && !contains(line, ";") && !contains(line, "template<") && !contains(line, "template <"))
                 {
                     std::vector<std::string> split_line = split_nonencased(line, ':');
                     std::string pre_colon = split(split_line[0], '<')[0];

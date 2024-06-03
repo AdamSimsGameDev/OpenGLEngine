@@ -5,6 +5,7 @@
 #include "CyEngine/Layers/EditorLayer.h"
 #include "Renderer/Renderer.h"
 #include "CyEngine/AssetManager/AssetManager.h"
+#include "CyEngine/Threads/ThreadManager.h"
 
 namespace Cy
 {
@@ -16,6 +17,9 @@ namespace Cy
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
+
+		// Initialise threads
+		//ThreadManager::Get().CreateThread("TestThread");
 
 		// Push default layers.
 		m_ImGuiLayer = new ImGuiLayer();
@@ -59,6 +63,11 @@ namespace Cy
 			// Update the window itself.
 			m_Window->OnUpdate();
 		}
+
+		if (!m_Running)
+		{
+			ThreadManager::StopAllThreads();
+		}
 	}
 
 	void Application::OnEvent(Event& e)
@@ -84,6 +93,19 @@ namespace Cy
 	{
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+	}
+
+	void Application::ThreadTest(String inStr)
+	{
+		int c = 0;
+		while (true)
+		{
+			if (c % 1000 == 1)
+			{
+				CY_LOG("Ran on thread, {0}", *inStr);
+			}
+			c++;
+		}
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

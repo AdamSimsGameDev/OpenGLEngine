@@ -81,7 +81,7 @@ namespace Cy
 
 	void AssetManager::RegisterAsset(AssetInfo* asset)
 	{
-		asset->OnRegister(s_NextAssetId);
+		// asset->OnRegister(s_NextAssetId);
 		s_NextAssetId++;
 		m_Assets.Add(asset);
 	}
