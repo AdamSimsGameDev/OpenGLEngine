@@ -29,7 +29,8 @@ namespace Cy
 		const std::thread& GetThread() const { return m_Thread; }
 
 	protected:
-		virtual void RunThread();
+		void RunThread();
+		virtual void ThreadTick();
 
 	private:
 		String m_Name;

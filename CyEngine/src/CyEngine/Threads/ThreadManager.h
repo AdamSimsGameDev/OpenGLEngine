@@ -7,10 +7,10 @@ namespace Cy
 	class ThreadManager
 	{
 	public:
-		template <class... _Args>
+		template <typename ThreadType=Thread, class... _Args>
 		void CreateThread(String name)
 		{
-			Thread* thread = new Thread(name);
+			ThreadType* thread = new ThreadType(name);
 			m_Threads.Add(thread);
 			thread->StartThread();
 		}

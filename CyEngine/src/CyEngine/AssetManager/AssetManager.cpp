@@ -81,7 +81,7 @@ namespace Cy
 
 	void AssetManager::RegisterAsset(AssetInfo* asset)
 	{
-		// asset->OnRegister(s_NextAssetId);
+		asset->OnRegister(s_NextAssetId);
 		s_NextAssetId++;
 		m_Assets.Add(asset);
 	}
@@ -190,9 +190,12 @@ namespace Cy
 				}
 			}
 
-			AssetInfo* asset = type->GetClass()->New<AssetInfo>();
-			asset->Initialise("", "", "", "");
-			RegisterAsset(asset);
+			if (type != nullptr)
+			{
+				AssetInfo* asset = type->GetClass()->New<AssetInfo>();
+				asset->Initialise(helper.GetName(), helper.GetFileExtension(), helper.RebuildRelativePath(s_ProjectPath + s_AssetRelativePath), helper.RebuildPath());
+				RegisterAsset(asset);
+			}
 		}
 	}
 

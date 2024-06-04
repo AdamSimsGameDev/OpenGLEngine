@@ -21,11 +21,7 @@ namespace Cy
         int c = 0;
         while (m_IsRunning)
         {
-            if (c % 10000 == 1)
-            {
-                CY_LOG("Ran on thread");
-            }
-            c++;
+            ThreadTick();
         }
     }
 }

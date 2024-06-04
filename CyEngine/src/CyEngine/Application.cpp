@@ -19,7 +19,7 @@ namespace Cy
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 
 		// Initialise threads
-		//ThreadManager::Get().CreateThread("TestThread");
+		ThreadManager::Get().CreateThread<Thread>("AsyncLoading");
 
 		// Push default layers.
 		m_ImGuiLayer = new ImGuiLayer();
