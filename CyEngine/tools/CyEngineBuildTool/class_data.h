@@ -27,7 +27,7 @@ static std::string enum_entry_format = "{ %i, \"%s\" }";
 static std::string class_meta_data_format = "AddMetaData(MetaDataProperty(%s, %s));\n";
 static std::string class_meta_data_format_single = "AddMetaData(MetaDataProperty(%s, true));\n";
 
-static std::string cdo_format = "ClassDefaultObject = New();\nGetClassDefaultObject_Mutable<%s>()->m_IsClassDefaultObject = true;";
+static std::string cdo_format = "ClassDefaultObject = New();";
 
 class ClassInfo
 {
@@ -180,7 +180,7 @@ void gen_class(const ClassInfo* class_info, std::string& h, std::string& cpp)
         class_info->parent_class.empty() ? "nullptr" : string_format("%sClass::Get()", class_info->parent_class.c_str()).c_str(),
         properties_string.c_str(),
         class_meta_data.c_str(),
-        string_format(cdo_format.c_str(), class_info->name.c_str()).c_str());
+        cdo_format.c_str());
 
     for (const auto& prop : class_info->properties)
     {

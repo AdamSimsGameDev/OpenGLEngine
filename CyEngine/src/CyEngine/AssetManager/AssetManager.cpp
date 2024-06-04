@@ -190,8 +190,8 @@ namespace Cy
 				}
 			}
 
-			AssetInfo* asset = type->GetStaticClass()->New<AssetInfo>();
-			asset->Initialise(helper.GetName(), helper.GetFileExtension(), helper.RebuildRelativePath(s_ProjectPath + s_AssetRelativePath), helper.RebuildPath());
+			AssetInfo* asset = type->GetClass()->New<AssetInfo>();
+			asset->Initialise("", "", "", "");
 			RegisterAsset(asset);
 		}
 	}

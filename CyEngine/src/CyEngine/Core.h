@@ -60,10 +60,7 @@ static To* CastChecked(From* from)
 	friend class type##Class;\
 	static class Class* GetStaticClass() { return type##Class::Get(); }\
 	virtual class Class* GetClass() const { return type##::GetStaticClass(); }\
-	bool IsClassDefaultObject() const { return m_IsClassDefaultObject; }\
-	private:\
-	bool m_IsClassDefaultObject = false;\
-	public:
+	bool IsClassDefaultObject() const { return type##::GetStaticClass()->GetClassDefaultObject<type##>() == this; }
 
 static int SizeTToInt(size_t data)
 {
