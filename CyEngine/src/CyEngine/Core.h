@@ -76,7 +76,9 @@ static T* New()
 }
 
 #include "CyEngine/SmartPointer.h"
-#include "CyEngine/Array.h"
+#include "CyEngine/GUID.h"
+#include "CyEngine/Collections/Array.h"
+#include "CyEngine/Collections/Queue.h"
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
 

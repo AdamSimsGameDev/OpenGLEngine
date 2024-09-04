@@ -14,6 +14,16 @@ namespace Cy
         m_IsRunning = false;
     }
 
+    void Thread::Pause()
+    {
+        m_IsPaused = true;
+    }
+
+    void Thread::Resume()
+    {
+        m_IsPaused = false;
+    }
+
     void Thread::RunThread()
     {
         SetThreadDescription(GetCurrentThread(), m_Name.ToWString().c_str());
@@ -21,7 +31,17 @@ namespace Cy
         int c = 0;
         while (m_IsRunning)
         {
+            if (IsPaused())
+            {
+                continue;
+            }
+
             ThreadTick();
         }
+    }
+
+    void Thread::ThreadTick()
+    {
+
     }
 }

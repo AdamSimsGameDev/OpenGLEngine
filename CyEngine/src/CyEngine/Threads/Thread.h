@@ -28,13 +28,21 @@ namespace Cy
 		std::thread& GetThread() { return m_Thread; }
 		const std::thread& GetThread() const { return m_Thread; }
 
+		void Pause();
+		void Resume();
+
+		bool IsPaused() const { return m_IsPaused; }
+		bool IsRunning() const { return m_IsRunning; }
+
 	protected:
 		void RunThread();
 		virtual void ThreadTick();
 
 	private:
 		String m_Name;
+
 		std::thread m_Thread;
 		std::atomic<bool> m_IsRunning;
+		std::atomic<bool> m_IsPaused;
 	};
 }

@@ -20,6 +20,8 @@ namespace Cy
 		{
 			CY_ERROR("Failed to load text for file \"%s\" from path \"%s\". ", *m_Name, *m_Path);
 		}
+
+		CY_LOG("Loaded text from file {0}, test is:\n{1}", *m_Name, *m_Content);
 	}
 
 	void TextAsset::OnUnload()

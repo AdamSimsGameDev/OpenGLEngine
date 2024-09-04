@@ -5,6 +5,7 @@
 #include "CyEngine/Layers/EditorLayer.h"
 #include "Renderer/Renderer.h"
 #include "CyEngine/AssetManager/AssetManager.h"
+#include "CyEngine/Threads/AsyncLoadingThread.h"
 #include "CyEngine/Threads/ThreadManager.h"
 
 namespace Cy
@@ -19,7 +20,7 @@ namespace Cy
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 
 		// Initialise threads
-		ThreadManager::Get().CreateThread<Thread>("AsyncLoading");
+		ThreadManager::Get().CreateThread<AsyncLoadingThread>("AsyncLoading");
 
 		// Push default layers.
 		m_ImGuiLayer = new ImGuiLayer();

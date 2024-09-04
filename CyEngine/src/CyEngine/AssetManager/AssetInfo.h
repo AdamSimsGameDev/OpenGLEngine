@@ -41,6 +41,9 @@ namespace Cy
 		void MarkDirty() { m_IsDirty = true; }
 		bool IsDirty() const { return m_IsDirty; }
 
+		void SetIsLoading(bool isLoading) { m_IsLoading = isLoading; }
+		bool IsLoading() const { return m_IsLoading; }
+
 	protected:
 		virtual bool OnSave() = 0;
 
@@ -55,6 +58,8 @@ namespace Cy
 
 		String m_Path;
 		String m_FullPath;
+
+		std::atomic<bool> m_IsLoading;
 
 		bool m_IsLoaded;
 		int m_AssetId;

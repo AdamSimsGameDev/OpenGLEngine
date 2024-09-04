@@ -16,12 +16,12 @@ namespace Cy
 
 	void AssetInfo::SyncLoad()
 	{
-		AssetManager::Get().SyncLoadAsset(m_AssetId);
+		AssetManager::Get().SyncLoadAsset(GetGUID());
 	}
 
 	void AssetInfo::Unload()
 	{
-		AssetManager::Get().UnloadAsset(m_AssetId);
+		AssetManager::Get().UnloadAsset(GetGUID());
 	}
 
 	bool AssetInfo::Save()

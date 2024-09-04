@@ -16,7 +16,9 @@
 #include <typeinfo>
 
 #include "CyEngine/String.h"
-#include "CyEngine/Array.h"
+#include "CyEngine/GUID.h"
+#include "CyEngine/Collections/Array.h"
+#include "CyEngine/Collections/Queue.h"
 #include "CyEngine/Maths/Vector.h"
 #include "CyEngine/Maths/Quat.h"
 #include "CyEngine/Maths/Matrix.h"

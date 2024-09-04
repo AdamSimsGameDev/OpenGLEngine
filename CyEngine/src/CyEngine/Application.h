@@ -36,6 +36,15 @@ namespace Cy
 
 		void ThreadTest(String inStr);
 
+		static const Window* GetWindowStatic()
+		{
+			if (s_Instance)
+			{
+				return s_Instance->m_Window.get();
+			}
+			return nullptr;
+		}
+
 	private:
 		bool OnWindowClose(class WindowCloseEvent& e);
 

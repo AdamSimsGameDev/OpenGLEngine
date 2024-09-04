@@ -7,7 +7,9 @@ namespace Cy
 	struct Vector3;
 	struct Vector4;
 	struct Quat;
+	struct guid;
 }
 
 #include "CyEngine/SmartPointer.h"
-#include "CyEngine/Array.h"
+#include "CyEngine/Collections/Array.h"
+#include "CyEngine/Collections/Queue.h"

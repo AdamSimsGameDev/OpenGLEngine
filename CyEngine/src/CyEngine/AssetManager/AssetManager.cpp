@@ -92,31 +92,64 @@ namespace Cy
 		asset->OnUnregister();
 	}
 
-	void AssetManager::SyncLoadAsset(int assetId)
+	void AssetManager::SyncLoadAsset(guid assetId)
 	{
-		AssetInfo* asset = GetAssetById(assetId);
+		AssetInfo* asset = GetAssetByGuid(assetId);
+		SyncLoadAsset(asset);
+	}
+
+	void AssetManager::SyncLoadAsset(AssetInfo* asset)
+	{
 		if (asset && !asset->IsLoaded())
 		{
 			asset->m_IsLoaded = true;
+			asset->m_IsLoading = false;
 			asset->OnLoad();
 		}
 	}
 
-	void AssetManager::UnloadAsset(int assetId)
+	void AssetManager::UnloadAsset(guid assetId)
 	{
-		AssetInfo* asset = GetAssetById(assetId);
-		if (asset && asset->IsLoaded())
+		AssetInfo* asset = GetAssetByGuid(assetId);
+		UnloadAsset(asset);
+	}
+
+	void AssetManager::UnloadAsset(AssetInfo* asset)
+	{
+		if (asset)
 		{
-			asset->m_IsLoaded = false;
-			asset->OnUnload();
+			if (asset->IsLoaded())
+			{
+				asset->m_IsLoaded = false;
+				asset->OnUnload();
+			}
+			else
+			{
+				asset->m_IsLoading = false;
+			}
 		}
 	}
 
-	AssetInfo* AssetManager::GetAssetById(int assetId)
+	void AssetManager::AsyncLoadAsset(guid assetId)
+	{
+		AssetInfo* asset = GetAssetByGuid(assetId);
+		AsyncLoadAsset(asset);
+	}
+
+	void AssetManager::AsyncLoadAsset(AssetInfo* asset)
+	{
+		if (asset && !asset->IsLoaded() && !asset->IsLoading())
+		{
+			asset->SetIsLoading(true);
+			Get().AssetAsyncLoadQueue.Enqueue(asset);
+		}
+	}
+
+	AssetInfo* AssetManager::GetAssetByGuid(guid assetId)
 	{
 		for (auto a : Get().m_Assets)
 		{
-			if (a->m_AssetId == assetId)
+			if (a->GetGUID() == assetId)
 			{
 				return a;
 			}
@@ -195,8 +228,17 @@ namespace Cy
 				AssetInfo* asset = type->GetClass()->New<AssetInfo>();
 				asset->Initialise(helper.GetName(), helper.GetFileExtension(), helper.RebuildRelativePath(s_ProjectPath + s_AssetRelativePath), helper.RebuildPath());
 				RegisterAsset(asset);
+
+				// Test it with a sync load real quick
+				AsyncLoadAsset(asset);
 			}
 		}
+	}
+
+	void AssetManager::LoadImmediate(AssetInfo* Info)
+	{
+		Info->m_IsLoaded = true;
+		Info->OnLoad();
 	}
 
 	Array<String> AssetManager::GatherAssetPaths() const
