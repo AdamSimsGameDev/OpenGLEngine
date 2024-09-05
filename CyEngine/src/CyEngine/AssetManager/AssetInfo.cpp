@@ -33,4 +33,56 @@ namespace Cy
 		}
 		return false;
 	}
+
+	void GetReferencesFrom(Object* Obj, Array<guid>& OutObjects)
+	{
+		// get our class
+		const Class* MyClass = Obj->GetClass();
+
+		// generate new references array from marked up Object properties
+		Array<Object*> FoundObjects;
+		for (auto Prop : MyClass->Properties)
+		{
+			// make sure we only check objects
+			if (Prop.second.IsType<Object>())
+			{
+				// get the object
+				Object* Found = MyClass->GetPropertyValueFromName<Object>(Prop.first, Obj);
+				if (Found == nullptr)
+				{
+					continue;
+				}
+
+				// check if the object is an asset itself
+				if (AssetInfo* Asset = Found->GetParent<AssetInfo>())
+				{
+					OutObjects.Add(Asset->GetGUID());
+				}
+			}
+		}
+	}
+
+	void AssetInfo::RebuildReferences()
+	{
+		// clear any existing references
+		for (const auto& Reference : m_AssetsReferencing)
+		{
+			// get the asset
+			if (AssetInfo* Info = AssetManager::GetAssetByGuid(Reference))
+			{
+				Info->m_AssetsReferencedBy.Remove(GetGUID());
+			}
+		}
+		m_AssetsReferencing.Clear();
+
+		// setup the references, internal references first
+		Array<Object*> References = GetInternalObjectReferences();
+	
+		// loop over the existing references and work out what they reference
+		// this only goes one layer deep but that should be fine?
+		for (Object* Reference : References)
+		{
+			GetReferencesFrom(Reference, m_AssetsReferencing);
+		}
+	}
 }

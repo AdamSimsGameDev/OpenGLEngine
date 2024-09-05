@@ -11,15 +11,39 @@ namespace Cy
 	{
 	public:
 		virtual String GetType() const { return "NULL"; }
+		virtual bool IsPointerType() const { return false; }
 		virtual bool RenderProperty(void* obj, const Class* cl, const String& displayName, const ClassProperty& info) const { return false; }
 
 		static bool RenderPropertyOfType(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop, const String* overrideType = nullptr)
 		{
-			String type = overrideType ? *overrideType : prop.second.Type;
-			if (PropertyFields.find(type) == PropertyFields.end())
+			bool found = false;
+
+			String type = overrideType ? *overrideType : (prop.second.GetClass() ? prop.second.GetClass()->Name : prop.second.Type);
+			while (!found)
 			{
-				return false;
+				if (PropertyFields.find(type) == PropertyFields.end())
+				{
+					if (overrideType != nullptr)
+					{
+						return false;
+					}
+
+					const Class* Target = prop.second.GetClass();
+					if (!Target || !Target->ParentClass)
+					{
+						return false;
+					}
+
+					type = Target->ParentClass->Name;
+				}
+				else
+				{
+					found = true;
+				}
 			}
+
+			if (!found) return false;
+
 			const MetaDataProperty* displayName = prop.second.GetMetaData("DisplayName");
 			return PropertyFields[type]->RenderProperty(obj, cl, displayName ? displayName->GetValue<String>() : prop.first, prop.second);
 		}
@@ -113,5 +137,12 @@ namespace Cy
 	{
 		virtual String GetType() const override { return "Enum"; }
 		virtual bool RenderProperty(uint8_t* data, const String& displayName, const ClassProperty& info) const override;
+	};
+
+	struct PropertyFieldObject : PropertyField<PropertyFieldObject, Object*>
+	{
+		virtual String GetType() const override { return "Object"; }
+		virtual bool IsPointerType() const override { return true; }
+		virtual bool RenderProperty(Object** data, const String& displayName, const ClassProperty& info) const override;
 	};
 }

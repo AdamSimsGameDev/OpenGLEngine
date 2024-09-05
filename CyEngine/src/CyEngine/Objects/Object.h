@@ -46,7 +46,7 @@ namespace Cy
 		const guid& GetGUID() const;
 
 	private:
-		PROPERTY()
+		PROPERTY(Hidden)
 		Object* m_Parent;
 
 		guid ObjectGUID;

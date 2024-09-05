@@ -41,6 +41,9 @@ namespace Cy
         PROPERTY()
         MeshComponentType Type;
 
+        PROPERTY()
+        SceneObject* Test;
+
     protected:
 #if CY_EDITOR
         virtual void EditorTick(float deltaTime) override;

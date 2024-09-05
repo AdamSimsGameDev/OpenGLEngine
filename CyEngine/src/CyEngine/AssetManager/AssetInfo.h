@@ -52,6 +52,10 @@ namespace Cy
 
 		virtual Array<String> GetSupportedFileTypes() const = 0;
 
+		virtual Array<Object*> GetInternalObjectReferences() const { return Array<Object*>(); }
+
+		void RebuildReferences();
+
 	protected:
 		String m_Name;
 		String m_FileType;
@@ -60,6 +64,9 @@ namespace Cy
 		String m_FullPath;
 
 		std::atomic<bool> m_IsLoading;
+
+		Array<guid> m_AssetsReferencedBy;
+		Array<guid> m_AssetsReferencing;
 
 		bool m_IsLoaded;
 		int m_AssetId;

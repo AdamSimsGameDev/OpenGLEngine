@@ -8,6 +8,8 @@
 
 namespace Cy
 {
+	class Class;
+
 	struct MetaDataProperty
 	{
 		enum class Type : uint8_t
@@ -126,6 +128,19 @@ namespace Cy
 			}
 			return nullptr;
 		}
+
+		template<typename T>
+		bool IsType() const
+		{
+			return String(Type) == T::GetStaticClass()->Name;
+		}
+
+		bool IsPointer() const
+		{
+			return String(Type).Contains('*');
+		}
+
+		const Class* GetClass() const;
 	};
 
 	typedef std::pair<String, std::unordered_map<int, String>> EnumInfo;
@@ -195,24 +210,28 @@ namespace Cy
 		{
 			Array<String> spl = String::Split(property_name, '.');
 			const auto* prop = GetPropertyFromName(spl[0]);
-			if (prop == nullptr || (!prop->IsEnum && String(prop->Type) != property_type))
-			{
-				return nullptr;
-			}
-			return spl.Count() > 1 ? GetArrayElementValuePtrFromName(spl[0], prop->Type, obj, std::stoi(spl[1])) : prop->Getter(obj);
-		}
-		template<typename ValueType>
-		void* GetPropertyValuePtrFromName(String property_name, const void* obj) const
-		{
-			Array<String> spl = String::Split(property_name, '.');
-			const auto* prop = GetPropertyFromName(spl[0]);
-			if (prop == nullptr || (!prop->IsEnum && prop->TypeInfo != &typeid(ValueType)))
+			if (prop == nullptr || (!prop->IsEnum && (String(prop->Type) != property_type && !prop->GetClass()->IsChildOf(Class::GetClassFromName(property_type)))))
 			{
 				return nullptr;
 			}
 			return spl.Count() > 1 ? GetArrayElementValuePtrFromName(spl[0], prop->Type, obj, std::stoi(spl[1])) : prop->Getter(obj);
 		}
 
+		template<typename ValueType>
+		static String ScrapeValueTypeName()
+		{
+			const std::type_info& t = typeid(ValueType);
+			String str = String(t.name());
+			String str2 = String::Split(str, ':').Last();
+			return String::Split(str2, ' ').First();
+		}
+
+		template<typename ValueType>
+		void* GetPropertyValuePtrFromName(String property_name, void* obj) const
+		{
+			return GetPropertyValuePtrFromName(property_name, ScrapeValueTypeName<ValueType>(), obj);
+		}		
+		
 		template<typename ValueType>
 		ValueType* GetPropertyValueFromName(String property_name, void* obj) const
 		{

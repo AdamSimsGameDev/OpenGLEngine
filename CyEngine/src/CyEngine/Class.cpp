@@ -6,6 +6,9 @@ namespace Cy
 {
 	bool Class::IsChildOf(const Class* Other) const
 	{
+		if (Other == nullptr)
+			return false;
+
 		if (Other == this)
 			return true;
 
@@ -123,5 +126,16 @@ namespace Cy
 			counter++;
 		}
 		return -1;
+	}
+
+	const Class* ClassProperty::GetClass() const
+	{
+		String CurType = Type;
+		if (IsPointer())
+		{
+			CurType = CurType.ReplaceLast("*", "");
+		}
+
+		return Class::GetClassFromName(CurType);
 	}
 }

@@ -165,4 +165,12 @@ namespace Cy
 		ImGui::ColorEdit4(*String::Format("##%s_%p", *displayName, data), &(data->r));
 		return true;
 	}
+
+	DEFINE_PROPERTY_FIELD(PropertyFieldObject);
+	bool PropertyFieldObject::RenderProperty(Object** data, const String& displayName, const ClassProperty& info) const
+	{
+		ItemLabel(displayName);
+		ImGui::TextColored(ImVec4(1.0f, 0.1f, 0.1f, 1.0f), "Not implemented yet");
+		return true;
+	}
 }
