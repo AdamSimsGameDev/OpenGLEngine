@@ -116,13 +116,13 @@ namespace Cy
 		bIsEditorWorld = true;
 		// spawn editor camera
 		SceneObject* cameraParent = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
-		cameraParent->Name = "Camera Parent";
+		cameraParent->SetName("Camera Parent");
 #if 1
 		EditorCamera = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
-		EditorCamera->Name = "Editor Camera";
+		EditorCamera->SetName("Editor Camera");
 #elif
 		EditorCamera = ObjectManager::CreateObject<SceneObject>();
-		EditorCamera->Name = "Editor Camera";
+		EditorCamera->SetName("Editor Camera");
 		EditorCamera->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
 		EditorCamera->GetTransform()->SetPosition(Vector3(0, 0, 0));
 		EditorCamera->GetTransform()->SetScale(Vector3::One);

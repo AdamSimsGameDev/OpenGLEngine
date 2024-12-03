@@ -111,6 +111,7 @@ namespace Cy
 							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
 							arr->AddDefault();
 						}
+
 						Array<int> toRemove;
 						for (int i = 0; i < s; i++)
 						{

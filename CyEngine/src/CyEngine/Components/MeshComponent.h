@@ -7,6 +7,7 @@ namespace Cy
     class Mesh;
     class Shader;
     class Texture;
+    class TextAsset;
 
     ENUM()
     enum class MeshComponentType : uint8_t
@@ -42,7 +43,10 @@ namespace Cy
         MeshComponentType Type;
 
         PROPERTY()
-        SceneObject* Test;
+        TextAsset* Test;
+
+        PROPERTY()
+        Array<TextAsset*> Tests;
 
     protected:
 #if CY_EDITOR

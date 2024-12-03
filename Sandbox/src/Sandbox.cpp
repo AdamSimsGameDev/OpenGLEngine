@@ -27,19 +27,19 @@ public:
 
 		// Create starting camera
 		SceneObject* cam = m_Scene->CreateSceneObject<SceneObject>(Vector3(0, 0.5f, 4), Quat::Identity);
-		cam->Name = "Main Camera";
+		cam->SetName("Main Camera");
 		m_Camera = cam->CreateAndAddComponent<CameraComponent>();
 		m_Camera->InitPerspectiveCamera({ 45.0f, 1280, 720, 0.1f, 150.0f });
 
 		// Create default cube
 		SceneObject* cube = m_Scene->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity, Vector3::One);
-		cube->Name = "Cube";
+		cube->SetName("Cube");
 		MeshComponent* cubeMesh = cube->CreateAndAddComponent<MeshComponent>();
 		cubeMesh->SetMeshType(MeshComponentType::Cube);
 
 		// Create light
 		SceneObject* mainLight = m_Scene->CreateSceneObject<SceneObject>(Vector3(5, 5, 5), Quat::FromEuler(-30.0f, 45.0f, 0.0f));
-		mainLight->Name = "Main Light";
+		mainLight->SetName("Main Light");
 		LightComponent* lightComp = mainLight->CreateAndAddComponent<LightComponent>();
 
 		Array<int> arr;

@@ -65,10 +65,6 @@ namespace Cy
 
 		World* GetWorld() const { return OwningWorld.Get(); }
 
-	public:
-		PROPERTY()
-		String Name;
-
 	protected:
 		Transform* m_Transform;
 

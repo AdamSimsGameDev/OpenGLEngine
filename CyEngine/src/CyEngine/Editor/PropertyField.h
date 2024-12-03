@@ -12,13 +12,14 @@ namespace Cy
 	public:
 		virtual String GetType() const { return "NULL"; }
 		virtual bool IsPointerType() const { return false; }
-		virtual bool RenderProperty(void* obj, const Class* cl, const String& displayName, const ClassProperty& info) const { return false; }
+		virtual bool RenderProperty(void* obj, const Class* cl, const String& displayName, const ClassProperty& info, int arrayIndex = -1) const { return false; }
 
 		static bool RenderPropertyOfType(void* obj, const Class* cl, const std::pair<String, ClassProperty>& prop, const String* overrideType = nullptr)
 		{
 			bool found = false;
 
 			String type = overrideType ? *overrideType : (prop.second.GetClass() ? prop.second.GetClass()->Name : prop.second.Type);
+			const Class* TargetClass = prop.second.GetClass();
 			while (!found)
 			{
 				if (PropertyFields.find(type) == PropertyFields.end())
@@ -28,13 +29,13 @@ namespace Cy
 						return false;
 					}
 
-					const Class* Target = prop.second.GetClass();
-					if (!Target || !Target->ParentClass)
+					if (!TargetClass || !TargetClass->ParentClass)
 					{
 						return false;
 					}
 
-					type = Target->ParentClass->Name;
+					type = TargetClass->ParentClass->Name;
+					TargetClass = TargetClass->ParentClass;
 				}
 				else
 				{
@@ -44,8 +45,16 @@ namespace Cy
 
 			if (!found) return false;
 
+			// Check to see if we're working with an array.
+			int arrayIndex = -1;
+			const Array<String>& splitName = String::Split(prop.first, '.');
+			if (splitName.Count() > 1)
+			{
+				arrayIndex = std::stoi(splitName[1]);
+			}
+
 			const MetaDataProperty* displayName = prop.second.GetMetaData("DisplayName");
-			return PropertyFields[type]->RenderProperty(obj, cl, displayName ? displayName->GetValue<String>() : prop.first, prop.second);
+			return PropertyFields[type]->RenderProperty(obj, cl, displayName ? displayName->GetValue<String>() : prop.first, prop.second, arrayIndex);
 		}
 
 		static std::unordered_map<String, PropertyFieldBase*> PropertyFields;
@@ -67,9 +76,10 @@ namespace Cy
 			return true;
 		}
 
-		virtual bool RenderProperty(void* obj, const Class* cl, const String& displayName, const ClassProperty& info) const override final
+		virtual bool RenderProperty(void* obj, const Class* cl, const String& displayName, const ClassProperty& info, int arrayIndex = -1) const override final
 		{
-			if (T2* i = cl->GetPropertyValueFromName<T2>(info.Name, obj))
+			String propertyName = arrayIndex == -1 ? info.Name : String(info.Name) + "." + Cy::String::ToString(arrayIndex);
+			if (T2* i = cl->GetPropertyValueFromName<T2>(propertyName, obj))
 			{
 				return RenderProperty(i, displayName, info);
 			}

@@ -45,7 +45,13 @@ namespace Cy
 
 		const guid& GetGUID() const;
 
+		const String& GetName() const { return Name; }
+		void SetName(const String& Name) { this->Name = Name; }
+
 	private:
+		PROPERTY()
+		String Name;
+
 		PROPERTY(Hidden)
 		Object* m_Parent;
 

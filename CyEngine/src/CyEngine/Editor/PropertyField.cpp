@@ -170,7 +170,11 @@ namespace Cy
 	bool PropertyFieldObject::RenderProperty(Object** data, const String& displayName, const ClassProperty& info) const
 	{
 		ItemLabel(displayName);
-		ImGui::TextColored(ImVec4(1.0f, 0.1f, 0.1f, 1.0f), "Not implemented yet");
+		const String& Name = *data == nullptr ? "None" : (*data)->GetName();
+		if (ImGui::Button(*Name, ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+		{
+
+		}
 		return true;
 	}
 }

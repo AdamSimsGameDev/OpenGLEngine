@@ -24,7 +24,7 @@ namespace Cy
 			if (objects[i]->GetChildCount() == 0)
 				node_flags |= ImGuiTreeNodeFlags_Leaf;
 
-			bool node_open = ImGui::TreeNodeEx(*(objects[i]->GetGUID().Value), node_flags, *String::Format("%s", objects[i]->Name));
+			bool node_open = ImGui::TreeNodeEx(*(objects[i]->GetGUID().Value), node_flags, *String::Format("%s", objects[i]->GetName()));
 			if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 				currentItem = objects[i];
 			if (ImGui::IsItemHovered() && Input::IsMouseButtonPressed(CY_MOUSE_BUTTON_RIGHT))
@@ -96,7 +96,7 @@ namespace Cy
 			if (ImGui::Button("+##NewObject"))
 			{
 				SceneObject* so = scene->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
-				so->Name = "New Object";
+				so->SetName("New Object");
 			}
 
 			SceneObject* currentItem = scene->CurrentSelectedObject;
