@@ -150,7 +150,7 @@ namespace Cy
 	public:
 		String Name;
 		const Class* ParentClass;
-		std::unordered_map<String, ClassProperty> Properties;
+		std::vector<ClassProperty> Properties;
 		std::vector<MetaDataProperty> MetaData;
 
 		void AddMetaData(MetaDataProperty metaData)

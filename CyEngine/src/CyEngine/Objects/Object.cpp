@@ -32,7 +32,7 @@ namespace Cy
 		// shallow copy each of the properties.
 		for (const auto& prop : GetClass()->Properties)
 		{
-			prop.second.Setter(this, prop.second.Getter(obj));
+			prop.Setter(this, prop.Getter(obj));
 		}
 	}
 
@@ -40,13 +40,13 @@ namespace Cy
 	{
 		for (const auto& prop : GetClass()->Properties)
 		{
-			const Class* cl = Class::GetClassFromName(prop.second.Type);
+			const Class* cl = Class::GetClassFromName(prop.Type);
 			if (cl && cl->IsChildOf<Object>())
 			{ 
-				Object* obj = *reinterpret_cast<Object**>(prop.second.Getter(this));
+				Object* obj = *reinterpret_cast<Object**>(prop.Getter(this));
 				if (state.IsCopied(obj->GetGUID()))
 				{
-					prop.second.Setter(this, ObjectManager::FindObject(state.GetCopiedGUID(obj->GetGUID())).Get());
+					prop.Setter(this, ObjectManager::FindObject(state.GetCopiedGUID(obj->GetGUID())).Get());
 				}
 			}
 		}

@@ -47,7 +47,14 @@ namespace Cy
 
 	const ClassProperty* Class::GetPropertyFromName(String property_name) const
 	{
-		return &(Properties.find(property_name)->second);
+		for (const auto& prop : Properties)
+		{
+			if (String(prop.Name) == property_name)
+			{
+				return &prop;
+			}
+		}
+		return nullptr;
 	}
 
 	const Class* Class::GetClassFromName(String class_name)

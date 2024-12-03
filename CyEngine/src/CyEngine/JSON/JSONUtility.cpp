@@ -24,19 +24,19 @@ namespace Cy
 			if (count != 0)
 				buffer += ",\n";
 			buffer += add_indent(indent + 1);
-			buffer += String::Format("\"%s\":", *prop.first);
-			if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.second.Type))
+			buffer += String::Format("\"%s\":", *prop.Name);
+			if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.Type))
 			{
-				if (prop.second.IsArray)
+				if (prop.IsArray)
 				{
 					buffer += "\n";
 					buffer += add_indent(indent + 1);
 					buffer += "[\n";
-					int s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
+					int s = cl->GetArraySizeFromName(prop.Name, prop.Type, obj);
 					for (int i = 0; i < s; i++)
 					{
 						buffer += add_indent(indent + 2);
-						void* n = cl->GetPropertyValuePtrFromName(prop.first + '.' + std::to_string(i), prop.second.Type, obj);
+						void* n = cl->GetPropertyValuePtrFromName(prop.Name + '.' + std::to_string(i), prop.Type, obj);
 						serializable->Serialize(n, buffer);
 						if (i != s - 1)
 						{
@@ -49,21 +49,21 @@ namespace Cy
 				}
 				else
 				{
-					serializable->Serialize(prop.second.Getter(obj), buffer);
+					serializable->Serialize(prop.Getter(obj), buffer);
 				}
 			}
-			else if (const Class* ncl = Class::GetClassFromName(prop.second.Type))
+			else if (const Class* ncl = Class::GetClassFromName(prop.Type))
 			{
-				if (prop.second.IsArray)
+				if (prop.IsArray)
 				{
 					buffer += "\n";
 					buffer += add_indent(indent + 1);
 					buffer += "[\n";
-					int s = cl->GetArraySizeFromName(prop.first, prop.second.Type, obj);
+					int s = cl->GetArraySizeFromName(prop.Name, prop.Type, obj);
 					for (int i = 0; i < s; i++)
 					{
 						buffer += add_indent(indent + 2);
-						void* n = cl->GetPropertyValuePtrFromName(prop.first + "." + std::to_string(i), prop.second.Type, obj);
+						void* n = cl->GetPropertyValuePtrFromName(*prop.Name + "." + std::to_string(i), prop.Type, obj);
 						ConvertToJsonInternal(n, ncl, buffer, indent + 1);
 						if (i != s - 1)
 						{
@@ -77,7 +77,7 @@ namespace Cy
 				else
 				{
 					buffer += "\n";
-					void* n = cl->GetPropertyValuePtrFromName(prop.first, prop.second.Type, obj);
+					void* n = cl->GetPropertyValuePtrFromName(prop.Name, prop.Type, obj);
 					ConvertToJsonInternal(n, ncl, buffer, indent + 1);
 				}
 			}

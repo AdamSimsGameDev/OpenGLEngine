@@ -92,23 +92,25 @@ namespace Cy
 				}
 			}
 
-			for (const auto& pair : cl->Properties)
+			for (const auto& prop : cl->Properties)
 			{
-				const bool hideInEditor = pair.second.GetMetaData("Hidden") != nullptr;
+				const bool hideInEditor = prop.GetMetaData("Hidden") != nullptr;
 				if (hideInEditor)
 					continue;
 
+				std::pair<Cy::String, Cy::ClassProperty> pair = { prop.Name, prop };
+
 				// if we are an array we need to do something slightly different.
-				if (pair.second.IsArray)
+				if (prop.IsArray)
 				{
-					int s = cl->GetArraySizeFromName(pair.first, pair.second.Type, obj);
+					int s = cl->GetArraySizeFromName(prop.Name, prop.Type, obj);
 					// draw the array header, and then the individual sub-properties.
-					if (ImGui::TreeNode(*pair.first, *String::Format("%s [%i]", *pair.first, s)))
+					if (ImGui::TreeNode(prop.Name, *String::Format("%s [%i]", prop.Name, s)))
 					{
 						ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 7.5f);
 						if (ImGui::Button("+", ImVec2(16.0f, ImGui::GetFrameHeight())))
 						{
-							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
+							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(prop.Name, prop.Type, obj));
 							arr->AddDefault();
 						}
 
@@ -129,7 +131,7 @@ namespace Cy
 						}
 						for (int t : toRemove)
 						{
-							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(pair.first, pair.second.Type, obj));
+							ArrayBase* arr = reinterpret_cast<ArrayBase*>(cl->GetPropertyValuePtrFromName(prop.Name, prop.Type, obj));
 							arr->RemoveAt(t);
 						}
 						ImGui::TreePop();

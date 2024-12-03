@@ -44,10 +44,10 @@ namespace Cy
 		for (auto Prop : MyClass->Properties)
 		{
 			// make sure we only check objects
-			if (Prop.second.IsType<Object>())
+			if (Prop.IsType<Object>())
 			{
 				// get the object
-				Object* Found = MyClass->GetPropertyValueFromName<Object>(Prop.first, Obj);
+				Object* Found = MyClass->GetPropertyValueFromName<Object>(Prop.Name, Obj);
 				if (Found == nullptr)
 				{
 					continue;

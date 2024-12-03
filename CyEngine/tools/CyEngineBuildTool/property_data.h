@@ -32,7 +32,7 @@ static std::string property_constructor_format =
      \tcp.IsArray = %s;\n\
      \tcp.IsFixedArray = %s;\n\
      \tcp.IsEnum = %s;\n\
-     \tProperties.emplace(\"%s\", cp);\n\
+     \tProperties.push_back(cp);\n\
     }\n";
 static std::string property_function_h_format = "static void* execGet%s(const void* obj);\nstatic void execSet%s(void* obj, void* val);\n";
 static std::string property_function_cpp_format = "void* %sClass::execGet%s(const void* obj) { return reinterpret_cast<void*>(&reinterpret_cast<%s*>(const_cast<void*>(obj))->%s); }\nvoid %sClass::execSet%s(void* obj, void* val) { reinterpret_cast<%s*>(obj)->%s = *reinterpret_cast<%s*>(val); }\n";;
@@ -121,8 +121,7 @@ std::string generate_property_for_constructor(PropertyInfo info, std::string cla
         property_meta_data.c_str(), 
         info.is_array ? "true" : "false", 
         info.is_fixed_array ? "true" : "false", 
-        info.is_enum ? "true" : "false",
-        property_name.c_str()
+        info.is_enum ? "true" : "false"
     );
 }
 
