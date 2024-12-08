@@ -135,6 +135,16 @@ namespace Cy
 
 	void EditorLayer::PushTab(EditorTab* tab)
 	{
+		// if a tab already exists with our name, close that tab
+		for (const auto& o : m_Tabs)
+		{
+			if (o.second->GetName() == tab->GetName())
+			{
+				PopTab(o.first);
+				break;
+			}
+		}
+
 		unsigned int id = tab->GetId();
 		if (m_Tabs[id])
 		{
@@ -151,12 +161,6 @@ namespace Cy
 
 	void EditorLayer::PopTab(unsigned int id)
 	{
-		if (id >= m_Tabs.size())
-		{
-			CY_CORE_ERROR("Can't pop tab with invalid id {0}", id);
-			return;
-		}
-
 		if (!m_Tabs[id])
 		{
 			CY_CORE_ERROR("Can't pop a tab that doesn't exist, id {0}, name {1}", id, *m_Tabs[id]->GetName());
@@ -223,7 +227,18 @@ namespace Cy
 			EditorTab* tab = pair.second;
 			if (!tab || !tab->IsTabOpen())
 				continue;
+
 			tab->OnRender();
+
+			if (!tab->IsTabOpen())
+			{
+				to_remove.push_back(tab->GetId());
+			}
+		}
+
+		for (auto remove : to_remove)
+		{
+			PopTab(remove);
 		}
 
 		ImGui::End();

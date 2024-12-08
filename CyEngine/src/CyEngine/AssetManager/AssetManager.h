@@ -77,6 +77,14 @@ namespace Cy
 		static bool ReadFromTextFile(const String& path, String& outString);
 		static bool WriteToTextFile(const String& path, const String& inString);
 
+		template<typename T>
+		static Array<T*> GetAllAssetsOfType()
+		{
+			return GetAllAssetsOfType(T::StaticClass());
+		}
+
+		static Array<AssetInfo*> GetAllAssetsOfType(const Class* Type);
+
 		static AssetManager& Get();
 
 	protected:

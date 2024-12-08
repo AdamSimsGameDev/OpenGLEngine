@@ -81,6 +81,7 @@ static T* New()
 #include "CyEngine/Collections/Queue.h"
 #include "CyEngine/Class.h"
 #include "CyEngine/String.h"
+#include "CyEngine/Objects/Object.h"
 
 // Maths
 #include "CyEngine/Maths/Colour.h"

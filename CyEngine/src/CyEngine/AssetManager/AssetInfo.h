@@ -15,7 +15,8 @@ namespace Cy
 	public:
 		void Initialise(String name, String fileType, String path, String fullPath)
 		{
-			m_Name = name;
+			SetName(name);
+
 			m_FileType = fileType;
 			m_Path = path;
 			m_FullPath = fullPath;
@@ -57,7 +58,6 @@ namespace Cy
 		void RebuildReferences();
 
 	protected:
-		String m_Name;
 		String m_FileType;
 
 		String m_Path;

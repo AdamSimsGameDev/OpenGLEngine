@@ -1,6 +1,10 @@
 #include "cypch.h"
 #include "PropertyField.h"
 #include "CyEngine/Objects/Object.h"
+#include "CyEngine/Editor/ObjectSelectorTab.h"
+#include "CyEngine/Layers/EditorLayer.h"
+#include "CyEngine/AssetManager/TextAsset.h"
+
 #include <imgui.h>
 #include <imgui_internal.h>
 
@@ -8,7 +12,7 @@ namespace Cy
 {
 	std::unordered_map<String, PropertyFieldBase*> PropertyFieldBase::PropertyFields;
 
-	void ItemLabel(String title)
+	void ItemLabel(String title, bool isArray = false)
 	{
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 		const ImVec2 lineStart = ImGui::GetCursorScreenPos();
@@ -41,13 +45,18 @@ namespace Cy
 
 		ImGui::SetCursorScreenPos(ImVec2{ textRect.Max.x - 0, textRect.Max.y - textSize.y + window->DC.CurrLineTextBaseOffset });
 		ImGui::SameLine();
+
+		if (isArray)
+		{
+			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 20.0f);
+		}
 	}
 
 
 	DEFINE_PROPERTY_FIELD(PropertyFieldInt);
 	bool PropertyFieldInt::RenderProperty(int* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		ImGui::DragInt(*String::Format("##%s_%p", *displayName, data), data);
 		return true;
 	}
@@ -55,7 +64,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldFloat);
 	bool PropertyFieldFloat::RenderProperty(float* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		ImGui::DragFloat(*String::Format("##%s_%p", *displayName, data), data);
 		return true;
 	}
@@ -63,7 +72,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldBool);
 	bool PropertyFieldBool::RenderProperty(bool* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName), info.IsArray;
 		ImGui::Checkbox(*String::Format("##%s_%p", *displayName, data), data);
 		return true;
 	}
@@ -74,7 +83,7 @@ namespace Cy
 		char* i_copy = new char[data->Length() + 1];
 		strcpy(i_copy, **data);
 		i_copy[data->Length()] = '\0';
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 16 - ImGui::GetStyle().ItemSpacing.x);
 		ImGui::InputText(*String::Format("##%s_%p", *displayName, data), i_copy, 256);
 		if (*data != i_copy)
@@ -87,7 +96,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldVector2);
 	bool PropertyFieldVector2::RenderProperty(Vector2* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		float pos[2]{ data->x, data->y };
 		ImGui::DragFloat2(*String::Format("##%s_%p", *displayName, data), pos);
 		data->x = pos[0];
@@ -98,7 +107,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldVector3);
 	bool PropertyFieldVector3::RenderProperty(Vector3* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		float pos[3]{ data->x, data->y, data->z };
 		ImGui::DragFloat3(*String::Format("##%s_%p", *displayName, data), pos);
 		data->x = pos[0];
@@ -110,7 +119,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldVector4);
 	bool PropertyFieldVector4::RenderProperty(Vector4* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		float pos[4]{ data->x, data->y, data->z, data->w };
 		ImGui::DragFloat3(*String::Format("##%s_%p", *displayName, data), pos);
 		data->x = pos[0];
@@ -123,7 +132,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldQuat);
 	bool PropertyFieldQuat::RenderProperty(Quat* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		Vector3 v = Quat::ToEuler(*data);
 		float rot[3]{ v.x, v.y, v.z };
 		ImGui::DragFloat3(*String::Format("##%s_%p", *displayName, data), rot);
@@ -149,7 +158,7 @@ namespace Cy
 
 		int index = Class::GetEnumValueIndex(info.Type, *data);
 
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		ImGui::Combo(*String::Format("##%s_%p", *displayName, data), &index, &ArrayStrGetter, *items, size);
 
 		// update i to the new value
@@ -161,7 +170,7 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldColour);
 	bool PropertyFieldColour::RenderProperty(Colour* data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		ImGui::ColorEdit4(*String::Format("##%s_%p", *displayName, data), &(data->r));
 		return true;
 	}
@@ -169,11 +178,13 @@ namespace Cy
 	DEFINE_PROPERTY_FIELD(PropertyFieldObject);
 	bool PropertyFieldObject::RenderProperty(Object** data, const String& displayName, const ClassProperty& info) const
 	{
-		ItemLabel(displayName);
+		ItemLabel(displayName, info.IsArray);
 		const String& Name = *data == nullptr ? "None" : (*data)->GetName();
-		if (ImGui::Button(*Name, ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+		if (ImGui::BeginComboBullet(*String::Format("##ComboObjectProp%s", *displayName), *Name))
 		{
+			EditorLayer::Get().PushTab(new ObjectSelectorTab(TextAsset::GetStaticClass(), data));
 
+			ImGui::EndComboBullet();
 		}
 		return true;
 	}

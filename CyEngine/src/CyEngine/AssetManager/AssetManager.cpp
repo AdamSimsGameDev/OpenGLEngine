@@ -180,6 +180,19 @@ namespace Cy
 		return false;
 	}
 
+	Array<AssetInfo*> AssetManager::GetAllAssetsOfType(const Class* Type)
+	{
+		Array<AssetInfo*> arr;
+		for (const auto& found : Get().m_Assets)
+		{
+			if (found->GetClass()->IsChildOf(Type))
+			{
+				arr.Add(found);
+			}
+		}
+		return arr;
+	}
+
 	AssetManager& AssetManager::Get()
 	{
 		if (s_AssetManager == nullptr)
