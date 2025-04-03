@@ -155,7 +155,6 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ImGuiEx.h" />
     <ClInclude Include="src\CoreMinimal.h" />
     <ClInclude Include="src\CyEngine.h" />
     <ClInclude Include="src\CyEngine\Application.h" />
@@ -185,6 +184,7 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     <ClInclude Include="src\CyEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\CyEngine\Events\WindowEvent.h" />
     <ClInclude Include="src\CyEngine\GUID.h" />
+    <ClInclude Include="src\CyEngine\ImGui\ImGuiEx.h" />
     <ClInclude Include="src\CyEngine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\CyEngine\ImGuiExtension.h" />
     <ClInclude Include="src\CyEngine\Input.h" />
@@ -666,7 +666,6 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImGuiEx.cpp" />
     <ClCompile Include="src\CyEngine\Application.cpp" />
     <ClCompile Include="src\CyEngine\AssetManager\AssetInfo.cpp" />
     <ClCompile Include="src\CyEngine\AssetManager\AssetManager.cpp" />
@@ -686,6 +685,7 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
     <ClCompile Include="src\CyEngine\GUID.cpp" />
     <ClCompile Include="src\CyEngine\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\CyEngine\ImGui\ImGuiEx.cpp" />
     <ClCompile Include="src\CyEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\CyEngine\ImGuiExtension.cpp" />
     <ClCompile Include="src\CyEngine\JSON\JSONUtility.cpp" />

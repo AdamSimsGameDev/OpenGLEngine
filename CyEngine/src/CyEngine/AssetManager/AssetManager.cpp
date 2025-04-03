@@ -8,6 +8,9 @@
 #include <filesystem>
 #include <CyEngine/Serialization/Directory.h>
 
+#include "CyEngine/ObjectManager.h"
+#include "CyEngine/JSON/JSONUtility.h"
+
 namespace Cy
 {
 	String AssetManager::s_ProjectPath = "";
@@ -110,6 +113,32 @@ namespace Cy
 		return arr;
 	}
 
+	AssetMetaData AssetManager::FindOrCreateAssetMetaData(const String& AssetPath)
+	{
+		// Check to see if the meta file exists.
+		const String MetaPath = AssetPath + ".meta";
+		String OutData;
+		if ( File::ReadFromTextFile(MetaPath, OutData) )
+		{
+			// Load the meta data from the Json
+			AssetMetaData MetaData;
+			JSONUtility::ConvertFromJson<AssetMetaData>( OutData, &MetaData );
+			MetaData.guid = MetaData.guidStr;
+			return MetaData;
+		}
+		else
+		{
+			AssetMetaData MetaData;
+			MetaData.Name = AssetPath;
+			MetaData.guid = guid::Make();
+			MetaData.guidStr = MetaData.guid.Value;
+			MetaData.DateLastModified = "TODO";
+
+			File::WriteToTextFile( MetaPath, JSONUtility::ConvertToJson<AssetMetaData>( &MetaData ) );
+			return MetaData;
+		}
+	}
+
 	AssetManager& AssetManager::Get()
 	{
 		if (s_AssetManager == nullptr)
@@ -158,7 +187,10 @@ namespace Cy
 				Directory RelativeDir;
 				helper.RelativeTo(Directory(s_ProjectPath + s_AssetRelativePath), RelativeDir);
 
+				AssetMetaData MetaData = FindOrCreateAssetMetaData(helper.ToString());
+				
 				AssetInfo* asset = type->GetClass()->New<AssetInfo>();
+				ObjectManager::Get()->RegisterObject(asset, MetaData.guid);
 				asset->Initialise(helper.GetName(), helper.GetFileExtension(), RelativeDir.ToString(), helper.ToString());
 				RegisterAsset(asset);
 

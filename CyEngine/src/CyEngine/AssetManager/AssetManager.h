@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AssetInfo.h"
 #include "CyEngine/Core.h"
 
 namespace Cy
@@ -51,6 +52,8 @@ namespace Cy
 
 		static Array<AssetInfo*> GetAllAssetsOfType(const Class* Type);
 
+		static AssetMetaData FindOrCreateAssetMetaData(const String& AssetPath);
+		
 		static AssetManager& Get();
 
 	protected:

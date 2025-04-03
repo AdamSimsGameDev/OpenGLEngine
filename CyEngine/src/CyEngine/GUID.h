@@ -7,11 +7,23 @@ namespace Cy
 	struct guid
 	{
 	public:
+		guid()
+		{
+			Value = "";
+		}
+
+		guid(const String& InStr)
+		{
+			Value = InStr;
+		}
+		
 		static guid Make();
 
 		bool operator==(const guid& other) const { return Value == other.Value; }
 		bool operator!=(const guid& other) const { return !(*this == other); }
 
+		bool IsValid() const { return !Value.IsEmpty(); }
+		
 		String Value;
 	};
 }

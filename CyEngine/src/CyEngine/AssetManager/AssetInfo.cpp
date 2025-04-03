@@ -87,30 +87,4 @@ namespace Cy
 			GetReferencesFrom(Reference, m_AssetsReferencing);
 		}
 	}
-
-	void AssetInfo::LoadMetaData()
-	{
-		// Check to see if the meta file exists.
-		const String MetaPath = m_FullPath + ".meta";
-		String OutData;
-		if ( File::ReadFromTextFile(MetaPath, OutData) )
-		{
-			// Load the OBJ from the Json
-			AssetMetaData MetaData;
-			JSONUtility::ConvertFromJson<AssetMetaData>( OutData, &MetaData );
-
-			// Load anything that a subclass might need
-			OnLoadMetaData( OutData );
-		}
-		else
-		{
-			AssetMetaData MetaData;
-			MetaData.Name = m_Path;
-			MetaData.guid = GetGUID().Value;
-			MetaData.DateLastModified = "TODO";
-
-			// TODO: Create the .meta file
-			File::WriteToTextFile( MetaPath, JSONUtility::ConvertToJson<AssetMetaData>( &MetaData ) );
-		}
-	}
 }

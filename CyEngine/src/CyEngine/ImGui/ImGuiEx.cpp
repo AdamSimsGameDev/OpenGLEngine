@@ -1,7 +1,6 @@
 #include "cypch.h"
 #include "ImGuiEx.h"
 #include <backends/imgui_impl_opengl3.h>
-#include <backends/imgui_impl_glfw.h>
 #include "imgui_internal.h"
 
 IMGUI_API bool ImGui::BeginComboBullet( const char* label, const char* preview_value, ImGuiComboFlags flags )

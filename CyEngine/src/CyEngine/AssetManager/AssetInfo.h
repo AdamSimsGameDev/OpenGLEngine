@@ -14,10 +14,12 @@ namespace Cy
 		String Name;
 
 		PROPERTY()
-		String guid;
+		String guidStr;
 	
 		PROPERTY()
 		String DateLastModified;
+
+		guid guid;
 	};
 
 	CLASS(Abstract)
@@ -38,8 +40,6 @@ namespace Cy
 
 			m_IsLoaded = false;
 			m_IsRegistered = false;
-		
-			LoadMetaData();
 		}
 
 		virtual void OnRegister();
@@ -67,17 +67,12 @@ namespace Cy
 
 		virtual void OnLoad() = 0;
 		virtual void OnUnload() = 0;
-
-		virtual void OnLoadMetaData( String Data ) { }
-
+		
 		virtual Array<String> GetSupportedFileTypes() const = 0;
 
 		virtual Array<Object*> GetInternalObjectReferences() const { return Array<Object*>(); }
 
 		void RebuildReferences();
-
-	private:
-		void LoadMetaData();
 
 	protected:
 		String m_FileType;

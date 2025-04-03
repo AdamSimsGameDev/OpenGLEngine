@@ -32,8 +32,8 @@ namespace Cy
 
 		static SharedPtr<Object> FindObject(const guid& guid) { return (*Get()->ObjectMap.find(guid)).second; }
 
-		void RegisterObject(Object* obj);
-
+		void RegisterObject(Object* obj, guid _guid = guid());
+		
 	private:
 		static ObjectManager* Instance;
 

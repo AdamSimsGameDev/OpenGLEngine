@@ -26,9 +26,14 @@ namespace Cy
         return Get()->ObjectMap[obj->ObjectGUID];
     }
 
-    void ObjectManager::RegisterObject(Object* obj)
+    void ObjectManager::RegisterObject(Object* obj, guid _guid)
     {
-        guid guid = guid::Make();
+        if (obj->ObjectGUID == _guid)
+        {
+            Get()->ObjectMap.erase(obj->ObjectGUID);
+        }
+            
+        guid guid = _guid.IsValid() ? _guid : guid::Make();
         ObjectMap.emplace(guid, SharedPtr(obj));
         obj->ObjectGUID = guid;
     }
