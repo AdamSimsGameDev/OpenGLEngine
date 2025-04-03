@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits> 
 
 template<typename Arr>
 class ArrayItr
@@ -126,7 +127,59 @@ public:
 	virtual void RemoveAt(int position) { }
 };
 
-template<typename T>
+class ArrayAllocator
+{
+public:
+	template<typename T>
+	static void Reserve( T* Arr, int Index ) = 0;
+
+	template<typename T>
+	static void PreSet( T* Arr, int Index ) = 0;
+};
+
+class ArrayAllocatorNone : ArrayAllocator
+{
+public:
+	template<typename T>
+	static void Reserve( T* Arr, int Index ) { }
+
+	template<typename T>
+	static void PreSet( T* Arr, int Index ) { }
+};
+
+class ArrayAllocatorDefault : ArrayAllocator
+{
+public:
+	template<typename T>
+	static void Reserve( T* Arr, int Index )
+	{ 
+		new ( &Arr[ Index ] ) T();
+	}
+
+	template<typename T>
+	static void PreSet( T* Arr, int Index )
+	{
+
+	}
+};
+
+class ArrayAllocatorLazy : ArrayAllocator
+{
+public:
+	template<typename T>
+	static void Reserve( T* Arr, int Index )
+	{
+
+	}
+
+	template<typename T>
+	static void PreSet( T* Arr, int Index )
+	{
+		new ( &Arr[ Index ] ) T();
+	}
+};
+
+template<typename T, typename Allocator = ArrayAllocatorLazy>
 class Array : ArrayBase
 {
 public:
@@ -135,9 +188,9 @@ public:
 	using ConstIterator = ArrayItrConst<Array<T>>;
 
 public:
-	Array()
+	Array(int Capacity = 2)
 	{
-		Reserve(2);
+		Reserve(Capacity);
 	}
 	Array(std::initializer_list<T> l)
 	{
@@ -214,7 +267,7 @@ public:
 		arr.m_Capacity = 0;
 
 		std::swap(m_Data, arr.m_Data);
-		::operator delete(arr.m_Data, m_Capacity * sizeof(T));
+		::operator delete( arr.m_Data, m_Capacity * sizeof( T ) );
 		return *this;
 	}
 
@@ -243,12 +296,21 @@ public:
 		return t;
 	}
 
+	T PopFirst()
+	{
+		T t = (*this)[0];
+		RemoveAt(0);
+		return t;
+	}
+
 	virtual void Reserve(int capacity) override
 	{
 		if (capacity < m_Size)
 			return;
 
-		T* n = (T*)::operator new(capacity * sizeof(T));
+		T* n = ( T* )::operator new( capacity * sizeof( T ) );
+		for ( int i = m_Capacity; i < capacity; ++i )
+			Allocator::Reserve( n, i );
 		for (int i = 0; i < m_Size; i++)
 			n[i] = std::move(m_Data[i]);
 		for (int i = 0; i < m_Size; i++)
@@ -267,13 +329,42 @@ public:
 	{
 		if (m_Size == m_Capacity)
 			Reserve(m_Capacity * 2);
-		m_Data[m_Size++] = value;
+		int Index = m_Size++;
+		Allocator::PreSet( m_Data, Index );
+		m_Data[ Index ] = value;
 	}
 	void Add(T&& value)
 	{
 		if (m_Size == m_Capacity)
 			Reserve(m_Capacity * 2);
-		m_Data[m_Size++] = T(value);
+		int Index = m_Size++;
+		Allocator::PreSet( m_Data, Index );
+		m_Data[ Index ] = T(value);
+	}
+
+	void Add(const Array<T>& value)
+	{
+		while (m_Size >= m_Capacity)
+			Reserve(m_Capacity * 2);
+
+		for (int i = 0; i < value.Count(); i++)
+		{
+			int Index = m_Size++;
+			Allocator::PreSet( m_Data, Index );
+			m_Data[ Index ] = value[i];
+		}
+	}
+	void Add(Array<T>&& value)
+	{
+		while (m_Size >= m_Capacity)
+			Reserve(m_Capacity * 2);
+
+		for (int i = 0; i < value.Count(); i++)
+		{
+			int Index = m_Size++;
+			Allocator::PreSet( m_Data, Index );
+			m_Data[Index] = T(value[i]);
+		}
 	}
 
 	template<typename... Args>
@@ -368,6 +459,32 @@ public:
 	virtual int Count() const override { return m_Size; }
 	virtual int GetElementSize() const override { return sizeof(T); }
 	virtual void* GetArrStartPtr() const override { return m_Data; }
+
+	template<typename Predicate>
+	T* FindByPredicate(Predicate InPredicate) const
+	{
+		for (int i = 0; i < m_Size; i++)
+		{
+			if (::Invoke(InPredicate, m_Data[i]))
+			{
+				return &m_Data[i];
+			}
+		}
+		return nullptr;
+	}
+
+	template<typename Key>
+	T* FindByKey(const Key& InKey)
+	{
+		for (int i = 0; i < m_Size; i++)
+		{
+			if (InKey == m_Data[i])
+			{
+				return *m_Data[i];
+			}
+		}
+		return nullptr;
+	}
 
 	T* Data() { return m_Data; }
 	const T* Data() const { return m_Data; }

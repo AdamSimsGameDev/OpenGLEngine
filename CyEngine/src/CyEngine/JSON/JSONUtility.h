@@ -18,7 +18,7 @@ namespace Cy
 		{
 			// need some way of getting the serialization info for the type.
 			// either this is a STRUCT or a CLASS and has serialization info.
-			Class* cl = type.GetClass();
+			Class* cl = obj->GetClass();
 			String s;
 			ConvertToJsonInternal(obj, cl, s);
 			return s;
@@ -35,7 +35,7 @@ namespace Cy
 		template<typename T>
 		static void ConvertFromJson(String json, void* target)
 		{
-			return ConvertFromJson(json, target, T::StaticClass());
+			return ConvertFromJson(json, target, T::GetStaticClass());
 		}
 		static void ConvertFromJson(String json, void* target, const Class* cl)
 		{

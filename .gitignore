@@ -9,6 +9,7 @@ CyEngine/tools/CyEngineBuildTool/CyEngine.35776e3f/
 *.user
 *.gen.h
 *.gen.cpp
-*.vcxproj
+# *.vcxproj
 *.vcxproj.filters
 */imgui.ini
+CyEngine/.idea/

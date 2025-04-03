@@ -75,7 +75,7 @@ namespace Cy
 
         const auto& Style = ImGui::GetStyle();
 
-        bool pressed = ImGui::Button(*String::Format("##{0}assetbutton", *asset->GetName()), ImVec2(ImGui::GetContentRegionAvail().x, Height));
+        bool pressed = ImGui::Button(*String::Format("##%s_assetbutton", *asset->GetName()), ImVec2(ImGui::GetContentRegionAvail().x, Height));
 
         const ImVec2& NextButtonPos = ImGui::GetCursorPos();
 

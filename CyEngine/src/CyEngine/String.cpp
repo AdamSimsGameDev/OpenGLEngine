@@ -335,6 +335,20 @@ namespace Cy
 		return s;
 	}
 
+	String String::Combine(const Array<String>& arr, const String& separator)
+	{
+		String s;
+		for (int i = 0; i < arr.Count(); i++)
+		{
+			if (i != 0)
+			{
+				s += separator;
+			}
+			s += arr[i];
+		}
+		return s;
+	}
+
 	String String::Reversed(const String& source)
 	{
 		size_t l = source.Length();

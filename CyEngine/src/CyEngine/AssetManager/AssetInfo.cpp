@@ -1,17 +1,19 @@
 #include "cypch.h"
 #include "AssetInfo.h"
 #include "CyEngine/AssetManager/AssetManager.h"
+#include "CyEngine/JSON/JSONUtility.h"
+#include "CyEngine/Serialization/File.h"
 
 namespace Cy
 {
-	void AssetInfo::OnRegister(int assetId)
+	void AssetInfo::OnRegister()
 	{
-		m_AssetId = assetId;
+		m_IsRegistered = true;
 	}
 
 	void AssetInfo::OnUnregister()
 	{
-		m_AssetId = -1;
+		m_IsRegistered = false;
 	}
 
 	void AssetInfo::SyncLoad()
@@ -83,6 +85,32 @@ namespace Cy
 		for (Object* Reference : References)
 		{
 			GetReferencesFrom(Reference, m_AssetsReferencing);
+		}
+	}
+
+	void AssetInfo::LoadMetaData()
+	{
+		// Check to see if the meta file exists.
+		const String MetaPath = m_FullPath + ".meta";
+		String OutData;
+		if ( File::ReadFromTextFile(MetaPath, OutData) )
+		{
+			// Load the OBJ from the Json
+			AssetMetaData MetaData;
+			JSONUtility::ConvertFromJson<AssetMetaData>( OutData, &MetaData );
+
+			// Load anything that a subclass might need
+			OnLoadMetaData( OutData );
+		}
+		else
+		{
+			AssetMetaData MetaData;
+			MetaData.Name = m_Path;
+			MetaData.guid = GetGUID().Value;
+			MetaData.DateLastModified = "TODO";
+
+			// TODO: Create the .meta file
+			File::WriteToTextFile( MetaPath, JSONUtility::ConvertToJson<AssetMetaData>( &MetaData ) );
 		}
 	}
 }

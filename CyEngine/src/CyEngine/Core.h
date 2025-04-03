@@ -75,6 +75,12 @@ static T* New()
 	return T::GetStaticClass()->New<T>();
 }
 
+template<typename FuncType, typename... ArgTypes>
+auto Invoke(FuncType&& Func, ArgTypes&&... Args) -> decltype(std::forward<FuncType>(Func)(std::forward<ArgTypes>(Args)...))
+{
+	return std::forward<FuncType>(Func)(std::forward<ArgTypes>(Args)...);
+}
+
 #include "CyEngine/SmartPointer.h"
 #include "CyEngine/GUID.h"
 #include "CyEngine/Collections/Array.h"

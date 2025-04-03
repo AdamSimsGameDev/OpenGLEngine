@@ -148,6 +148,11 @@ int main()
     std::unordered_map<std::string, ClassInfo*> found_classes;
     std::unordered_map<std::string, EnumInfo*> found_enums;
 
+    std::unordered_map<std::string, std::string> generated_cpps;
+    std::unordered_map<std::string, std::string> generated_hs;
+
+    std::unordered_map<std::string, std::string> file_paths;
+
     // iterate over each of the paths, backwards
     for (int i = paths.size() - 1; i >= 0; i--)
     {        
@@ -182,6 +187,8 @@ int main()
         // get the file name.
         std::vector<std::string> split_path = split(entry, '\\');
         std::string file_name = split(split_path[split_path.size() - 1], '.')[0];
+
+        file_paths.emplace( file_name, entry );
 
         // load the file
         infile.open(entry);
@@ -396,7 +403,7 @@ int main()
                     std::vector<std::string> split_parent_class = split(post_colon.size() > 0 ? split(post_colon, ',')[0] : "", ' ');
                     std::vector<std::string> non_templated_parent = split(split_parent_class.size() > 1 ? split_parent_class[1] : "", '<');
 
-                    ClassInfo* class_info = new ClassInfo(split_class[split_class.size() == 2 ? 1 : 2], non_templated_parent.size() > 0 ? non_templated_parent[0] : "");
+                    ClassInfo* class_info = new ClassInfo(split_class[split_class.size() == 2 ? 1 : 2], non_templated_parent.size() > 0 ? non_templated_parent[0] : "", file_name);
                     class_info->meta_data = meta_data;
                     meta_data.clear();
 
@@ -409,6 +416,8 @@ int main()
                         current_class = class_info;
                         next_line_class = false;
                         found_class = true;
+
+                        class_brace_depth = brace_depth;
 
                         class_info->is_generated = true;
                     }
@@ -472,43 +481,57 @@ int main()
             generated_h += "}\n";
             generated_cpp += "}\n";
         }
-    
+
         if (found_class)
         {
-            if (std::find(generated_paths.begin(), generated_paths.end(), file_name) == generated_paths.end())
+            generated_cpps.emplace( file_name, generated_cpp );
+            generated_hs.emplace( file_name, generated_h );
+        }
+    }
+
+    // iterate over all classes
+    for ( const auto& pair : found_classes )
+    {
+        if ( pair.second == nullptr || !pair.second->is_generated)
+            continue;
+
+        if ( std::find( generated_paths.begin(), generated_paths.end(), pair.second->file_name ) == generated_paths.end() )
+        {
+            has_updated_generated_file = true;
+
+            std::string h_name = pair.second->file_name + ".gen.h";
+
+            std::cout << "Generated class: " << pair.second->name << std::endl;
+
+            std::ofstream outcpp( generated_path + "\\" + pair.second->file_name + ".gen.cpp" );
+            outcpp << "#include \"cypch.h\"" << std::endl;
+            outcpp << "#include \"" + h_name + "\"" << std::endl;
+            outcpp << "#include \"" + file_paths[pair.second->file_name] + "\"" << std::endl;
+            outcpp << "#include \"ClassLibrary.h\"" << std::endl;
+            outcpp << generated_cpps[pair.second->file_name] << std::endl;
+            outcpp.close();
+
+            std::ofstream outh( generated_path + "\\" + h_name );
+            outh << "#pragma once" << std::endl;
+            auto* cl = found_classes[ pair.second->name ];
+            if ( cl->parent_class.empty() )
             {
-                has_updated_generated_file = true;
-
-                std::string h_name = file_name + ".gen.h";
-
-                std::cout << "Generated class: " << class_name << std::endl;
-
-                std::ofstream outcpp(generated_path + "\\" + file_name + ".gen.cpp");
-                outcpp << "#include \"cypch.h\"" << std::endl;
-                outcpp << "#include \"" + h_name + "\"" << std::endl;
-                outcpp << "#include \"" + entry + "\"" << std::endl;
-                outcpp << "#include \"ClassLibrary.h\"" << std::endl;
-                outcpp << generated_cpp << std::endl;
-                outcpp.close();
-
-                std::ofstream outh(generated_path + "\\" + h_name);
-                outh << "#pragma once" << std::endl;
-                auto* cl = found_classes[class_name];
-                if (cl->parent_class.empty())
-                {
-                    outh << "#include \"CyEngine/Class.h\"" << std::endl << std::endl;
-                }
-                else
-                {
-                    outh << string_format("#include \"generated/%s.gen.h\"", cl->parent_class.c_str()) << std::endl << std::endl;
-                }
-                outh << generated_h << std::endl;
-                outh.close();
+                outh << "#include \"CyEngine/Class.h\"" << std::endl << std::endl;
             }
             else
             {
-                generated_paths.erase(std::find(generated_paths.begin(), generated_paths.end(), file_name));
+                auto* pcl = found_classes[ cl->parent_class ];
+                if ( pcl )
+                {
+                    outh << string_format( "#include \"generated/%s.gen.h\"", pcl->file_name.c_str() ) << std::endl << std::endl;
+                }
             }
+            outh << generated_hs[ pair.second->file_name ] << std::endl;
+            outh.close();
+        }
+        else
+        {
+            generated_paths.erase( std::find( generated_paths.begin(), generated_paths.end(), pair.second->file_name ) );
         }
     }
 
@@ -526,7 +549,7 @@ int main()
     // iterate over all of the classes, and make sure that if a class isn't generated, it's parent also isn't generated, and vice-versa
     for (const auto& pair : found_classes)
     {
-        if (pair.second->is_struct || pair.second->parent_class.size() == 0)
+        if (!pair.second || pair.second->is_struct || pair.second->parent_class.size() == 0)
             continue;
         const auto* parent = found_classes[pair.second->parent_class];
         if (parent && parent->is_generated != pair.second->is_generated)
@@ -573,9 +596,9 @@ int main()
         std::string properties_string;
         for (const auto& f : found_classes)
         {
-            if (!f.second->is_generated)
+            if (!f.second || !f.second->is_generated)
                 continue;
-            properties_include_string += "#include \"" + f.first + ".gen.h\"\n";
+            properties_include_string += "#include \"" + f.second->file_name + ".gen.h\"\n";
             properties_string += string_format(class_library_entry, f.first.c_str(), f.first.c_str()) + ",\n";
         }
 

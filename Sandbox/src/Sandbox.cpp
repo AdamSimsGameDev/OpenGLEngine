@@ -41,16 +41,6 @@ public:
 		SceneObject* mainLight = m_Scene->CreateSceneObject<SceneObject>(Vector3(5, 5, 5), Quat::FromEuler(-30.0f, 45.0f, 0.0f));
 		mainLight->SetName("Main Light");
 		LightComponent* lightComp = mainLight->CreateAndAddComponent<LightComponent>();
-
-		Array<int> arr;
-		arr.Add(1);
-		CopyTest(arr);
-	}
-
-	void CopyTest(Array<int> arr)
-	{
-		for (int i = 0; i < arr.Count(); i++)
-			CY_LOG("{0}", arr[i]);
 	}
 
 	virtual void OnUpdate(float deltaTime) override

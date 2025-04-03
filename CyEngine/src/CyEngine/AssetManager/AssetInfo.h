@@ -5,6 +5,21 @@
 
 namespace Cy
 {
+	STRUCT()
+	struct AssetMetaData 
+	{
+		GENERATED_CLASS( AssetMetaData )
+
+		PROPERTY()
+		String Name;
+
+		PROPERTY()
+		String guid;
+	
+		PROPERTY()
+		String DateLastModified;
+	};
+
 	CLASS(Abstract)
 	class AssetInfo : public Object
 	{
@@ -12,7 +27,7 @@ namespace Cy
 
 		friend class AssetManager;
 
-	public:
+	public: 
 		void Initialise(String name, String fileType, String path, String fullPath)
 		{
 			SetName(name);
@@ -22,16 +37,18 @@ namespace Cy
 			m_FullPath = fullPath;
 
 			m_IsLoaded = false;
-			m_AssetId = -1;
+			m_IsRegistered = false;
+		
+			LoadMetaData();
 		}
 
-		virtual void OnRegister(int assetId);
+		virtual void OnRegister();
 		virtual void OnUnregister();
 
 		const String& GetPath() const { return m_Path; }
 		const String& GetFullPath() const { return m_FullPath; }
 
-		bool IsRegistered() const { return m_AssetId >= 0; }
+		bool IsRegistered() const { return m_IsRegistered; }
 		bool IsLoaded() const { return m_IsLoaded; }
 
 		void SyncLoad();
@@ -51,11 +68,16 @@ namespace Cy
 		virtual void OnLoad() = 0;
 		virtual void OnUnload() = 0;
 
+		virtual void OnLoadMetaData( String Data ) { }
+
 		virtual Array<String> GetSupportedFileTypes() const = 0;
 
 		virtual Array<Object*> GetInternalObjectReferences() const { return Array<Object*>(); }
 
 		void RebuildReferences();
+
+	private:
+		void LoadMetaData();
 
 	protected:
 		String m_FileType;
@@ -69,7 +91,7 @@ namespace Cy
 		Array<guid> m_AssetsReferencing;
 
 		bool m_IsLoaded;
-		int m_AssetId;
+		bool m_IsRegistered;
 
 		bool m_IsDirty;
 	};

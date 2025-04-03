@@ -4,6 +4,7 @@
 #include "CyEngine/Editor/OutputTab.h"
 #include "CyEngine/Editor/ViewportTab.h"
 #include "CyEngine/Editor/OutlinerTab.h"
+#include "CyEngine/Editor/ContentBrowserTab.h"
 
 #include <imgui.h>
 #include <gl/GL.h>
@@ -19,6 +20,7 @@ namespace Cy
 		PushTab(new OutputTab());
 		PushTab(new InspectorTab());
 		PushTab(new OutlinerTab());
+		PushTab(new ContentBrowserTab());
 		m_ViewportTab = new ViewportTab();
 		PushTab(m_ViewportTab);
 	}

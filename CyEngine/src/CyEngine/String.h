@@ -168,6 +168,7 @@ namespace Cy
 
 		// Statics
 		static String Combine(const Array<String>& arr);
+		static String Combine(const Array<String>& arr, const String& separator);
 		static String Reversed(const String& source);
 		static Array<String> Split(const String& str, const char& separator);
 		static Array<String> SplitUnquoted(const String& str, const char& separator);

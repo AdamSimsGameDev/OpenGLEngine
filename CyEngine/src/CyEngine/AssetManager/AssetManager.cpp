@@ -3,76 +3,17 @@
 
 #include "AssetInfo.h"
 #include "TextAsset.h"
+#include "CyEngine/Serialization/File.h"
 
-#include <sstream>
 #include <filesystem>
+#include <CyEngine/Serialization/Directory.h>
 
 namespace Cy
 {
-	PathHelper::PathHelper(String inString)
-	{
-		inString.ReplaceAll("\\", "/");		
-		m_PathElements = String::Split(inString, '/');
-
-		const String& ext = m_PathElements[m_PathElements.Count() - 1];
-		Array<String> spl = String::Split(ext, '.');
-		if (spl.Count() == 1)
-		{
-			m_IsFile = false;
-			m_FileExtension = "";
-		}
-		else
-		{
-			m_IsFile = true;
-			m_FileExtension = "." + spl.Pop();
-		}
-
-		m_Name = String::Combine(spl);
-	}
-
-	String PathHelper::RebuildPath() const
-	{
-		String newPath;
-		for (int i = 0; i < Count(); i++)
-		{
-			if (i != 0)
-			{
-				newPath += "/";
-			}
-
-			newPath += m_PathElements[i];
-		}
-		return newPath;
-	}
-
-	String PathHelper::RebuildRelativePath(const String& relativeTo) const
-	{
-		const PathHelper& relativeToHelper = PathHelper(relativeTo);
-
-		String newPath;
-		for (int i = 0; i < Count(); i++)
-		{
-			if (i < relativeToHelper.Count() && relativeToHelper.m_PathElements[i] == m_PathElements[i])
-			{
-				continue;
-			}
-
-			if (!newPath.IsEmpty())
-			{
-				newPath += "/";
-			}
-
-			newPath += m_PathElements[i];
-		}
-
-		return newPath;
-	}
-
 	String AssetManager::s_ProjectPath = "";
 	String AssetManager::s_AssetRelativePath = "/Assets";
 
 	SharedPtr<AssetManager> AssetManager::s_AssetManager = nullptr;
-	int AssetManager::s_NextAssetId = 0;
 
 	void AssetManager::Refresh()
 	{
@@ -81,8 +22,7 @@ namespace Cy
 
 	void AssetManager::RegisterAsset(AssetInfo* asset)
 	{
-		asset->OnRegister(s_NextAssetId);
-		s_NextAssetId++;
+		asset->OnRegister();
 		m_Assets.Add(asset);
 	}
 
@@ -157,29 +97,6 @@ namespace Cy
 		return nullptr;
 	}
 
-	bool AssetManager::ReadFromTextFile(const String& path, String& outString)
-	{
-		std::ifstream infile;
-		infile.open(path);
-
-		if (infile.fail())
-		{
-			return false;
-		}
-
-		std::stringstream buffer;
-		buffer << infile.rdbuf();
-
-		outString = buffer.str();
-
-		return true;
-	}
-
-	bool AssetManager::WriteToTextFile(const String& path, const String& inString)
-	{
-		return false;
-	}
-
 	Array<AssetInfo*> AssetManager::GetAllAssetsOfType(const Class* Type)
 	{
 		Array<AssetInfo*> arr;
@@ -219,7 +136,7 @@ namespace Cy
 		const Array<String>& assetPaths = GatherAssetPaths();
 		for (auto path : assetPaths)
 		{
-			PathHelper helper = PathHelper(path);
+			Directory helper = Directory(path);
 
 			// Get the asset type.
 			// TODO: swap for a dictionary/map to make this less yucky!
@@ -238,8 +155,11 @@ namespace Cy
 
 			if (type != nullptr)
 			{
+				Directory RelativeDir;
+				helper.RelativeTo(Directory(s_ProjectPath + s_AssetRelativePath), RelativeDir);
+
 				AssetInfo* asset = type->GetClass()->New<AssetInfo>();
-				asset->Initialise(helper.GetName(), helper.GetFileExtension(), helper.RebuildRelativePath(s_ProjectPath + s_AssetRelativePath), helper.RebuildPath());
+				asset->Initialise(helper.GetName(), helper.GetFileExtension(), RelativeDir.ToString(), helper.ToString());
 				RegisterAsset(asset);
 
 				// Test it with a sync load real quick
@@ -259,19 +179,23 @@ namespace Cy
 		Array<String> outPaths;
 
 		const String& fullPath = s_ProjectPath + s_AssetRelativePath;
-
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(*fullPath))
+		for ( const String& Path : File::GetAllFilesInDirectory( fullPath, true ) )
 		{
-			const String& fileExtension = entry.path().extension().string();
-			const String& path = entry.path().string();
+			const Array<String> Split = String::Split( Path, '.' );
+			const String& Extension = Split.Last();
+			const bool IsFile = Split.Count() > 1;
+			if ( !IsFile )
+			{
+				continue;
+			}
 
 			// TODO: swap for a dictionary/map to make this less yucky!
 			bool found = false;
-			for (int i = 0; i < m_AssetTypes.Count() && !found; i++)
+			for ( int i = 0; i < m_AssetTypes.Count() && !found; i++ )
 			{
-				for (auto ext : m_AssetTypes[i]->GetSupportedFileTypes())
+				for ( auto ext : m_AssetTypes[ i ]->GetSupportedFileTypes() )
 				{
-					if (ext == fileExtension)
+					if ( ext == Extension )
 					{
 						found = true;
 						break;
@@ -279,9 +203,9 @@ namespace Cy
 				}
 			}
 
-			if (found)
+			if ( found )
 			{
-				outPaths.Add(path);
+				outPaths.Add( Path );
 			}
 		}
 

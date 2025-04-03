@@ -34,15 +34,17 @@ class ClassInfo
 public:
     std::string name;
     std::string parent_class;
+    std::string file_name;
     std::vector<PropertyInfo> properties;
     bool is_generated;
     bool is_struct;
     std::unordered_map<std::string, std::string> meta_data;
 
-    ClassInfo(std::string n, std::string p)
+    ClassInfo(std::string n, std::string p, std::string file)
     {
         name = n;
         parent_class = p;
+        file_name = file;
     }
 
     bool IsAbstract() const

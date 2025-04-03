@@ -24,7 +24,7 @@ namespace Cy
 			if (count != 0)
 				buffer += ",\n";
 			buffer += add_indent(indent + 1);
-			buffer += String::Format("\"%s\":", *prop.Name);
+			buffer += String::Format("\"%s\":", prop.Name);
 			if (const SerializableBase* serializable = Serialization::FindSerializableProperty(prop.Type))
 			{
 				if (prop.IsArray)
