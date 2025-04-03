@@ -155,6 +155,7 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ImGuiEx.h" />
     <ClInclude Include="src\CoreMinimal.h" />
     <ClInclude Include="src\CyEngine.h" />
     <ClInclude Include="src\CyEngine\Application.h" />
@@ -665,6 +666,7 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImGuiEx.cpp" />
     <ClCompile Include="src\CyEngine\Application.cpp" />
     <ClCompile Include="src\CyEngine\AssetManager\AssetInfo.cpp" />
     <ClCompile Include="src\CyEngine\AssetManager\AssetManager.cpp" />

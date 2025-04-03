@@ -4,6 +4,7 @@
 #include "CyEngine/Editor/ObjectSelectorTab.h"
 #include "CyEngine/Layers/EditorLayer.h"
 #include "CyEngine/AssetManager/TextAsset.h"
+#include "CyEngine/ImGui/ImGuiEx.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
