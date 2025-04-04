@@ -52,6 +52,8 @@ namespace Cy
 
 		static Array<AssetInfo*> GetAllAssetsOfType(const Class* Type);
 
+		static AssetInfo* FindAssetByPath(String Path);
+		
 		static AssetMetaData FindOrCreateAssetMetaData(const String& AssetPath);
 		
 		static AssetManager& Get();

@@ -113,6 +113,19 @@ namespace Cy
 		return arr;
 	}
 
+	AssetInfo* AssetManager::FindAssetByPath(String Path)
+	{
+		// TODO: Swap this out for something a bit better
+		for (auto* Asset : Get().m_Assets)
+		{
+			if (Asset->GetFullPath() == Path)
+			{
+				return Asset;
+			}
+		}
+		return nullptr;
+	}
+
 	AssetMetaData AssetManager::FindOrCreateAssetMetaData(const String& AssetPath)
 	{
 		// Check to see if the meta file exists.

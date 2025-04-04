@@ -7,12 +7,15 @@
 namespace Cy
 {
 	class AssetInfo;
+	class Texture;
 
 	struct ContentBrowserFolder
 	{
 		String FolderName;
 		Directory FullPath;
 
+		ContentBrowserFolder* Parent;
+		
 		Array<AssetInfo*> Assets;
 		Array<ContentBrowserFolder, ArrayAllocatorLazy> Folders;
 
@@ -20,11 +23,12 @@ namespace Cy
 		{
 			FolderName = "";
 			FullPath = Directory("");
-
+			Parent = nullptr;
+			
 			Assets = Array<AssetInfo*>();
 			Folders = Array<ContentBrowserFolder, ArrayAllocatorLazy>();
 		}
-
+		
 		bool FindFolder(const Directory& RelativePath, ContentBrowserFolder& OutFolder) const;
 	};
 
@@ -32,10 +36,14 @@ namespace Cy
 	{
 	public:
 		ContentBrowserTab()
-			: EditorTab("Content Browser") 
+			: EditorTab("Content Browser")
+			, RootFolder()
 		{
+			LoadAssets();
 			Refresh();
+
 			CurrentFolder = &RootFolder;
+			SelectedElement = "";
 		}
 
 		virtual void OnRender() override;
@@ -48,13 +56,23 @@ namespace Cy
 	protected:
 		void RenderAsset(AssetInfo* Asset);
 		void RenderFolder(const ContentBrowserFolder& Folder);
+
+		bool RenderSelectable(String Title, String Path, Texture* Icon);
+		
 		void RebuildRootFolder();
 		void BuildFolderTree(ContentBrowserFolder& Folder, const Directory& Directory);
 
+		void LoadAssets();
+		
 		ContentBrowserFolder RootFolder;
 
+		String SelectedElement;
 		String CurrentPath;
-		ContentBrowserFolder* CurrentFolder;
+		const ContentBrowserFolder* CurrentFolder;
+
+		Texture* FolderTexture;
+		Texture* FolderTextureOpen;
+		Texture* DocumentTexture;
 	};
 }
 
