@@ -175,6 +175,7 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     <ClInclude Include="src\CyEngine\Editor\ObjectSelectorTab.h" />
     <ClInclude Include="src\CyEngine\Editor\OutlinerTab.h" />
     <ClInclude Include="src\CyEngine\Editor\OutputTab.h" />
+    <ClInclude Include="src\CyEngine\Editor\Presets\ObjectPreset.h" />
     <ClInclude Include="src\CyEngine\Editor\PropertyField.h" />
     <ClInclude Include="src\CyEngine\Editor\ViewportTab.h" />
     <ClInclude Include="src\CyEngine\EntryPoint.h" />
@@ -681,6 +682,7 @@ $(ProjectDir)/tools/CyEngineBuildTool/x64/Debug/CyEngineBuildTool.exe</Command>
     <ClCompile Include="src\CyEngine\Editor\ObjectSelectorTab.cpp" />
     <ClCompile Include="src\CyEngine\Editor\OutlinerTab.cpp" />
     <ClCompile Include="src\CyEngine\Editor\OutputTab.cpp" />
+    <ClCompile Include="src\CyEngine\Editor\Presets\ObjectPreset.cpp" />
     <ClCompile Include="src\CyEngine\Editor\PropertyField.cpp" />
     <ClCompile Include="src\CyEngine\Editor\ViewportTab.cpp" />
     <ClCompile Include="src\CyEngine\GUID.cpp" />

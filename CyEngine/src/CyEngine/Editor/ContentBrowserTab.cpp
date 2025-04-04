@@ -9,16 +9,18 @@
 
 namespace Cy
 {
-	constexpr float ButtonWidth = 160.0f;
-	constexpr float ButtonHeight = 180.0f;
-	constexpr float ButtonSpacing = 20.0f;
-
 	void ContentBrowserTab::OnRender()
 	{
 		ImGui::Begin("Content Browser", &m_TabOpen);
 
+		CurrentButtonSize = ContentBrowserButtonInfo::Lerp( MinButtonSize, MaxButtonSize, ButtonSizeAlpha );
+
 		if (CurrentFolder)
 		{
+			const float ButtonSpacing = CurrentButtonSize.Padding;
+			const float ButtonWidth = CurrentButtonSize.Width;
+			const float ButtonHeight = CurrentButtonSize.Height;
+
 			const int MaxHorizontal = (int)floor(ImGui::GetContentRegionAvail().x - ButtonSpacing) / (ButtonSpacing + ButtonWidth);
 
 			int X = 0;
@@ -42,6 +44,15 @@ namespace Cy
 				{
 					X = 0;
 					Y++;
+				}
+			}
+
+			if ( !SelectedElement.IsEmpty() )
+			{
+				// Selected element inputs go here
+				if ( Input::IsKeyReleased( CY_KEY_ENTER ) )
+				{
+					SetCurrentPath( SelectedElement );
 				}
 			}
 
@@ -81,9 +92,15 @@ namespace Cy
 		ImGui::End();
 	}
 
-	bool ContentBrowserTab::FindFolder(const Directory& RelativePath, ContentBrowserFolder& OutFolder) const
+	bool ContentBrowserTab::FindFolder(const Directory& Path, ContentBrowserFolder& OutFolder) const
 	{
-		return RootFolder.FindFolder(RelativePath, OutFolder);
+		Directory RelativePath;
+		if ( Path.RelativeTo( RootFolder.FullPath, RelativePath ) )
+		{
+			CY_LOG( "Relative path is {0}", *RelativePath.ToString() );
+			return RootFolder.FindFolder( RelativePath, OutFolder );
+		}
+		return false;
 	}
 
 	void ContentBrowserTab::SetCurrentPath(const String& InPath)
@@ -121,22 +138,22 @@ namespace Cy
 	{
 		ImVec2 StartPos = ImGui::GetCursorPos();
 
-		const bool IsSelected = ImGui::Selectable(*String::Format("##%sContentBrowserButton", *Title), SelectedElement == Path, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ButtonWidth, ButtonHeight));
+		const bool IsSelected = ImGui::Selectable(*String::Format("##%sContentBrowserButton", *Title), SelectedElement == Path, ImGuiSelectableFlags_AllowDoubleClick, ImVec2( CurrentButtonSize.Width, CurrentButtonSize.Height));
 		if (IsSelected)
 		{
 			SelectedElement = Path;
 		}
 
 		// Double click to open
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::GetMouseClickedCount( ImGuiMouseButton_Left ) >= 2)
 		{
 			return true;
 		}
 
 		// Text field
 		float TextWidth = ImGui::CalcTextSize(*Title).x;
-		constexpr float HalfWidth = ButtonWidth / 2.0f;
-		ImGui::SetCursorPos(ImVec2(StartPos.x + (HalfWidth - TextWidth * 0.5f), StartPos.y + ButtonHeight - 30.0f));
+		const float HalfWidth = CurrentButtonSize.Width / 2.0f;
+		ImGui::SetCursorPos(ImVec2(StartPos.x + (HalfWidth - TextWidth * 0.5f), StartPos.y + CurrentButtonSize.Height - 30.0f));
 		ImGui::Text("%s", *Title);
 
 		// Image

@@ -175,6 +175,8 @@ namespace Cy
 
 	void AssetManager::Refresh_Internal()
 	{
+		CY_LOG( "Refresh Asset Manager" );
+
 		const Array<String>& assetPaths = GatherAssetPaths();
 		for (auto path : assetPaths)
 		{
@@ -206,6 +208,8 @@ namespace Cy
 				ObjectManager::Get()->RegisterObject(asset, MetaData.guid);
 				asset->Initialise(helper.GetName(), helper.GetFileExtension(), RelativeDir.ToString(), helper.ToString());
 				RegisterAsset(asset);
+
+				CY_LOG( "Registered asset {0}", *helper.ToString() );
 
 				// Test it with a sync load real quick
 				AsyncLoadAsset(asset);

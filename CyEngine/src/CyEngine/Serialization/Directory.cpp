@@ -52,16 +52,24 @@ namespace Cy
 			return false;
 		}
 
-		bool bFoundFirstDiff = false;
-		for (int i = 0; i < Length() && i < Other.Length(); i++)
+		if ( Other.Length() >= Length() )
 		{
-			if (!bFoundFirstDiff && Other.Path[i] == Path[i])
-			{
-				continue;
-			}
+			return false;
+		}
 
-			bFoundFirstDiff = true;
-			OutDirectory.Append(Path[i]);
+		// Check that this directory contains the other directory
+		for ( int i = 0; i < Other.Length(); i++ )
+		{
+			if ( Path[ i ] != Other.Path[ i ] )
+			{
+				return false;
+			}
+		}
+
+		// If we reach here then anything past the other's length is the relative path
+		for ( int i = Other.Length(); i < Length(); i++ )
+		{
+			OutDirectory.Append( Path[ i ] );
 		}
 
 		return true;

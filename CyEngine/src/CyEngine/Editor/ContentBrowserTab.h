@@ -9,6 +9,36 @@ namespace Cy
 	class AssetInfo;
 	class Texture;
 
+	struct ContentBrowserButtonInfo
+	{
+		float Width;
+		float Height;
+		float Padding;
+
+		ContentBrowserButtonInfo()
+		{
+			Width = 0.0f;
+			Height = 0.0f;
+			Padding = 0.0f;
+		}
+
+		ContentBrowserButtonInfo( float _Width, float _Height, float _Padding )
+		{
+			Width = _Width;
+			Height = _Height;
+			Padding = _Padding;
+		}
+
+		static ContentBrowserButtonInfo Lerp(const ContentBrowserButtonInfo& A, const ContentBrowserButtonInfo& B, float Alpha)
+		{
+			ContentBrowserButtonInfo N;
+			N.Width = Math::Lerp( A.Width, B.Width, Alpha );
+			N.Height = Math::Lerp( A.Height, B.Height, Alpha );
+			N.Padding = Math::Lerp( A.Padding, B.Padding, Alpha );
+			return N;
+		}
+	};
+
 	struct ContentBrowserFolder
 	{
 		String FolderName;
@@ -44,6 +74,9 @@ namespace Cy
 
 			CurrentFolder = &RootFolder;
 			SelectedElement = "";
+
+			MinButtonSize = { 80.0f, 90.0f, 10.0f };
+			MaxButtonSize = { 160.0f, 180.0f, 20.0f };
 		}
 
 		virtual void OnRender() override;
@@ -73,6 +106,12 @@ namespace Cy
 		Texture* FolderTexture;
 		Texture* FolderTextureOpen;
 		Texture* DocumentTexture;
+
+	private:
+		ContentBrowserButtonInfo MinButtonSize;
+		ContentBrowserButtonInfo MaxButtonSize;
+		ContentBrowserButtonInfo CurrentButtonSize;
+		float ButtonSizeAlpha;
 	};
 }
 

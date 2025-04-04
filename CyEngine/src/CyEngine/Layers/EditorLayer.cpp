@@ -5,6 +5,7 @@
 #include "CyEngine/Editor/ViewportTab.h"
 #include "CyEngine/Editor/OutlinerTab.h"
 #include "CyEngine/Editor/ContentBrowserTab.h"
+#include "CyEngine/Editor/Presets/ObjectPreset.h"
 
 #include <imgui.h>
 #include <gl/GL.h>
@@ -210,6 +211,18 @@ namespace Cy
 			}
 			ImGui::Separator();
 			ImGui::MenuItem("Demo", nullptr, &m_ShowDemo);
+			ImGui::EndMenu();
+		}
+		
+		if ( ImGui::BeginMenu( "Object" ) )
+		{
+			for ( auto& Preset : ObjectPresetBase::ObjectPresets )
+			{
+				if ( ImGui::MenuItem( *Preset.first, nullptr, nullptr ) )
+				{
+					Preset.second->SpawnObject(World::Get());
+				}
+			}
 			ImGui::EndMenu();
 		}
 

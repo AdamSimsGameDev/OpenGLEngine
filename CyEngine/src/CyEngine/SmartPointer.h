@@ -175,6 +175,22 @@ public:
 		}
 	}
 
+	void Clear()
+	{
+		if ( rc )
+		{
+			rc->DecrementWeak();
+			if ( rc->ShouldInvalidate() )
+			{
+				delete[] rc;
+				rc = nullptr;
+			}
+		}
+
+		rc = nullptr;
+		ptr = nullptr;
+	}
+
 	operator T*() const { return ptr; }
 	T* operator->() const { return ptr; }
 
@@ -187,7 +203,7 @@ public:
 
 	bool IsValid() const
 	{
-		return rc->IsValid();
+		return rc && rc->IsValid();
 	}
 
 private:

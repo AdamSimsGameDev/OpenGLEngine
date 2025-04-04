@@ -46,6 +46,7 @@ namespace Cy
 				if (Input::IsKeyPressed(CY_KEY_DELETE))
 				{
 					CurrentSelectedObject->Destroy();
+					CurrentSelectedObject.Clear();
 				}
 
 				if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyPressed(CY_KEY_C))

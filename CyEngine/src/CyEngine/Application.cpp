@@ -22,6 +22,9 @@ namespace Cy
 		// Initialise threads
 		ThreadManager::Get().CreateThread<AsyncLoadingThread>("AsyncLoading");
 
+		// Fetch assets
+		AssetManager::Get();
+
 		// Push default layers.
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -35,8 +38,6 @@ namespace Cy
 
 	void Application::Run()
 	{
-		AssetManager::Get();
-
 		while (m_Running)
 		{
 			Input::Update();
