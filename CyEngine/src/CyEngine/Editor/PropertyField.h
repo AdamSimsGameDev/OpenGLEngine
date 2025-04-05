@@ -7,6 +7,20 @@ namespace Cy
 {
 	class Object;
 
+	static String FormatDisplayName(const String& Name)
+	{
+		String OutName = Name;
+		if (Name.Length() > 1 && Name[0] == 'b' && std::isupper(Name[1]))
+		{
+			OutName.Erase(0, 1);
+		}
+		if (Name.Length() > 2 && Name[0] == 'm' &&  Name[1] == '_')
+		{
+			OutName.Erase(0, 2);
+		}
+		return OutName;
+	}
+	
 	struct PropertyFieldBase
 	{
 	public:
@@ -54,8 +68,13 @@ namespace Cy
 			}
 
 			const MetaDataProperty* displayName = prop.second.GetMetaData("DisplayName");
-			return PropertyFields[type]->RenderProperty(obj, cl, displayName ? displayName->GetValue<String>() : prop.first, prop.second, arrayIndex);
+			if (PropertyFields[type]->RenderProperty(obj, cl, displayName ? displayName->GetValue<String>() : FormatDisplayName(prop.first), prop.second, arrayIndex))
+			{
+				OnPropertyChanged(obj, cl, prop);
+			}
+			return true;
 		}
+		static void OnPropertyChanged(void* Obj, const Class* Cl, const std::pair<String, ClassProperty>& Property);
 
 		static std::unordered_map<String, PropertyFieldBase*> PropertyFields;
 	};

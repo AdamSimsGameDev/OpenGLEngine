@@ -22,7 +22,7 @@ namespace Cy
 		virtual Array<String> GetSupportedFileTypes() const override;
 	
 	protected:
-		PROPERTY()
+		PROPERTY(MultiLine)
 		String m_Content;
 	};
 }

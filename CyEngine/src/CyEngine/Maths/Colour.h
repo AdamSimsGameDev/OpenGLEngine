@@ -49,6 +49,15 @@ namespace Cy
 			}
 		}
 
+		bool operator==(const Colour& rhs) const
+		{
+			return r == rhs.r && g == rhs.g && b == rhs.b && a == rhs.a;
+		}
+		bool operator!=(const Colour& rhs) const
+		{
+			return !(*this == rhs);
+		}
+
 		operator Vector3() const { return Vector3(r, g, b); }
 		operator Vector4() const { return Vector4(r, g, b, a); }
 

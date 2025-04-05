@@ -24,11 +24,11 @@ namespace Cy
 
 		static void DestroyObject(Object* obj);
 		template<typename T>
-		static SharedPtr<T> GetSharedPtrTyped(T* obj)
+		static SharedPtr<T> GetSharedObjectPtrTyped(T* obj)
 		{
-			return *reinterpret_cast<SharedPtr<T>*>(&GetSharedPtr(obj));
+			return *reinterpret_cast<SharedPtr<T>*>(&GetSharedObjectPtr(obj));
 		}
-		static SharedPtr<Object> GetSharedPtr(Object* obj);
+		static SharedPtr<Object> GetSharedObjectPtr(Object* obj);
 
 		static SharedPtr<Object> FindObject(const guid& guid) { return (*Get()->ObjectMap.find(guid)).second; }
 

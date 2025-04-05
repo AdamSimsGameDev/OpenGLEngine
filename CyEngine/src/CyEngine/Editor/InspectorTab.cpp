@@ -177,31 +177,34 @@ namespace Cy
 		if (scene && scene->CurrentSelectedObject)
 		{
 			RenderObject(scene->CurrentSelectedObject, scene->CurrentSelectedObject->GetClass(), false);
-			ImGui::Spacing();
-			ImGui::Separator();
-			ImGui::Spacing();
-			if (ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f)))
+			if (SceneObject* SO = Cast<SceneObject>(scene->CurrentSelectedObject.Get()))
 			{
-				ImGui::OpenPopup("##AddComponent");
-			}
-
-			if (ImGui::BeginPopup("##AddComponent"))
-			{
-				Array<const Class*> classes = Class::GetChildClassesOfType<Component>();
-				for (const auto& cl : classes)
+				ImGui::Spacing();
+				ImGui::Separator();
+				ImGui::Spacing();
+				if (ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f)))
 				{
-					const auto* spawnableMetaData = cl->GetMetaData("EditorSpawnable");
-					if (!spawnableMetaData || !spawnableMetaData->GetValue<bool>())
-					{
-						continue;
-					}
-					if (ImGui::Button(*String::Format("%s##AddComponent", *cl->Name), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y * 2.0f)))
-					{
-						scene->CurrentSelectedObject->CreateAndAddComponent(cl);
-					}
+					ImGui::OpenPopup("##AddComponent");
 				}
 
-				ImGui::EndPopup();
+				if (ImGui::BeginPopup("##AddComponent"))
+				{
+					Array<const Class*> classes = Class::GetChildClassesOfType<Component>();
+					for (const auto& cl : classes)
+					{
+						const auto* spawnableMetaData = cl->GetMetaData("EditorSpawnable");
+						if (!spawnableMetaData || !spawnableMetaData->GetValue<bool>())
+						{
+							continue;
+						}
+						if (ImGui::Button(*String::Format("%s##AddComponent", *cl->Name), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y * 2.0f)))
+						{
+							SO->CreateAndAddComponent(cl);
+						}
+					}
+
+					ImGui::EndPopup();
+				}
 			}
 		}
 

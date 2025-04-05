@@ -29,7 +29,7 @@ namespace Cy
 				currentItem = objects[i];
 			if (ImGui::IsItemHovered() && Input::IsMouseButtonPressed(CY_MOUSE_BUTTON_RIGHT))
 			{
-				ContextMenuObject = ObjectManager::GetSharedPtrTyped<SceneObject>(objects[i]).MakeWeak();
+				ContextMenuObject = ObjectManager::GetSharedObjectPtrTyped<SceneObject>(objects[i]).MakeWeak();
 				ImGui::OpenPopup("##OutlinerTabContextMenu");
 			}
 			if (ImGui::BeginDragDropSource())
@@ -63,19 +63,19 @@ namespace Cy
 			ImGui::Separator();
 			if (ImGui::MenuItem("Copy", "Ctrl+C"))
 			{
-				world->CurrentCopiedObject = ContextMenuObject;
+				world->CurrentCopiedObject = Cast<Object>(ContextMenuObject);
 			}			
 			if (ImGui::MenuItem("Paste", "Ctrl+V"))
 			{
 				SceneObject* n = world->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
 				n->Object::CopyFrom(world->CurrentCopiedObject.Get());
-				world->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+				world->CurrentSelectedObject = ObjectManager::GetSharedObjectPtrTyped<Object>(n).MakeWeak();
 			}			
 			if (ImGui::MenuItem("Duplicate", "Ctrl+D"))
 			{
 				SceneObject* n = world->CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
 				n->Object::CopyFrom(ContextMenuObject.Get());
-				world->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+				world->CurrentSelectedObject = ObjectManager::GetSharedObjectPtrTyped<Object>(n).MakeWeak();
 			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Delete", "Del"))
@@ -99,7 +99,7 @@ namespace Cy
 				so->SetName("New Object");
 			}
 
-			SceneObject* currentItem = scene->CurrentSelectedObject;
+			SceneObject* currentItem = Cast<SceneObject>(scene->CurrentSelectedObject.Get());
 			if (ImGui::TreeNodeEx("World##Outliner", ImGuiTreeNodeFlags_DefaultOpen))
 			{
 				if (ImGui::BeginDragDropTarget())
@@ -115,9 +115,9 @@ namespace Cy
 				const Array<SceneObject*> objects = scene->GetSceneObjects();
 				RenderTree(scene, objects, currentItem, true);
 
-				if (currentItem != scene->CurrentSelectedObject)
+				if (currentItem && currentItem != scene->CurrentSelectedObject)
 				{
-					scene->CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(currentItem).MakeWeak();
+					scene->CurrentSelectedObject = ObjectManager::GetSharedObjectPtrTyped<Object>(currentItem).MakeWeak();
 				}
 
 				ImGui::TreePop();

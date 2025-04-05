@@ -31,6 +31,10 @@ namespace Cy
 		virtual void CopyFrom(ObjectCopyState& state, const Object* obj);
 		virtual void UpdateReferencesFrom(const ObjectCopyState& state);
 
+#if CY_EDITOR
+		virtual void PostPropertyChanged(String PropertyName);
+#endif
+
 		virtual void Start();
 		virtual void End();
 

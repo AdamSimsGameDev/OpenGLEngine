@@ -52,6 +52,13 @@ namespace Cy
 		}
 	}
 
+#if CY_EDITOR
+	void Object::PostPropertyChanged(String PropertyName)
+	{
+		// Stub
+	}
+#endif
+
 	void Object::Start()
 	{
 		// Stub

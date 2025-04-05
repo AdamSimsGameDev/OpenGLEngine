@@ -21,7 +21,7 @@ namespace Cy
         Get()->ObjectMap.erase(obj->ObjectGUID);
     }
 
-    SharedPtr<Object> ObjectManager::GetSharedPtr(Object* obj)
+    SharedPtr<Object> ObjectManager::GetSharedObjectPtr(Object* obj)
     {
         return Get()->ObjectMap[obj->ObjectGUID];
     }

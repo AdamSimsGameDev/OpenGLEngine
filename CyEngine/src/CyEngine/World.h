@@ -38,7 +38,7 @@ namespace Cy
 			t->GetTransform().SetRotation(rotation);
 			t->GetTransform().SetScale(scale);
 			m_SceneObjects.Emplace(t);
-			t->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
+			t->OwningWorld = ObjectManager::GetSharedObjectPtrTyped<World>(this).MakeWeak();
 			t->Start();
 			return t;
 		}
@@ -69,8 +69,8 @@ namespace Cy
 #if CY_EDITOR
 		void SetIsEditorWorld();
 		bool bIsEditorWorld = false;
-		WeakPtr<SceneObject> CurrentSelectedObject = nullptr;
-		WeakPtr<SceneObject> CurrentCopiedObject = nullptr;
+		WeakPtr<Object> CurrentSelectedObject = nullptr;
+		WeakPtr<Object> CurrentCopiedObject = nullptr;
 		SceneObject* EditorCamera = nullptr;
 #endif
 

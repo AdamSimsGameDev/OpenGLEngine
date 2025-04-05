@@ -59,7 +59,7 @@ namespace Cy
 			Folders = Array<ContentBrowserFolder, ArrayAllocatorLazy>();
 		}
 		
-		bool FindFolder(const Directory& RelativePath, ContentBrowserFolder& OutFolder) const;
+		bool FindFolder(const Directory& RelativePath, ContentBrowserFolder*& OutFolder) const;
 	};
 
 	class ContentBrowserTab : public EditorTab
@@ -81,7 +81,7 @@ namespace Cy
 
 		virtual void OnRender() override;
 
-		bool FindFolder(const Directory& RelativePath, ContentBrowserFolder& OutFolder) const;
+		bool FindFolder(const Directory& RelativePath, ContentBrowserFolder*& OutFolder) const;
 
 		void SetCurrentPath(const String& InPath);
 		void Refresh();
@@ -90,7 +90,7 @@ namespace Cy
 		void RenderAsset(AssetInfo* Asset);
 		void RenderFolder(const ContentBrowserFolder& Folder);
 
-		bool RenderSelectable(String Title, String Path, Texture* Icon);
+		void RenderSelectable(String Title, String Path, Texture* Icon, bool& IsSelected, bool& IsDoubleClicked);
 		
 		void RebuildRootFolder();
 		void BuildFolderTree(ContentBrowserFolder& Folder, const Directory& Directory);

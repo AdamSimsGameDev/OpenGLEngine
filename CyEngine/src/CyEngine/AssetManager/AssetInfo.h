@@ -42,6 +42,8 @@ namespace Cy
 			m_IsRegistered = false;
 		}
 
+		virtual void PostPropertyChanged(String PropertyName) override;
+
 		virtual void OnRegister();
 		virtual void OnUnregister();
 

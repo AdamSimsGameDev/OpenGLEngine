@@ -39,6 +39,12 @@ inline const Target* Cast(const Source* x)
 	return tmp;
 }
 
+template<typename Target, typename Source>
+inline WeakPtr<Target> Cast(WeakPtr<Source>& x)
+{
+	return *reinterpret_cast<WeakPtr<Target>*>(&x);;
+}
+
 #define GET_NAME(x) typeid(x).name()
 #define GET_NAME_SAFE(x) x ? typeid(x).name() : "NULL"
 

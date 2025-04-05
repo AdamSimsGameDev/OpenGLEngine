@@ -162,6 +162,7 @@ public:
 		rc = wp.rc;
 		rc->IncrementWeak();
 	}
+	
 	~WeakPtr()
 	{
 		if (rc)
@@ -206,7 +207,7 @@ public:
 		return rc && rc->IsValid();
 	}
 
-private:
+protected:
 	T* ptr;
 	ReferenceCount* rc;
 };

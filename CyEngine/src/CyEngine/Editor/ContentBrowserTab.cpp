@@ -32,7 +32,15 @@ namespace Cy
 					ImGui::GetWindowContentRegionMin().x + ButtonSpacing + (X * (ButtonSpacing + ButtonWidth)),
 					ImGui::GetWindowContentRegionMin().y + ButtonSpacing + (Y * (ButtonSpacing + ButtonHeight)))
 					);
-				if (RenderSelectable("../", CurrentFolder->Parent->FullPath.ToString(), FolderTextureOpen))
+				bool IsDoubleClicked = false;
+				bool IsSelected = CurrentFolder->Parent->FullPath.ToString() == SelectedElement && World::Get()->CurrentSelectedObject != nullptr;
+				RenderSelectable("../", CurrentFolder->Parent->FullPath.ToString(), FolderTextureOpen, IsSelected, IsDoubleClicked);
+				if (IsSelected)
+				{
+					World::Get()->CurrentSelectedObject.Clear();
+				}
+				
+				if (IsDoubleClicked)
 				{
 					CurrentFolder = CurrentFolder->Parent;
 					ImGui::End();
@@ -92,7 +100,7 @@ namespace Cy
 		ImGui::End();
 	}
 
-	bool ContentBrowserTab::FindFolder(const Directory& Path, ContentBrowserFolder& OutFolder) const
+	bool ContentBrowserTab::FindFolder(const Directory& Path, ContentBrowserFolder*& OutFolder) const
 	{
 		Directory RelativePath;
 		if ( Path.RelativeTo( RootFolder.FullPath, RelativePath ) )
@@ -105,11 +113,18 @@ namespace Cy
 
 	void ContentBrowserTab::SetCurrentPath(const String& InPath)
 	{
-		ContentBrowserFolder OutFolder;
+		if (InPath == RootFolder.FullPath.ToString())
+		{
+			CurrentPath = InPath;
+			CurrentFolder = &RootFolder;
+			return;
+		}
+		
+		ContentBrowserFolder* OutFolder;
 		if (FindFolder(InPath, OutFolder))
 		{
 			CurrentPath = InPath;
-			CurrentFolder = &OutFolder;
+			CurrentFolder = OutFolder;
 		}
 	}
 
@@ -120,34 +135,61 @@ namespace Cy
 
 	void ContentBrowserTab::RenderAsset(AssetInfo* Asset)
 	{
-		if (RenderSelectable(Asset->GetName(), Asset->GetFullPath(), DocumentTexture))
+		String Name = Asset->GetName();
+		if (Asset->IsDirty())
 		{
-			// TODO: Open things?
+			Name += " *";
+		}
+		
+		bool IsDoubleClicked = false;
+		bool IsSelected = Asset->GetFullPath() == SelectedElement && World::Get()->CurrentSelectedObject == Asset;
+		RenderSelectable(Name, Asset->GetFullPath(), DocumentTexture, IsSelected, IsDoubleClicked);
+		
+		if (IsSelected)
+		{
+			SharedPtr<Object> Shared = ObjectManager::GetSharedObjectPtr(Asset);
+			World::Get()->CurrentSelectedObject = Shared.MakeWeak();
+
+			if (Input::IsKeyDown(CY_KEY_LEFT_CONTROL) && Input::IsKeyReleased(CY_KEY_S))
+			{
+				Asset->Save();
+			}
 		}
 	}
 
 	void ContentBrowserTab::RenderFolder(const ContentBrowserFolder& Folder)
 	{
-		if (RenderSelectable(Folder.FolderName, Folder.FullPath.ToString(), FolderTexture))
+		bool IsDoubleClicked = false;
+		bool IsSelected = Folder.FullPath.ToString() == SelectedElement && World::Get()->CurrentSelectedObject == nullptr;
+		RenderSelectable(Folder.FolderName, Folder.FullPath.ToString(), FolderTexture, IsSelected, IsDoubleClicked);
+
+		if (IsSelected)
+		{
+			World::Get()->CurrentSelectedObject.Clear();
+		}
+		
+		if (IsDoubleClicked)
 		{
 			CurrentFolder = &Folder;
 		}
 	}
 
-	bool ContentBrowserTab::RenderSelectable(String Title, String Path, Texture* Icon)
+	void ContentBrowserTab::RenderSelectable(String Title, String Path, Texture* Icon, bool& IsSelected, bool& IsDoubleClicked)
 	{
 		ImVec2 StartPos = ImGui::GetCursorPos();
 
-		const bool IsSelected = ImGui::Selectable(*String::Format("##%sContentBrowserButton", *Title), SelectedElement == Path, ImGuiSelectableFlags_AllowDoubleClick, ImVec2( CurrentButtonSize.Width, CurrentButtonSize.Height));
-		if (IsSelected)
+		const bool Selected = ImGui::Selectable(*String::Format("##%sContentBrowserButton", *Title), IsSelected, ImGuiSelectableFlags_AllowDoubleClick, ImVec2( CurrentButtonSize.Width, CurrentButtonSize.Height));
+		if (Selected)
 		{
 			SelectedElement = Path;
+			IsSelected = true;
 		}
 
 		// Double click to open
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::GetMouseClickedCount( ImGuiMouseButton_Left ) >= 2)
 		{
-			return true;
+			IsDoubleClicked = true;
+			return;
 		}
 
 		// Text field
@@ -161,8 +203,6 @@ namespace Cy
 		ImGui::Image(reinterpret_cast<ImTextureID>(Icon->m_RendererId), ImVec2(140.0f, 140.0f));
 		
 		// TODO: Add input field to change the assets name
-
-		return false;
 	}
 
 	void ContentBrowserTab::RebuildRootFolder()
@@ -205,7 +245,7 @@ namespace Cy
 		DocumentTexture = Texture::LoadTexture("resources/icon_document.png");
 	}
 
-	bool ContentBrowserFolder::FindFolder(const Directory& RelativePath, ContentBrowserFolder& OutFolder) const
+	bool ContentBrowserFolder::FindFolder(const Directory& RelativePath, ContentBrowserFolder*& OutFolder) const
 	{
 		ContentBrowserFolder* Found = Folders.FindByPredicate([&](const ContentBrowserFolder& F) { return F.FolderName == RelativePath.First(); });
 		if (!Found)
@@ -215,7 +255,7 @@ namespace Cy
 
 		if (RelativePath.Length() == 1)
 		{
-			OutFolder = *Found;
+			OutFolder = Found;
 			return true;
 		}
 		else

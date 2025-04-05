@@ -6,6 +6,13 @@
 
 namespace Cy
 {
+	void AssetInfo::PostPropertyChanged(String PropertyName)
+	{
+		Object::PostPropertyChanged(PropertyName);
+
+		MarkDirty();
+	}
+
 	void AssetInfo::OnRegister()
 	{
 		m_IsRegistered = true;

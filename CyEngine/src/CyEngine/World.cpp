@@ -23,9 +23,9 @@ namespace Cy
 		{
 			s_Scene = this;
 
-			ADD_TRACKED_COMPONENT_TYPE(MeshComponent);
-			ADD_TRACKED_COMPONENT_TYPE(CameraComponent);
-			ADD_TRACKED_COMPONENT_TYPE(LightComponent);
+			ADD_TRACKED_COMPONENT_TYPE(MeshComponent)
+			ADD_TRACKED_COMPONENT_TYPE(CameraComponent)
+			ADD_TRACKED_COMPONENT_TYPE(LightComponent)
 		}
 	}
 
@@ -58,7 +58,7 @@ namespace Cy
 				{
 					SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
 					n->Object::CopyFrom(CurrentSelectedObject.Get());
-					CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+					CurrentSelectedObject = ObjectManager::GetSharedObjectPtrTyped<Object>(n).MakeWeak();
 				}
 			}
 
@@ -66,7 +66,7 @@ namespace Cy
 			{
 				SceneObject* n = CreateSceneObject<SceneObject>(Vector3::Zero, Quat::Identity);
 				n->Object::CopyFrom(CurrentCopiedObject.Get());
-				CurrentSelectedObject = ObjectManager::GetSharedPtrTyped<SceneObject>(n).MakeWeak();
+				CurrentSelectedObject = ObjectManager::GetSharedObjectPtrTyped<Object>(n).MakeWeak();
 			}
 
 			if (bIsEditorWorld)
@@ -118,17 +118,10 @@ namespace Cy
 		// spawn editor camera
 		SceneObject* cameraParent = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
 		cameraParent->SetName("Camera Parent");
-#if 1
+		
 		EditorCamera = CreateSceneObject<SceneObject>(Vector3(0, 0.5f, -4), Quat::Identity);
 		EditorCamera->SetName("Editor Camera");
-#elif
-		EditorCamera = ObjectManager::CreateObject<SceneObject>();
-		EditorCamera->SetName("Editor Camera");
-		EditorCamera->OwningWorld = ObjectManager::GetSharedPtrTyped<World>(this).MakeWeak();
-		EditorCamera->GetTransform()->SetPosition(Vector3(0, 0, 0));
-		EditorCamera->GetTransform()->SetScale(Vector3::One);
-		EditorCamera->Start();
-#endif
+		
 		EditorCamera->SetParent(cameraParent);
 
 		EditorCameraComponent* m_Camera = EditorCamera->CreateAndAddComponent<EditorCameraComponent>();
